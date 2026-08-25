@@ -1,0 +1,132 @@
+---
+import { site } from '../lib/site';
+import PrototypeBanner from './PrototypeBanner.astro';
+
+const links = [
+  { href: '/', label: 'Inicio' },
+  { href: '/servicios', label: 'Servicios' },
+  { href: '/venta', label: 'Venta' },
+  { href: '/precios', label: 'Precios' },
+  { href: '/pedido', label: 'Enviar archivo' },
+  { href: '/imagenes', label: 'Imágenes' },
+  { href: '/informacion', label: 'Información' },
+  { href: '/contacto', label: 'Contacto' },
+];
+
+const current = Astro.url.pathname;
+---
+
+<header class:list={['site-header fixed top-0 left-0 w-full z-50', site.isPrototype && 'has-banner']}>
+  <PrototypeBanner />
+  <div class="bg-brand border-b-2 border-accent">
+    <div class="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-3 shrink-0">
+        <span class="flex h-9 w-9 items-center justify-center bg-accent text-brand text-xs font-black tracking-tight">
+          {site.shortName}
+        </span>
+        <span class="leading-none">
+          <span class="block text-[13px] font-black uppercase tracking-[0.08em] text-white">Central</span>
+          <span class="block text-[10px] font-medium tracking-wide text-white/50 mt-0.5">Copistería</span>
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-0 text-[12px] font-semibold uppercase tracking-[0.06em]">
+        {
+          links.map((link) => {
+            const active =
+              link.href === '/'
+                ? current === '/'
+                : link.href === '/servicios'
+                  ? current === '/servicios' || current.startsWith('/servicio/')
+                  : current === link.href || current.startsWith(`${link.href}/`);
+            return (
+              <a
+                href={link.href}
+                class:list={[
+                  'px-2.5 py-5 border-b-2 -mb-[2px] transition',
+                  active
+                    ? 'border-accent text-accent'
+                    : 'border-transparent text-white/70 hover:text-white hover:border-white/30',
+                ]}
+              >
+                {link.label}
+              </a>
+            );
+          })
+        }
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a
+          href="/pedido"
+          class="btn-primary hidden sm:inline-flex items-center px-4 py-2 text-xs font-black uppercase tracking-wide"
+        >
+          Enviar PDF
+        </a>
+        <button
+          id="menu-toggle"
+          class="flex lg:hidden flex-col justify-center items-center w-10 h-10 border border-white/25 text-white p-2 gap-1.5"
+          aria-label="Abrir menú"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span class="w-5 h-0.5 bg-current transition-transform duration-300 menu-line"></span>
+          <span class="w-5 h-0.5 bg-current transition-opacity duration-300 menu-line"></span>
+          <span class="w-5 h-0.5 bg-current transition-transform duration-300 menu-line"></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="lg:hidden max-h-0 overflow-hidden bg-brand-dark border-t border-white/10 transition-all duration-300">
+      <nav class="flex flex-col px-4 pt-2 pb-4 gap-0 text-sm font-semibold uppercase tracking-wide">
+        {
+          links.map((link) => (
+            <a href={link.href} class="mobile-link px-3 py-3 border-b border-white/10 text-white/85 hover:text-accent">
+              {link.label}
+            </a>
+          ))
+        }
+        <a href="/pedido" class="mobile-link btn-primary mt-3 mx-1 inline-flex justify-center px-3 py-2.5 text-xs font-black uppercase">
+          Enviar PDF
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+  const lines = menuToggle?.querySelectorAll('.menu-line');
+
+  function setOpen(open: boolean) {
+    if (!mobileMenu || !menuToggle) return;
+    menuToggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+      mobileMenu.classList.remove('max-h-0');
+      mobileMenu.classList.add('max-h-[32rem]');
+      if (lines && lines.length === 3) {
+        lines[0].classList.add('translate-y-2', 'rotate-45');
+        lines[1].classList.add('opacity-0');
+        lines[2].classList.add('-translate-y-2', '-rotate-45');
+      }
+    } else {
+      mobileMenu.classList.remove('max-h-[32rem]');
+      mobileMenu.classList.add('max-h-0');
+      if (lines && lines.length === 3) {
+        lines[0].classList.remove('translate-y-2', 'rotate-45');
+        lines[1].classList.remove('opacity-0');
+        lines[2].classList.remove('-translate-y-2', '-rotate-45');
+      }
+    }
+  }
+
+  menuToggle?.addEventListener('click', () => {
+    setOpen(mobileMenu?.classList.contains('max-h-0') ?? false);
+  });
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+</script>

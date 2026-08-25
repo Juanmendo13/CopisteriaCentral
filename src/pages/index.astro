@@ -1,0 +1,79 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import HomeHero from '../components/HomeHero.astro';
+import ServiceIconsRow from '../components/ServiceIconsRow.astro';
+import UtilityStrip from '../components/UtilityStrip.astro';
+import HomeExtras from '../components/HomeExtras.astro';
+import HomePrecios from '../components/HomePrecios.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import { servicios } from '../data/servicios';
+import { site } from '../lib/site';
+---
+
+<Layout title={`${site.name} | Copistería en Sevilla`}>
+  <HomeHero />
+  <UtilityStrip />
+  <ServiceIconsRow />
+
+  <main>
+    <section id="servicios" class="scroll-mt-24 relative bg-white pt-14 sm:pt-16 pb-16 px-4 border-b border-line">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+          <SectionHeader
+            eyebrow="Servicios"
+            title="Del PDF al mostrador"
+            description="Fotocopias, impresión, encuadernación, plastificados y venta de papelería. Sin intermediarios."
+          />
+          <a href="/servicios" class="btn-secondary-light shrink-0 inline-flex items-center px-5 py-2.5 text-xs font-black uppercase tracking-wide">
+            Ver listado completo
+          </a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
+          {servicios.map((servicio) => <ServiceCard servicio={servicio} />)}
+        </div>
+      </div>
+    </section>
+
+    <HomePrecios />
+
+    <HomeExtras />
+
+    <section class="bg-brand text-white">
+      <div class="max-w-6xl mx-auto grid lg:grid-cols-2">
+        <div class="border-b lg:border-b-0 lg:border-r border-white/15 p-8 sm:p-10 lg:p-12">
+          <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-accent border-l-2 border-accent pl-3 mb-4">
+            El local
+          </p>
+          <h2 class="font-display text-2xl sm:text-3xl font-black tracking-[-0.02em] mb-4">
+            Calidad de impresión.<br />Trato de mostrador.
+          </h2>
+          <p class="text-white/65 leading-relaxed font-medium">
+            Atención personalizada, archivos PDF/JPG/PNG y recogida en {site.addressLine}. Cliente que vuelve porque el trabajo sale bien y a tiempo.
+          </p>
+          <ul class="mt-6 space-y-2.5 text-sm font-semibold text-white/85">
+            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> Atención en mostrador</li>
+            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> PDF, JPG y PNG</li>
+            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> Recogida en Reina Mercedes</li>
+          </ul>
+          <a href="/informacion" class="mt-8 inline-flex btn-secondary px-5 py-2.5 text-xs font-black uppercase tracking-wide text-white">
+            Sobre el negocio
+          </a>
+        </div>
+        <div class="bg-brand-dark p-8 sm:p-10 lg:p-12">
+          <h3 class="font-display text-xl font-black tracking-tight mb-2">Pedir presupuesto</h3>
+          <p class="text-sm text-white/55 mb-6 font-medium">
+            Con archivo listo: <a href="/pedido" class="text-accent font-bold hover:underline">envía el PDF</a>. Papelería: <a href="/venta" class="text-accent font-bold hover:underline">lista de venta</a>.
+          </p>
+          <div class="[&_label]:text-white/70 [&_input]:bg-white [&_select]:bg-white [&_textarea]:bg-white">
+            <QuoteForm compact />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

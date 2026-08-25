@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../lib/site';
+---
+
+<Layout title={`Página no encontrada | ${site.name}`}>
+  <Navbar />
+  <main class="pt-32 pb-20 px-4 max-w-xl mx-auto text-center">
+    <p class="text-sm font-semibold text-brand">404</p>
+    <h1 class="mt-2 text-3xl font-semibold text-ink">No encontramos esa página</h1>
+    <p class="mt-3 text-slate-600">Prueba el listado de servicios o vuelve al inicio.</p>
+    <div class="mt-8 flex justify-center gap-3">
+      <a href="/" class="rounded-md bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark">Inicio</a>
+      <a href="/servicios" class="rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-ink">Servicios</a>
+    </div>
+  </main>
+  <Footer />
+</Layout>

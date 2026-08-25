@@ -1,0 +1,33 @@
+---
+import { site } from '../lib/site';
+---
+
+<section class="bg-brand-dark text-white border-y border-white/10">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
+      <div class="flex items-center gap-4 py-5 sm:pr-8">
+        <span class="text-accent text-xs font-extrabold uppercase tracking-[0.2em] shrink-0 w-16">Dónde</span>
+        <div class="min-w-0">
+          <p class="text-sm font-bold leading-snug truncate">{site.landmark}</p>
+          <p class="text-xs text-white/55">{site.postalCity}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 py-5 sm:px-8">
+        <span class="text-accent text-xs font-extrabold uppercase tracking-[0.2em] shrink-0 w-16">Horario</span>
+        <div class="min-w-0">
+          <p class="text-sm font-bold leading-snug">L–J 9:00 – 20:30</p>
+          <p class="text-xs text-white/55">Sáb 9:30 – 13:30 · V partido</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 py-5 sm:pl-8">
+        <span class="text-accent text-xs font-extrabold uppercase tracking-[0.2em] shrink-0 w-16">Tel.</span>
+        <div class="min-w-0">
+          <a href={site.phoneHref} class="text-sm font-bold hover:text-accent transition">{site.phone}</a>
+          <p class="text-xs text-white/55">
+            <a href="/contacto" class="hover:text-accent transition">Contacto y mapa →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

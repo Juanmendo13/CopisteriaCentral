@@ -1,0 +1,317 @@
+---
+import { formatEuro, preciosPorCategoria, type PrecioItem } from '../data/precios';
+import { site } from '../lib/site';
+
+const grupos = preciosPorCategoria();
+const catalogoJson = JSON.stringify(
+  grupos.flatMap((g) => g.items).map((item: PrecioItem) => ({
+    id: item.id,
+    nombre: item.nombre,
+    precio: item.precio,
+    unidad: item.unidad,
+    modo: item.modo,
+  })),
+);
+
+const inputClass =
+  'w-full border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20';
+---
+
+<div class="grid lg:grid-cols-[1fr_22rem] gap-8 items-start" id="precios-app" data-catalogo={catalogoJson}>
+  <div class="space-y-10">
+    {
+      grupos.map((grupo) => (
+        <section>
+          <h2 class="font-display text-xl font-black text-ink mb-4 border-b-2 border-accent pb-2 tracking-tight">{grupo.categoria}</h2>
+          <div class="grid sm:grid-cols-2 gap-px bg-line border border-line">
+            {grupo.items.map((item) => (
+              <article class="bg-white p-4 flex flex-col gap-3 hover:bg-brand-soft/40 transition-colors">
+                <div class="flex-1">
+                  <h3 class="font-bold text-ink">{item.nombre}</h3>
+                  <p class="mt-1 text-sm text-muted leading-relaxed font-medium">{item.descripcion}</p>
+                  <p class="mt-2 text-sm font-black text-ink">
+                    {item.modo === 'consultar' || item.precio == null ? (
+                      <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand">
+                        Pendiente de evaluación
+                      </span>
+                    ) : (
+                      <>
+                        {formatEuro(item.precio)}
+                        <span class="font-medium text-muted"> / {item.unidad}</span>
+                      </>
+                    )}
+                  </p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <label class="sr-only" for={`qty-${item.id}`}>
+                    Cantidad {item.nombre}
+                  </label>
+                  <input
+                    id={`qty-${item.id}`}
+                    type="number"
+                    min="1"
+                    max="5000"
+                    value="1"
+                    class="w-20 border border-line px-2 py-2 text-sm"
+                    data-qty-for={item.id}
+                  />
+                  <button
+                    type="button"
+                    class="btn-accent flex-1 px-3 py-2 text-xs font-black uppercase tracking-wide"
+                    data-add={item.id}
+                  >
+                    Añadir
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <aside class="lg:sticky lg:top-28 border border-line bg-white p-5">
+    <div class="flex items-center justify-between gap-2 mb-4 border-b border-line pb-3">
+      <h2 class="font-display text-lg font-black text-ink tracking-tight">Carrito</h2>
+      <span id="cart-count" class="bg-brand text-accent px-2.5 py-0.5 text-xs font-black">0</span>
+    </div>
+
+    <ul id="cart-lines" class="space-y-3 text-sm max-h-64 overflow-y-auto"></ul>
+    <p id="cart-empty" class="text-sm text-muted font-medium">Aún no has añadido nada.</p>
+
+    <div class="mt-4 border-t border-line pt-4 space-y-1 text-sm">
+      <div class="flex justify-between font-black text-ink">
+        <span>Subtotal orientativo</span>
+        <span id="cart-subtotal">{formatEuro(0)}</span>
+      </div>
+      <p id="cart-note" class="text-xs text-muted hidden">
+        Incluye servicios pendientes de evaluación.
+      </p>
+    </div>
+
+    <form id="cart-checkout" class="mt-5 space-y-3" novalidate>
+      <label class="block text-sm font-medium text-stone-700">
+        Nombre
+        <input class:list={[inputClass, 'mt-1']} type="text" name="nombre" required minlength="2" maxlength="80" autocomplete="name" />
+      </label>
+      <label class="block text-sm font-medium text-stone-700">
+        Email
+        <input class:list={[inputClass, 'mt-1']} type="email" name="email" required autocomplete="email" />
+      </label>
+      <label class="block text-sm font-medium text-stone-700">
+        Teléfono
+        <input class:list={[inputClass, 'mt-1']} type="tel" name="telefono" required autocomplete="tel" />
+      </label>
+      <label class="block text-sm font-medium text-stone-700">
+        Notas (opcional)
+        <textarea class:list={[inputClass, 'mt-1 min-h-20']} name="notas" maxlength="1000" placeholder="Fecha de recogida, detalles…"></textarea>
+      </label>
+      <button type="submit" id="cart-submit" class="btn-accent w-full rounded-xl px-4 py-3 text-sm">
+        Solicitar presupuesto oficial
+      </button>
+      <p class="text-xs text-stone-500 leading-relaxed">
+        Te enviaremos el resumen. No es un cobro online: se confirma en el local ({site.phone}).
+        {
+          site.isPrototype && (
+            <>
+              {' '}
+              En esta demo, Resend solo entrega a {site.inboxEmail} hasta verificar un dominio.
+            </>
+          )
+        }
+      </p>
+      <p id="cart-status" class="text-sm hidden" role="status"></p>
+    </form>
+  </aside>
+</div>
+
+<script>
+  type CartLine = { id: string; cantidad: number };
+  type CatalogItem = {
+    id: string;
+    nombre: string;
+    precio: number | null;
+    unidad: string;
+    modo: 'fijo' | 'consultar';
+  };
+
+  const STORAGE_KEY = 'a0-carrito-v1';
+  const root = document.getElementById('precios-app');
+  const catalogo: CatalogItem[] = JSON.parse(root?.dataset.catalogo || '[]');
+  const byId = Object.fromEntries(catalogo.map((i) => [i.id, i]));
+
+  const linesEl = document.getElementById('cart-lines');
+  const emptyEl = document.getElementById('cart-empty');
+  const countEl = document.getElementById('cart-count');
+  const subtotalEl = document.getElementById('cart-subtotal');
+  const noteEl = document.getElementById('cart-note');
+  const form = document.getElementById('cart-checkout') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('cart-submit') as HTMLButtonElement | null;
+  const statusEl = document.getElementById('cart-status');
+
+  function load(): CartLine[] {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw) as CartLine[];
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter((l) => byId[l.id] && Number.isInteger(l.cantidad) && l.cantidad > 0);
+    } catch {
+      return [];
+    }
+  }
+
+  function save(lines: CartLine[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
+  }
+
+  function euro(n: number) {
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(n);
+  }
+
+  let cart = load();
+
+  function render() {
+    if (!linesEl || !emptyEl || !countEl || !subtotalEl || !noteEl) return;
+
+    const totalQty = cart.reduce((s, l) => s + l.cantidad, 0);
+    countEl.textContent = String(totalQty);
+
+    linesEl.innerHTML = '';
+    let subtotal = 0;
+    let hayConsultar = false;
+
+    if (cart.length === 0) {
+      emptyEl.classList.remove('hidden');
+    } else {
+      emptyEl.classList.add('hidden');
+      for (const line of cart) {
+        const item = byId[line.id];
+        if (!item) continue;
+        const li = document.createElement('li');
+        li.className = 'rounded-xl border border-blue-100 bg-white p-3';
+
+        let priceLabel = 'Pendiente de evaluación';
+        if (item.modo === 'fijo' && item.precio != null) {
+          const lineTotal = item.precio * line.cantidad;
+          subtotal += lineTotal;
+          priceLabel = euro(lineTotal);
+        } else {
+          hayConsultar = true;
+        }
+
+        li.innerHTML = `
+          <div class="flex justify-between gap-2">
+            <div>
+              <p class="font-semibold text-ink">${item.nombre}</p>
+              <p class="text-xs text-stone-500">${line.cantidad} × ${
+                item.precio != null ? euro(item.precio) : 'a consultar'
+              }</p>
+            </div>
+            <p class="font-bold text-ink shrink-0">${priceLabel}</p>
+          </div>
+          <div class="mt-2 flex gap-2">
+            <button type="button" class="rounded-lg border border-stone-200 px-2 py-1 text-xs font-semibold" data-dec="${item.id}">−</button>
+            <button type="button" class="rounded-lg border border-stone-200 px-2 py-1 text-xs font-semibold" data-inc="${item.id}">+</button>
+            <button type="button" class="rounded-lg border border-stone-200 px-2 py-1 text-xs font-semibold text-red-700 ml-auto" data-rm="${item.id}">Quitar</button>
+          </div>
+        `;
+        linesEl.appendChild(li);
+      }
+    }
+
+    subtotalEl.textContent = euro(subtotal);
+    noteEl.classList.toggle('hidden', !hayConsultar);
+    save(cart);
+  }
+
+  function add(id: string, qty: number) {
+    const existing = cart.find((l) => l.id === id);
+    if (existing) existing.cantidad = Math.min(5000, existing.cantidad + qty);
+    else cart.push({ id, cantidad: qty });
+    render();
+  }
+
+  root?.querySelectorAll<HTMLButtonElement>('[data-add]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.add!;
+      const input = root.querySelector<HTMLInputElement>(`[data-qty-for="${id}"]`);
+      const qty = Math.max(1, Math.min(5000, Number(input?.value || 1) || 1));
+      add(id, qty);
+    });
+  });
+
+  linesEl?.addEventListener('click', (ev) => {
+    const t = ev.target as HTMLElement;
+    const dec = t.closest<HTMLElement>('[data-dec]')?.getAttribute('data-dec');
+    const inc = t.closest<HTMLElement>('[data-inc]')?.getAttribute('data-inc');
+    const rm = t.closest<HTMLElement>('[data-rm]')?.getAttribute('data-rm');
+    if (dec) {
+      const line = cart.find((l) => l.id === dec);
+      if (!line) return;
+      line.cantidad -= 1;
+      if (line.cantidad < 1) cart = cart.filter((l) => l.id !== dec);
+      render();
+    }
+    if (inc) {
+      const line = cart.find((l) => l.id === inc);
+      if (!line) return;
+      line.cantidad = Math.min(5000, line.cantidad + 1);
+      render();
+    }
+    if (rm) {
+      cart = cart.filter((l) => l.id !== rm);
+      render();
+    }
+  });
+
+  form?.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    if (!statusEl || !submitBtn) return;
+    if (cart.length === 0) {
+      statusEl.className = 'text-sm text-red-700';
+      statusEl.textContent = 'Añade al menos un producto al carrito.';
+      statusEl.classList.remove('hidden');
+      return;
+    }
+
+    const fd = new FormData(form);
+    const payload = {
+      nombre: String(fd.get('nombre') || ''),
+      email: String(fd.get('email') || ''),
+      telefono: String(fd.get('telefono') || ''),
+      notas: String(fd.get('notas') || ''),
+      lineas: cart,
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+    statusEl.classList.add('hidden');
+
+    try {
+      const res = await fetch('/api/presupuesto-carrito', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'No se pudo enviar.');
+      statusEl.className = 'text-sm text-emerald-700';
+      statusEl.textContent = data.mensaje || 'Presupuesto enviado. Revisa tu correo.';
+      statusEl.classList.remove('hidden');
+      cart = [];
+      render();
+      form.reset();
+    } catch (err) {
+      statusEl.className = 'text-sm text-red-700';
+      statusEl.textContent = err instanceof Error ? err.message : 'Error al enviar.';
+      statusEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Solicitar presupuesto oficial';
+    }
+  });
+
+  render();
+</script>

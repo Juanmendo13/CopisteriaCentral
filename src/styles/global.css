@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --color-brand: #002d62;
+  --color-brand-dark: #001a3d;
+  --color-brand-soft: #e8eef5;
+  --color-accent: #ffd700;
+  --color-accent-dark: #e6c200;
+  --color-accent-soft: #fff8cc;
+  --color-ink: #0a1628;
+  --color-muted: #475569;
+  --color-paper: #f0f2f5;
+  --color-line: #c5ced9;
+  --radius-ui: 2px;
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: var(--color-brand-dark);
+  font-weight: 800;
+  border-radius: var(--radius-ui);
+  border: 1px solid var(--color-accent-dark);
+  box-shadow: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.btn-accent:hover {
+  background-color: var(--color-accent-dark);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e8eef5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #64748b;
+  border-radius: 0;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-brand-dark);
+  font-weight: 800;
+  border-radius: var(--radius-ui);
+  border: 1px solid var(--color-accent-dark);
+  box-shadow: none;
+  transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-dark);
+}
+
+.btn-secondary {
+  border: 1px solid rgb(255 255 255 / 0.45);
+  background-color: transparent;
+  color: inherit;
+  font-weight: 800;
+  border-radius: var(--radius-ui);
+  box-shadow: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-accent);
+  background-color: rgb(255 255 255 / 0.06);
+}
+
+.btn-secondary-light {
+  border: 1px solid var(--color-line);
+  background-color: white;
+  color: var(--color-ink);
+  font-weight: 800;
+  border-radius: var(--radius-ui);
+  box-shadow: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-secondary-light:hover {
+  border-color: var(--color-brand);
+  background-color: var(--color-brand-soft);
+}
+
+/* Espacio extra bajo el banner de prototipo (páginas con navbar fija) */
+body:has(.site-header.has-banner) main.pt-28 {
+  padding-top: 9.25rem;
+}
+
+body:has(.site-header.has-banner) main.pt-32 {
+  padding-top: 10.25rem;
+}
+
+body:has(.site-header.has-banner) main > section.pt-28 {
+  padding-top: 9.25rem;
+}
+
+@media (min-width: 768px) {
+  body:has(.site-header.has-banner) main > section.md\:pt-32 {
+    padding-top: 10.25rem;
+  }
+}
