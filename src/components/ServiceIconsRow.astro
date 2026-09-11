@@ -33,26 +33,20 @@ const items = [
 ];
 ---
 
-<section class="bg-paper border-b border-line py-8 px-4">
+<section class="bg-paper py-10 px-5 sm:px-8">
   <div class="max-w-6xl mx-auto">
-    <div class="flex items-center gap-4 mb-6">
-      <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-brand shrink-0">Servicios</p>
-      <span class="h-px flex-1 bg-line" aria-hidden="true"></span>
-    </div>
-    <ul class="grid grid-cols-3 sm:grid-cols-6 gap-0 border border-line bg-white">
+    <p class="text-sm text-muted mb-5">Lo que hacemos a diario</p>
+    <ul class="flex flex-wrap gap-x-6 gap-y-5">
       {
-        items.map((item, i) => (
-          <li class:list={['border-line', i % 3 !== 2 && 'border-r', 'sm:border-r sm:last:border-r-0', i < 3 && 'border-b sm:border-b-0']}>
-            <a
-              href={item.href}
-              class="group flex flex-col items-center gap-2.5 text-center px-2 py-5 hover:bg-brand-soft/50 transition-colors"
-            >
-              <span class="flex h-11 w-11 items-center justify-center border border-brand bg-brand text-accent group-hover:bg-accent group-hover:text-brand group-hover:border-accent transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+        items.map((item) => (
+          <li>
+            <a href={item.href} class="group inline-flex items-center gap-2.5 text-ink hover:text-brand transition">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-accent">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d={item.path} />
                 </svg>
               </span>
-              <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-ink leading-tight">{item.label}</span>
+              <span class="text-sm font-semibold">{item.label}</span>
             </a>
           </li>
         ))

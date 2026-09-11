@@ -12,45 +12,44 @@ import { site } from '../lib/site';
 >
   <Navbar />
 
-  <main class="pt-28 pb-16">
-    <div class="bg-brand text-white border-b-2 border-accent px-4 py-10 sm:py-12">
-      <div class="max-w-6xl mx-auto">
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-accent border-l-2 border-accent pl-3 mb-4">Pedidos</p>
-        <h1 class="font-display text-4xl font-black tracking-[-0.025em]">Contacto</h1>
-        <p class="mt-4 max-w-2xl text-white/65 leading-relaxed font-medium">
-          Para imprimir un PDF, usa <a href="/pedido" class="text-accent font-bold hover:underline">enviar archivo</a>.
-          Para papelería, mira la <a href="/venta" class="text-accent font-bold hover:underline">venta</a>.
-          Si solo quieres precio o una consulta, usa el formulario de esta página.
-        </p>
-      </div>
+  <main class="pt-28 pb-16 px-5 sm:px-8">
+    <div class="max-w-6xl mx-auto">
+    <div class="max-w-2xl mb-10">
+      <p class="text-sm font-medium text-brand mb-2">Pedidos</p>
+      <h1 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink">Contacto</h1>
+      <p class="mt-4 text-muted leading-relaxed">
+        Para imprimir un PDF, usa <a href="/pedido" class="text-brand font-semibold hover:underline">enviar archivo</a>.
+        Para papelería, mira la <a href="/venta" class="text-brand font-semibold hover:underline">venta</a>.
+        Si solo quieres precio o una consulta, usa el formulario.
+      </p>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 pt-10 grid lg:grid-cols-2 gap-0 border border-line bg-line">
-      <div class="bg-white p-6 md:p-8">
-        <h2 class="text-sm font-black uppercase tracking-[0.14em] text-ink mb-6">Pedir presupuesto</h2>
+    <div class="grid lg:grid-cols-2 gap-8">
+      <div class="rounded-xl border border-line bg-white p-6 sm:p-7">
+        <h2 class="text-lg font-semibold text-ink mb-5">Pedir presupuesto</h2>
         <QuoteForm />
       </div>
 
-      <div class="bg-brand-soft/40 border-t lg:border-t-0 lg:border-l border-line">
-        <div class="p-6 md:p-8 border-b border-line bg-white">
-          <h2 class="text-sm font-black uppercase tracking-[0.14em] text-ink mb-4">Datos</h2>
+      <div class="space-y-6">
+        <div class="rounded-xl border border-line bg-white p-6">
+          <h2 class="text-lg font-semibold text-ink mb-4">Datos</h2>
           <ul class="space-y-4 text-sm text-muted">
             <li>
-              <span class="block text-[10px] uppercase tracking-[0.2em] text-brand font-extrabold mb-1">Teléfono</span>
-              <a class="text-ink font-bold" href={site.phoneHref}>{site.phone}</a>
+              <span class="block text-xs text-brand font-medium mb-0.5">Teléfono</span>
+              <a class="text-ink font-semibold" href={site.phoneHref}>{site.phone}</a>
             </li>
             <li>
-              <span class="block text-[10px] uppercase tracking-[0.2em] text-brand font-extrabold mb-1">WhatsApp</span>
-              <a class="text-ink font-bold" href={site.whatsappHref} target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
+              <span class="block text-xs text-brand font-medium mb-0.5">WhatsApp</span>
+              <a class="text-ink font-semibold" href={site.whatsappHref} target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
             </li>
             <li>
-              <span class="block text-[10px] uppercase tracking-[0.2em] text-brand font-extrabold mb-1">Dirección</span>
-              <span class="text-ink font-bold">{site.address}</span>
-              <span class="block text-muted">{site.landmark}</span>
+              <span class="block text-xs text-brand font-medium mb-0.5">Dirección</span>
+              <span class="text-ink font-semibold">{site.address}</span>
+              <span class="block">{site.landmark}</span>
             </li>
             <li>
-              <span class="block text-[10px] uppercase tracking-[0.2em] text-brand font-extrabold mb-1">Horario</span>
-              <ul class="mt-1 space-y-1 font-medium">
+              <span class="block text-xs text-brand font-medium mb-0.5">Horario</span>
+              <ul class="mt-1 space-y-1">
                 {site.hours.map((row) => (
                   <li>{row.days}: {row.hours}</li>
                 ))}
@@ -58,7 +57,7 @@ import { site } from '../lib/site';
             </li>
           </ul>
         </div>
-        <div class="overflow-hidden aspect-[4/3] bg-paper">
+        <div class="overflow-hidden rounded-xl border border-line bg-paper aspect-[4/3]">
           <iframe
             title={`Mapa de ${site.name}`}
             src={site.mapsEmbed}
@@ -68,6 +67,7 @@ import { site } from '../lib/site';
           ></iframe>
         </div>
       </div>
+    </div>
     </div>
   </main>
 

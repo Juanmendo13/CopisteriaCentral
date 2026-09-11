@@ -2,17 +2,17 @@
 import { site } from '../lib/site';
 ---
 
-<footer class="border-t border-white/10 bg-brand-dark text-white">
-  <div class="max-w-6xl mx-auto px-4 py-14">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/15">
+<footer class="bg-brand-dark text-white mt-4">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
       <div>
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.22em] text-accent mb-4">Horario</p>
-        <ul class="space-y-2 text-sm">
+        <p class="text-sm font-medium text-accent mb-3">Horario</p>
+        <ul class="space-y-1.5 text-sm">
           {
             site.hours.map((row) => (
-              <li class="flex justify-between gap-4 border-b border-white/10 pb-2 last:border-0">
+              <li class="flex justify-between gap-4">
                 <span class="text-white/50">{row.days}</span>
-                <span class="text-white font-bold">{row.hours}</span>
+                <span class="text-white/90">{row.hours}</span>
               </li>
             ))
           }
@@ -20,9 +20,9 @@ import { site } from '../lib/site';
       </div>
 
       <div>
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.22em] text-accent mb-4">Local</p>
-        <p class="text-sm leading-relaxed">
-          <span class="block font-black text-white uppercase tracking-wide">{site.name}</span>
+        <p class="text-sm font-medium text-accent mb-3">Local</p>
+        <p class="text-sm leading-relaxed text-white/80">
+          <span class="block font-semibold text-white mb-1">{site.name}</span>
           {site.addressLine}
           <br />
           {site.postalCity}
@@ -33,50 +33,39 @@ import { site } from '../lib/site';
           href={site.mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="mt-3 inline-flex text-sm font-bold text-accent hover:underline"
+          class="mt-3 inline-flex text-sm font-medium text-accent hover:underline"
         >
           Abrir en Google Maps →
         </a>
       </div>
 
       <div>
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.22em] text-accent mb-4">Contacto</p>
-        <p class="text-sm text-white/50 mb-4 font-medium">Presupuesto, archivo o papelería.</p>
+        <p class="text-sm font-medium text-accent mb-3">Contacto</p>
+        <p class="text-sm text-white/50 mb-4">Presupuesto, archivo o papelería.</p>
         <div class="flex flex-col gap-2">
-          <a href="/venta" class="btn-accent inline-flex items-center justify-center px-4 py-2.5 text-xs font-black uppercase tracking-wide">
+          <a href="/venta" class="btn-accent inline-flex items-center justify-center px-4 py-2.5 text-sm">
             Ver venta
           </a>
           <a
             href="/pedido"
-            class="btn-secondary inline-flex items-center justify-center px-4 py-2.5 text-xs font-black uppercase tracking-wide text-white"
+            class="btn-secondary inline-flex items-center justify-center px-4 py-2.5 text-sm text-white"
           >
             Enviar PDF
           </a>
-          <a
-            href={site.phoneHref}
-            class="inline-flex items-center justify-center border border-white/25 px-4 py-2.5 text-sm font-bold text-white hover:border-accent hover:text-accent transition"
-          >
+          <a href={site.phoneHref} class="text-sm text-white/70 hover:text-accent transition text-center py-1">
             {site.phone}
-          </a>
-          <a
-            href={site.whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center border border-white/25 px-4 py-2.5 text-sm font-bold text-white hover:border-accent hover:text-accent transition"
-          >
-            WhatsApp
           </a>
         </div>
       </div>
     </div>
 
-    <div class="pt-8 flex flex-col sm:flex-row justify-between gap-3 text-xs text-white/40">
+    <div class="pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-white/40">
       <div>
         <p>© {new Date().getFullYear()} {site.name}. {site.titular}{site.cif !== 'Pendiente' ? ` · CIF ${site.cif}` : ''}</p>
         {
           site.isPrototype && (
             <p class="mt-1">
-              Versión de prueba · Ficha en{' '}
+              Versión de prueba ·{' '}
               <a href={site.currentWeb} class="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
                 Google Maps
               </a>
@@ -84,9 +73,9 @@ import { site } from '../lib/site';
           )
         }
       </div>
-      <div class="flex flex-wrap gap-4 font-semibold uppercase tracking-wide">
-        <a href="/aviso-legal" class="hover:text-white transition">Aviso legal</a>
-        <a href="/privacidad" class="hover:text-white transition">Privacidad</a>
+      <div class="flex flex-wrap gap-4">
+        <a href="/aviso-legal" class="hover:text-white/80 transition">Aviso legal</a>
+        <a href="/privacidad" class="hover:text-white/80 transition">Privacidad</a>
       </div>
     </div>
   </div>

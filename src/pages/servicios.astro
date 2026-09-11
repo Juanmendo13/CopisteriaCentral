@@ -14,20 +14,17 @@ import { site } from '../lib/site';
 >
   <Navbar />
 
-  <main class="pt-28 pb-16">
-    <div class="bg-brand text-white border-b-2 border-accent px-4 py-10 sm:py-12 mb-10">
-      <div class="max-w-6xl mx-auto">
+  <main class="pt-28 pb-16 px-5 sm:px-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-10 max-w-2xl">
         <SectionHeader
-          dark
           eyebrow="Copistería e imprenta"
           title="Servicios"
           description="Impresión de planos, fotos, carteles y póster. Papelería, laminados y acabados para entregas académicas y de oficina."
         />
       </div>
-    </div>
 
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {servicios.map((servicio) => <ServiceCard servicio={servicio} />)}
       </div>
     </div>

@@ -19,19 +19,19 @@ import { site } from '../lib/site';
   <ServiceIconsRow />
 
   <main>
-    <section id="servicios" class="scroll-mt-24 relative bg-white pt-14 sm:pt-16 pb-16 px-4 border-b border-line">
+    <section id="servicios" class="scroll-mt-24 bg-white py-14 sm:py-16 px-5 sm:px-8">
       <div class="max-w-6xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
           <SectionHeader
             eyebrow="Servicios"
             title="Del PDF al mostrador"
-            description="Fotocopias, impresión, encuadernación, plastificados y venta de papelería. Sin intermediarios."
+            description="Fotocopias, impresión, encuadernación, plastificados y papelería. Te lo dejamos listo."
           />
-          <a href="/servicios" class="btn-secondary-light shrink-0 inline-flex items-center px-5 py-2.5 text-xs font-black uppercase tracking-wide">
-            Ver listado completo
+          <a href="/servicios" class="btn-secondary-light shrink-0 inline-flex items-center px-4 py-2 text-sm self-start">
+            Ver todos
           </a>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {servicios.map((servicio) => <ServiceCard servicio={servicio} />)}
         </div>
       </div>
@@ -41,35 +41,32 @@ import { site } from '../lib/site';
 
     <HomeExtras />
 
-    <section class="bg-brand text-white">
-      <div class="max-w-6xl mx-auto grid lg:grid-cols-2">
-        <div class="border-b lg:border-b-0 lg:border-r border-white/15 p-8 sm:p-10 lg:p-12">
-          <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-accent border-l-2 border-accent pl-3 mb-4">
-            El local
-          </p>
-          <h2 class="font-display text-2xl sm:text-3xl font-black tracking-[-0.02em] mb-4">
-            Calidad de impresión.<br />Trato de mostrador.
+    <section class="px-5 sm:px-8 py-14 sm:py-16">
+      <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-12 items-start">
+        <div>
+          <p class="text-sm font-medium text-brand mb-2">El local</p>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-ink mb-4">
+            Calidad de impresión y trato de confianza
           </h2>
-          <p class="text-white/65 leading-relaxed font-medium">
-            Atención personalizada, archivos PDF/JPG/PNG y recogida en {site.addressLine}. Cliente que vuelve porque el trabajo sale bien y a tiempo.
+          <p class="text-muted leading-relaxed">
+            Cuando asumimos el reto de ofrecer un trabajo de calidad, no perdimos de vista que la atención era primordial. Un cliente satisfecho por la relación calidad-precio y por el trato es un cliente que regresa.
           </p>
-          <ul class="mt-6 space-y-2.5 text-sm font-semibold text-white/85">
-            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> Atención en mostrador</li>
-            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> PDF, JPG y PNG</li>
-            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> Recogida en Reina Mercedes</li>
+          <ul class="mt-5 space-y-2 text-sm text-ink">
+            <li>Atención personalizada en mostrador</li>
+            <li>Archivos PDF, JPG y PNG</li>
+            <li>Recogida en {site.addressLine}</li>
           </ul>
-          <a href="/informacion" class="mt-8 inline-flex btn-secondary px-5 py-2.5 text-xs font-black uppercase tracking-wide text-white">
-            Sobre el negocio
+          <a href="/informacion" class="mt-6 inline-flex text-sm font-semibold text-brand hover:underline">
+            Sobre el negocio →
           </a>
         </div>
-        <div class="bg-brand-dark p-8 sm:p-10 lg:p-12">
-          <h3 class="font-display text-xl font-black tracking-tight mb-2">Pedir presupuesto</h3>
-          <p class="text-sm text-white/55 mb-6 font-medium">
-            Con archivo listo: <a href="/pedido" class="text-accent font-bold hover:underline">envía el PDF</a>. Papelería: <a href="/venta" class="text-accent font-bold hover:underline">lista de venta</a>.
+        <div class="rounded-xl bg-white border border-line p-6 sm:p-7">
+          <h3 class="font-display text-lg font-bold text-ink mb-1">Pedir presupuesto</h3>
+          <p class="text-sm text-muted mb-5">
+            Con archivo: <a href="/pedido" class="text-brand font-semibold hover:underline">envía el PDF</a>.
+            Papelería: <a href="/venta" class="text-brand font-semibold hover:underline">lista de venta</a>.
           </p>
-          <div class="[&_label]:text-white/70 [&_input]:bg-white [&_select]:bg-white [&_textarea]:bg-white">
-            <QuoteForm compact />
-          </div>
+          <QuoteForm compact />
         </div>
       </div>
     </section>

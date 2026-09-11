@@ -13,34 +13,29 @@ import { site } from '../lib/site';
 >
   <Navbar />
 
-  <main class="pt-28 pb-16">
-    <div class="bg-brand text-white border-b-2 border-accent px-4 py-10 sm:py-12 mb-10">
-      <div class="max-w-6xl mx-auto">
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-accent border-l-2 border-accent pl-3 mb-4">Tienda</p>
-        <h1 class="font-display text-4xl font-black tracking-[-0.025em]">Venta de papelería</h1>
-        <p class="mt-4 max-w-2xl text-white/65 leading-relaxed font-medium">
-          Material de escritorio, archivo, corte y embalaje. Precios orientativos ({venta.length} artículos).
-          Añade lo que necesites a la lista y te lo reservamos en el local — stock sujeto a disponibilidad.
-        </p>
-        <p class="mt-2 text-xs text-white/40">
-          Imágenes orientativas generadas. Sustituibles por fotos reales del local.
-        </p>
-        <nav class="mt-6 flex flex-wrap gap-0 border border-white/20" aria-label="Categorías">
-          {
-            ventaCategorias.map((cat) => (
-              <a
-                href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}`}
-                class="border-r border-white/20 last:border-r-0 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-white/80 hover:bg-white/10 hover:text-accent transition"
-              >
-                {cat}
-              </a>
-            ))
-          }
-        </nav>
-      </div>
+  <main class="pt-28 pb-16 px-5 sm:px-8">
+    <div class="max-w-6xl mx-auto mb-8">
+      <p class="text-sm font-medium text-brand mb-2">Tienda</p>
+      <h1 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink">Venta de papelería</h1>
+      <p class="mt-3 max-w-2xl text-muted leading-relaxed">
+        Material de escritorio, archivo, corte y embalaje. Precios orientativos ({venta.length} artículos).
+        Añade lo que necesites y te lo reservamos en el local.
+      </p>
+      <nav class="mt-5 flex flex-wrap gap-2" aria-label="Categorías">
+        {
+          ventaCategorias.map((cat) => (
+            <a
+              href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}`}
+              class="rounded-md border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink hover:border-brand/40 hover:bg-brand-soft/50 transition"
+            >
+              {cat}
+            </a>
+          ))
+        }
+      </nav>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
       <VentaCarrito />
     </div>
   </main>

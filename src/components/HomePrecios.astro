@@ -14,37 +14,33 @@ const destacados = [
   .filter((item): item is NonNullable<typeof item> => Boolean(item));
 ---
 
-<section id="precios" class="scroll-mt-24 px-4 py-16 sm:py-20 bg-paper border-b border-line">
+<section id="precios" class="scroll-mt-24 px-5 sm:px-8 py-14 sm:py-16 bg-paper">
   <div class="max-w-6xl mx-auto">
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
       <SectionHeader
-        eyebrow="Tarifas"
+        eyebrow="Precios"
         title="Lo básico, a la vista"
-        description="Precios orientativos de mostrador. El resto se confirma en el local."
+        description="Orientativos de mostrador. El resto se confirma en el local."
       />
-      <a href="/precios" class="btn-accent shrink-0 inline-flex items-center px-5 py-2.5 text-xs font-black uppercase tracking-wide">
-        Ver tarifas y presupuesto
+      <a href="/precios" class="btn-accent shrink-0 inline-flex items-center px-4 py-2 text-sm self-start">
+        Ver tarifas
       </a>
     </div>
 
-    <div class="border border-line bg-white divide-y divide-line">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
       {
         destacados.map((item) => (
           <a
             href="/precios"
-            class="group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-5 py-4 hover:bg-brand-soft/40 transition-colors"
+            class="rounded-xl border border-line bg-white px-4 py-4 hover:border-brand/25 transition"
           >
-            <div class="min-w-0">
-              <p class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-muted">{item.categoria}</p>
-              <h3 class="mt-0.5 font-bold text-ink group-hover:text-brand transition">
-                {item.nombre}
-              </h3>
-            </div>
-            <p class="text-base font-black text-ink sm:text-right shrink-0">
+            <p class="text-xs text-muted mb-1">{item.categoria}</p>
+            <h3 class="font-semibold text-ink text-[15px] leading-snug">
+              {item.nombre}
+            </h3>
+            <p class="mt-2 text-base font-bold text-ink">
               {item.modo === 'consultar' || item.precio == null ? (
-                <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand">
-                  Pendiente de evaluación
-                </span>
+                <span class="text-sm font-semibold text-brand">Consultar</span>
               ) : (
                 <>
                   {formatEuro(item.precio)}

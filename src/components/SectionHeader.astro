@@ -12,26 +12,20 @@ const { eyebrow, title, description, align = 'left', dark = false } = Astro.prop
 
 <div class:list={[align === 'center' && 'text-center mx-auto max-w-2xl']}>
   {eyebrow && (
-    <p
-      class:list={[
-        'mb-4 text-[11px] font-extrabold uppercase tracking-[0.28em]',
-        dark ? 'text-accent' : 'text-brand',
-        align === 'left' && 'border-l-2 border-accent pl-3',
-      ]}
-    >
+    <p class:list={['mb-2 text-sm font-medium', dark ? 'text-accent' : 'text-brand']}>
       {eyebrow}
     </p>
   )}
   <h2
     class:list={[
-      'font-display text-3xl sm:text-4xl font-black tracking-[-0.025em] leading-tight',
+      'font-display text-2xl sm:text-3xl font-bold tracking-tight leading-snug',
       dark ? 'text-white' : 'text-ink',
     ]}
   >
     {title}
   </h2>
   {description && (
-    <p class:list={['mt-4 text-base sm:text-lg leading-relaxed font-medium', dark ? 'text-white/65' : 'text-muted']}>
+    <p class:list={['mt-3 text-base leading-relaxed max-w-xl', dark ? 'text-white/65' : 'text-muted']}>
       {description}
     </p>
   )}

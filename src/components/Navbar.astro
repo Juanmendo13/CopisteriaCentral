@@ -18,19 +18,16 @@ const current = Astro.url.pathname;
 
 <header class:list={['site-header fixed top-0 left-0 w-full z-50', site.isPrototype && 'has-banner']}>
   <PrototypeBanner />
-  <div class="bg-brand border-b-2 border-accent">
-    <div class="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between gap-4">
-      <a href="/" class="flex items-center gap-3 shrink-0">
-        <span class="flex h-9 w-9 items-center justify-center bg-accent text-brand text-xs font-black tracking-tight">
+  <div class="bg-brand">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-14 md:h-[3.75rem] flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 shrink-0">
+        <span class="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-brand text-xs font-bold">
           {site.shortName}
         </span>
-        <span class="leading-none">
-          <span class="block text-[13px] font-black uppercase tracking-[0.08em] text-white">Central</span>
-          <span class="block text-[10px] font-medium tracking-wide text-white/50 mt-0.5">Copistería</span>
-        </span>
+        <span class="text-[15px] font-semibold text-white tracking-tight">Copistería Central</span>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-0 text-[12px] font-semibold uppercase tracking-[0.06em]">
+      <nav class="hidden lg:flex items-center gap-0.5 text-sm font-medium">
         {
           links.map((link) => {
             const active =
@@ -43,10 +40,8 @@ const current = Astro.url.pathname;
               <a
                 href={link.href}
                 class:list={[
-                  'px-2.5 py-5 border-b-2 -mb-[2px] transition',
-                  active
-                    ? 'border-accent text-accent'
-                    : 'border-transparent text-white/70 hover:text-white hover:border-white/30',
+                  'px-2.5 py-1.5 rounded-md transition',
+                  active ? 'text-accent' : 'text-white/75 hover:text-white',
                 ]}
               >
                 {link.label}
@@ -57,15 +52,12 @@ const current = Astro.url.pathname;
       </nav>
 
       <div class="flex items-center gap-2">
-        <a
-          href="/pedido"
-          class="btn-primary hidden sm:inline-flex items-center px-4 py-2 text-xs font-black uppercase tracking-wide"
-        >
+        <a href="/pedido" class="btn-primary hidden sm:inline-flex items-center px-4 py-2 text-sm">
           Enviar PDF
         </a>
         <button
           id="menu-toggle"
-          class="flex lg:hidden flex-col justify-center items-center w-10 h-10 border border-white/25 text-white p-2 gap-1.5"
+          class="flex lg:hidden flex-col justify-center items-center w-10 h-10 rounded-md text-white p-2 gap-1.5"
           aria-label="Abrir menú"
           aria-expanded="false"
           aria-controls="mobile-menu"
@@ -77,16 +69,16 @@ const current = Astro.url.pathname;
       </div>
     </div>
 
-    <div id="mobile-menu" class="lg:hidden max-h-0 overflow-hidden bg-brand-dark border-t border-white/10 transition-all duration-300">
-      <nav class="flex flex-col px-4 pt-2 pb-4 gap-0 text-sm font-semibold uppercase tracking-wide">
+    <div id="mobile-menu" class="lg:hidden max-h-0 overflow-hidden bg-brand-dark transition-all duration-300">
+      <nav class="flex flex-col px-5 pt-2 pb-4 gap-0.5 text-sm font-medium">
         {
           links.map((link) => (
-            <a href={link.href} class="mobile-link px-3 py-3 border-b border-white/10 text-white/85 hover:text-accent">
+            <a href={link.href} class="mobile-link px-3 py-2.5 rounded-md text-white/85 hover:bg-white/10">
               {link.label}
             </a>
           ))
         }
-        <a href="/pedido" class="mobile-link btn-primary mt-3 mx-1 inline-flex justify-center px-3 py-2.5 text-xs font-black uppercase">
+        <a href="/pedido" class="mobile-link btn-primary mt-2 mx-1 inline-flex justify-center px-3 py-2.5 text-sm">
           Enviar PDF
         </a>
       </nav>
