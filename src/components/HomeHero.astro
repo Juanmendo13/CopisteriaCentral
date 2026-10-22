@@ -3,7 +3,6 @@ import { site } from '../lib/site';
 import PrototypeBanner from './PrototypeBanner.astro';
 import Doodle from './Doodle.astro';
 import DoodleDecor from './DoodleDecor.astro';
-import { heroAlt } from '../data/galeria';
 
 const links = [
   { href: '/', label: 'Inicio' },
@@ -87,32 +86,36 @@ const current = Astro.url.pathname;
   </div>
 </header>
 
-{/* One composition: full-bleed navy + edge-to-edge photo. Brand is the hero. */}
-<section class="relative flex flex-col lg:flex-row min-h-[90vh] lg:min-h-[calc(100vh-3.85rem)]">
-  <div class="relative z-10 flex flex-col justify-center bg-brand text-white lg:w-[46%] px-5 sm:px-8 lg:px-12 xl:px-16 py-16 lg:py-20 overflow-hidden">
-    <div
-      class="pointer-events-none absolute inset-0 opacity-[0.1]"
-      style="background-image: repeating-linear-gradient(transparent, transparent 31px, white 31px, white 32px)"
-      aria-hidden="true"
-    ></div>
-    <div
-      class="pointer-events-none absolute -right-20 top-0 bottom-0 w-48 bg-accent rotate-[-8deg] opacity-90"
-      aria-hidden="true"
-    ></div>
-    <div
-      class="pointer-events-none absolute -right-10 top-0 bottom-0 w-6 bg-brand-dark rotate-[-8deg]"
-      aria-hidden="true"
-    ></div>
-    <DoodleDecor variant="hero" />
+{/* Full-bleed navy + mustard composition — no photo panel */}
+<section class="relative min-h-[78vh] lg:min-h-[calc(100vh-3.85rem)] flex items-center bg-brand text-white overflow-hidden border-b-[8px] border-accent">
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.1]"
+    style="background-image: repeating-linear-gradient(transparent, transparent 31px, white 31px, white 32px)"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="pointer-events-none absolute -right-16 sm:-right-24 top-0 bottom-0 w-[38%] max-w-xl bg-accent rotate-[-6deg] origin-top"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="pointer-events-none absolute -right-8 sm:-right-12 top-0 bottom-0 w-8 bg-brand-dark rotate-[-6deg] origin-top"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="pointer-events-none absolute left-0 right-0 bottom-0 h-2 bg-accent/80"
+    aria-hidden="true"
+  ></div>
+  <DoodleDecor variant="hero" />
 
-    <div class="relative hero-rise max-w-md xl:max-w-lg">
-      <h1 class="font-display text-[2.6rem] sm:text-[3.2rem] xl:text-[3.85rem] leading-[0.95] text-white">
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-24">
+    <div class="hero-rise max-w-xl xl:max-w-2xl">
+      <h1 class="font-display text-[2.75rem] sm:text-[3.5rem] xl:text-[4.25rem] leading-[0.95] text-white">
         Copistería<br />Central
       </h1>
       <p class="mt-6 text-xl sm:text-2xl font-black text-accent leading-snug">
         Donde te imprimimos tus sueños
       </p>
-      <p class="mt-4 text-base sm:text-lg text-white/80 leading-relaxed max-w-sm font-medium">
+      <p class="mt-4 text-base sm:text-lg text-white/80 leading-relaxed max-w-md font-medium">
         Fotocopias, encuadernación y papelería al lado del campus. Vienes con prisas, sales con todo listo.
       </p>
 
@@ -127,20 +130,6 @@ const current = Astro.url.pathname;
         </a>
       </div>
     </div>
-  </div>
-
-  <div class="relative lg:w-[54%] min-h-[44vh] sm:min-h-[52vh] lg:min-h-auto grow border-t-[6px] border-accent lg:border-t-0 lg:border-l-[6px]">
-    <img
-      src="/galeria/local-fachada.png?v=20261022c"
-      alt={heroAlt}
-      width="1200"
-      height="900"
-      class="absolute inset-0 h-full w-full object-cover object-center"
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/50 via-transparent to-transparent lg:bg-gradient-to-l lg:from-transparent lg:via-transparent lg:to-brand/25"></div>
   </div>
 </section>
 
