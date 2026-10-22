@@ -8,50 +8,73 @@ const features = [
     text: 'En Reina Mercedes, cerca de ETSII. Entre clase y clase: pasas, fotocopias y sigues.',
     doodle: 'cuaderno' as const,
     tone: 'bg-brand text-white',
+    pose: 'sm:-rotate-[1.8deg] sm:z-[2] sm:mb-2 sm:max-w-[97%]',
   },
   {
     title: 'Horario largo',
     text: 'De las primeras en abrir y de las últimas en cerrar en la avenida.',
     doodle: 'regla' as const,
     tone: 'bg-accent text-brand-dark',
+    pose: 'sm:rotate-[2.2deg] sm:translate-y-6 sm:z-[1] sm:mt-1',
   },
   {
     title: 'Lo que hace falta',
     text: 'Fotocopias, color, espirales, plastificados y la papelería de apuro.',
     doodle: 'tijeras' as const,
     tone: 'bg-coral text-white',
+    pose: 'sm:rotate-[1.4deg] sm:-translate-y-3 sm:z-[3] sm:-mr-1',
   },
   {
     title: 'Trato de barrio',
     text: 'Rápidos, claros y con lo que pedís a última hora — sin dramas.',
     doodle: 'boli' as const,
     tone: 'bg-white text-brand border-brand',
+    pose: 'sm:-rotate-[2.4deg] sm:translate-y-3 sm:z-[2] sm:ml-1 sm:min-h-[11.5rem] sm:max-w-[98%] sm:justify-self-end sm:w-full',
   },
 ];
 ---
 
-<section class="relative px-5 sm:px-8 py-16 sm:py-20 bg-paper-deep overflow-hidden border-y-[8px] border-brand">
-  <Doodle name="cinta" rotate={12} class="doodle-float absolute top-6 right-8 h-14 w-14 opacity-40 hidden md:block" />
-  <div class="relative max-w-6xl mx-auto">
-    <div class="max-w-xl mb-12">
-      <p class="text-sm font-black text-coral mb-2 inline-flex items-center gap-2 uppercase tracking-[0.14em]">
-        <Doodle name="postit" class="h-5 w-5" rotate={8} />
-        Por qué la gente vuelve
-      </p>
-      <h2 class="font-display text-3xl sm:text-5xl text-brand leading-[1.02]">
-        Tu copistería de siempre en Reina Mercedes
-      </h2>
+<section class="relative px-5 sm:px-8 py-16 sm:py-20 paper-extras overflow-hidden border-y-[8px] border-brand">
+  {/* Desk clutter — fills empty air around the headline */}
+  <Doodle name="cinta" rotate={12} class="doodle-float absolute top-5 right-6 h-14 w-14 opacity-50 hidden md:block z-[2]" />
+  <Doodle name="clip" rotate={-28} class="doodle-float-slow absolute top-28 right-[18%] h-11 w-7 opacity-45 hidden lg:block z-[2]" />
+  <Doodle name="chincheta" rotate={14} class="absolute top-12 left-[4%] h-9 w-7 opacity-40 hidden xl:block z-[2]" />
+  <Doodle name="folio" rotate={-7} class="doodle-wiggle absolute bottom-10 left-[3%] h-16 w-12 opacity-35 hidden md:block z-[2]" />
+  <Doodle name="goma" rotate={8} class="absolute bottom-16 right-[6%] h-8 w-14 opacity-40 hidden sm:block z-[2]" />
+
+  <div class="relative z-[3] max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-8 lg:gap-6 items-end mb-10 sm:mb-14">
+      <div class="max-w-xl">
+        <p class="text-sm font-black text-coral mb-2 inline-flex items-center gap-2 uppercase tracking-[0.14em]">
+          <Doodle name="postit" class="h-5 w-5" rotate={8} />
+          Por qué la gente vuelve
+        </p>
+        <h2 class="font-display text-3xl sm:text-5xl text-brand leading-[1.02]">
+          Tu copistería de siempre en Reina Mercedes
+        </h2>
+      </div>
+
+      {/* Doodle cluster where the pale yellow used to feel empty */}
+      <div class="relative hidden lg:block h-36 xl:h-40" aria-hidden="true">
+        <div class="absolute inset-0 border-[3px] border-dashed border-brand/25 bg-accent/25 shadow-[inset_0_0_0_1px_rgb(0_45_98/0.06)]"></div>
+        <Doodle name="lapiz" rotate={-22} class="doodle-float absolute -top-4 left-[12%] h-28 w-8 opacity-90" />
+        <Doodle name="postit" rotate={9} class="doodle-wiggle absolute top-6 right-[18%] h-16 w-16 opacity-95" />
+        <Doodle name="regla" rotate={4} class="doodle-float-slow absolute bottom-3 left-[22%] h-7 w-40 opacity-85" />
+        <Doodle name="tijeras" rotate={-14} class="absolute top-2 right-[2%] h-14 w-14 opacity-80" />
+        <Doodle name="boli" rotate={16} class="doodle-float absolute -bottom-2 right-[28%] h-20 w-7 opacity-90" />
+        <span class="stamp-mark stamp-ink absolute -left-3 bottom-8 h-11 w-11 text-[10px] -rotate-[8deg]">OK</span>
+      </div>
     </div>
-    {/* Color blocks — not icon+text soft cards */}
-    <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
+
+    {/* Stamp collage — slight tilt, overlap, richer press shadow */}
+    <div class="grid sm:grid-cols-2 gap-5 sm:gap-x-7 sm:gap-y-2">
       {
-        features.map((item, i) => (
+        features.map((item) => (
           <div
             class:list={[
-              'border-[4px] border-brand-dark p-6 sm:p-7 shadow-[6px_6px_0_rgba(0,26,61,0.3)]',
+              'stamp-tile border-[4px] border-brand-dark p-6 sm:p-7 shadow-[7px_7px_0_rgba(0,26,61,0.32)]',
               item.tone,
-              i === 1 && 'sm:translate-y-4',
-              i === 2 && 'sm:-translate-y-2',
+              item.pose,
             ]}
           >
             <span class="stamp-mark h-12 w-12 mb-4">

@@ -296,6 +296,78 @@ body {
     100% 100%;
 }
 
+/* Deep mustard desk pad — grain + ruled + soft color washes (HomeExtras) */
+.paper-extras {
+  background-color: #edd56a;
+  background-image:
+    radial-gradient(ellipse 70% 55% at 88% 12%, rgb(255 215 0 / 0.55), transparent 58%),
+    radial-gradient(ellipse 55% 50% at 8% 92%, rgb(0 45 98 / 0.12), transparent 55%),
+    radial-gradient(ellipse 40% 35% at 55% 48%, rgb(232 93 58 / 0.1), transparent 60%),
+    repeating-linear-gradient(
+      transparent,
+      transparent 29px,
+      rgb(0 45 98 / 0.09) 29px,
+      rgb(0 45 98 / 0.09) 30px
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.11'/%3E%3C/svg%3E");
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 30px,
+    160px 160px;
+  position: relative;
+}
+
+.paper-extras::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 14px;
+  background:
+    linear-gradient(180deg, rgb(0 26 61 / 0.12), transparent),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 10px,
+      rgb(0 45 98 / 0.08) 10px 12px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.paper-extras::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 18px;
+  background:
+    linear-gradient(0deg, rgb(0 26 61 / 0.1), transparent),
+    radial-gradient(ellipse 80% 100% at 50% 100%, rgb(196 92 38 / 0.18), transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stamp-tile {
+  transition:
+    scale 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stamp-tile:hover {
+  scale: 1.02;
+  box-shadow: 11px 11px 0 rgb(0 26 61 / 0.4) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-tile {
+    transition: none;
+  }
+
+  .stamp-tile:hover {
+    scale: none;
+  }
+}
+
 .band-mustard {
   background-color: var(--color-accent);
   color: var(--color-brand-dark);
