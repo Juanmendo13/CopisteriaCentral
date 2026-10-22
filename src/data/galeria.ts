@@ -1,15 +1,14 @@
 /**
  * Galería de Copistería Central.
- * Las fotos numeradas y local-*.png heredadas de A0 Impresiones se eliminaron.
- * Solo assets propios de esta marca (placeholder de fachada hasta fotos reales).
+ * Fotos A0 eliminadas a propósito. Hero = póster de marca en repo (PNG/JPG reales).
  */
 export const fotos = [
   {
-    image: '/galeria/local-fachada.svg',
-    alt: 'Fachada ilustrada de Copistería Central en Av. Reina Mercedes',
+    image: '/galeria/hero-brand.jpg',
+    alt: 'Póster de marca Copistería Central — Reina Mercedes, Sevilla',
   },
 ] as const;
 
-/** Placeholder de marca (SVG). No usar fotos A0. */
-export const heroImage = '/galeria/local-fachada.svg';
-export const heroAlt = 'Fachada de Copistería Central en Av. Reina Mercedes, Sevilla';
+/** Asset real en public/galeria (generado con sharp). No usar SVG stub. */
+export const heroImage = '/galeria/hero-brand.jpg';
+export const heroAlt = 'Copistería Central — póster de marca, Reina Mercedes, Sevilla';
