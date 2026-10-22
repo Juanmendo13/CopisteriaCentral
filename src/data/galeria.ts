@@ -1,7 +1,7 @@
 /** Todas las fotos de /imagenes en orden de visualización. */
 export const fotos = [
-  { image: '/galeria/local-fachada.png', alt: 'Fachada de Copistería Central en Av. Reina Mercedes' },
-  { image: '/galeria/local-interior.png', alt: 'Interior del local con plotter y mostrador' },
+  { image: '/galeria/local-interior.png', alt: 'Interior de Copistería Central: mostrador, plotters y papelería' },
+  { image: '/galeria/hero-local.jpg', alt: 'Plotter de gran formato imprimiendo un póster a color' },
   { image: '/galeria/20.jpg', alt: 'Plano de arquitectura enrollado sobre mesa de trabajo' },
   { image: '/galeria/120.jpg', alt: 'Pósters de arquitectura expuestos en caballete' },
   { image: '/galeria/60.jpg', alt: 'Impresora Canon de gran formato imprimiendo un cartel' },
@@ -16,5 +16,6 @@ export const fotos = [
   { image: '/galeria/90.jpg', alt: 'Material de corrección sobre plano impreso' },
 ] as const;
 
-export const heroImage = '/galeria/local-fachada.svg';
+/** Fachada real del local (PNG en repo). No usar local-fachada.svg (placeholder). */
+export const heroImage = '/galeria/local-fachada.png?v=20261022';
 export const heroAlt = 'Fachada de Copistería Central en Av. Reina Mercedes, Sevilla';
