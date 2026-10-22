@@ -1,21 +1,32 @@
 ---
-import { site } from '../lib/site';
+import { site, whatsappLink } from '../lib/site';
+
+const wa = whatsappLink('Hola Copistería Central — consulta rápida.');
 ---
 
-<section class="bg-brand-dark/95 text-white/80">
-  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-x-8 sm:gap-y-2 text-sm">
+<section class="band-mustard" aria-label="Datos útiles">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-3.5 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-x-8 sm:gap-y-1 text-sm font-extrabold uppercase tracking-wide">
     <p>
-      <span class="text-white/45">Dónde · </span>
-      <span class="text-white font-medium">{site.landmark}</span>
+      <span class="opacity-60">Aquí · </span>
+      <span class="text-brand">{site.landmark}</span>
     </p>
     <p>
-      <span class="text-white/45">Horario · </span>
-      <span class="text-white font-medium">L–J 9:00–20:30</span>
-      <span class="text-white/45"> · Sáb 9:30–13:30</span>
+      <span class="opacity-60">Horario · </span>
+      <span class="text-brand">L–J 9:00–20:30</span>
+      <span class="opacity-60"> · Sáb 9:30–13:30</span>
     </p>
-    <p>
-      <span class="text-white/45">Tel. · </span>
-      <a href={site.phoneHref} class="text-accent font-medium hover:underline">{site.phone}</a>
+    <p class="sm:ml-auto flex flex-wrap items-center gap-x-4 gap-y-1">
+      <a href={site.phoneHref} class="text-brand underline underline-offset-2 decoration-[3px] hover:opacity-80">
+        {site.phone}
+      </a>
+      <a
+        href={wa}
+        class="text-brand underline underline-offset-2 decoration-[3px] hover:opacity-80"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        WhatsApp
+      </a>
     </p>
   </div>
 </section>

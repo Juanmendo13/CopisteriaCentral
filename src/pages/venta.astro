@@ -3,40 +3,57 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import VentaCarrito from '../components/VentaCarrito.astro';
+import Doodle from '../components/Doodle.astro';
 import { venta, ventaCategorias } from '../data/venta';
 import { site } from '../lib/site';
 ---
 
 <Layout
   title={`Venta de papelería | ${site.name}`}
-  description="Bolígrafos, libretas, carpetas, grapadoras y más. Añade a tu lista y reserva en Copistería Central, Reina Mercedes."
+  description="Bolis, libretas, carpetas y lo de apuro. Haz tu lista y reservamos en Copistería Central, Reina Mercedes."
 >
   <Navbar />
 
-  <main class="pt-28 pb-16 px-5 sm:px-8">
-    <div class="max-w-6xl mx-auto mb-8">
-      <p class="text-sm font-medium text-brand mb-2">Tienda</p>
-      <h1 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink">Venta de papelería</h1>
-      <p class="mt-3 max-w-2xl text-muted leading-relaxed">
-        Material de escritorio, archivo, corte y embalaje. Precios orientativos ({venta.length} artículos).
-        Añade lo que necesites y te lo reservamos en el local.
-      </p>
-      <nav class="mt-5 flex flex-wrap gap-2" aria-label="Categorías">
-        {
-          ventaCategorias.map((cat) => (
-            <a
-              href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}`}
-              class="rounded-md border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink hover:border-brand/40 hover:bg-brand-soft/50 transition"
-            >
-              {cat}
-            </a>
-          ))
-        }
-      </nav>
+  <main class="pt-28 pb-0 relative overflow-hidden">
+    <section class="page-hero-block px-5 sm:px-8 py-12 sm:py-16">
+      <Doodle name="boli" rotate={14} class="doodle-float absolute top-10 right-8 h-16 w-6 opacity-50 hidden lg:block" />
+      <Doodle name="postit" rotate={-8} class="doodle-wiggle absolute bottom-12 left-8 h-12 w-12 opacity-40 hidden md:block" />
+      <div class="relative max-w-6xl mx-auto">
+        <p class="text-sm font-black text-accent mb-3 inline-flex items-center gap-2 uppercase tracking-[0.14em]">
+          <Doodle name="cuaderno" class="h-5 w-4" rotate={-6} />
+          Del mostrador
+        </p>
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98] max-w-3xl">
+          Papelería para el día a día
+        </h1>
+        <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
+          Bolis, libretas, carpetas y lo que siempre se te olvida ({venta.length} artículos, precios orientativos).
+          Haz tu lista y te lo reservamos para cuando pases.
+        </p>
+      </div>
+    </section>
+
+    <div class="band-mustard border-t-0">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4">
+        <nav class="flex flex-wrap gap-2" aria-label="Categorías">
+          {
+            ventaCategorias.map((cat) => (
+              <a
+                href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}`}
+                class="rounded-sm border-2 border-brand bg-white px-3 py-1.5 text-xs font-bold text-brand hover:bg-brand hover:text-accent transition"
+              >
+                {cat}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
     </div>
 
-    <div class="max-w-6xl mx-auto">
-      <VentaCarrito />
+    <div class="relative paper-dots px-5 sm:px-8 py-12 sm:py-14">
+      <div class="relative max-w-6xl mx-auto">
+        <VentaCarrito />
+      </div>
     </div>
   </main>
 

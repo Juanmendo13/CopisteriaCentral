@@ -1,6 +1,6 @@
 ---
 import { formatEuro, getPrecioItem } from '../data/precios';
-import SectionHeader from './SectionHeader.astro';
+import Doodle from './Doodle.astro';
 
 const destacados = [
   'foto-bn-a4',
@@ -12,45 +12,92 @@ const destacados = [
 ]
   .map((id) => getPrecioItem(id))
   .filter((item): item is NonNullable<typeof item> => Boolean(item));
+
+const doodles = ['folio', 'boli', 'lapiz', 'cuaderno', 'cinta', 'tijeras'] as const;
 ---
 
-<section id="precios" class="scroll-mt-24 px-5 sm:px-8 py-14 sm:py-16 bg-paper">
-  <div class="max-w-6xl mx-auto">
-    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
-      <SectionHeader
-        eyebrow="Precios"
-        title="Lo básico, a la vista"
-        description="Orientativos de mostrador. El resto se confirma en el local."
-      />
-      <a href="/precios" class="btn-accent shrink-0 inline-flex items-center px-4 py-2 text-sm self-start">
-        Ver tarifas
+{/* Wall-menu / ticket board — NOT a SaaS price-card grid */}
+<section id="precios" class="scroll-mt-24 relative overflow-hidden">
+  <div class="band-mustard px-5 sm:px-8 py-12 sm:py-14 relative">
+    <Doodle name="regla" rotate={-6} class="doodle-float-slow absolute top-6 right-8 h-8 w-32 opacity-50 hidden md:block" />
+    <Doodle name="chincheta" rotate={12} class="absolute bottom-8 left-8 h-10 w-8 opacity-60 hidden sm:block" />
+    <div class="relative max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+      <div class="max-w-xl">
+        <p class="inline-flex items-center gap-2 text-sm font-black text-brand mb-2 uppercase tracking-[0.14em]">
+          <Doodle name="postit" class="h-5 w-5" rotate={8} />
+          Carta del mostrador
+        </p>
+        <h2 class="font-display text-3xl sm:text-5xl text-brand leading-[1.02]">
+          Precios a gritos,<br class="hidden sm:block" /> sin letra pequeña
+        </h2>
+        <p class="mt-4 text-brand/80 max-w-md font-semibold leading-relaxed">
+          Orientativos de barrio. El resto te lo contamos en persona, mirándote a la cara.
+        </p>
+      </div>
+      <a
+        href="/precios"
+        class="inline-flex items-center gap-2 self-start lg:self-auto bg-brand text-accent border-[3px] border-brand-dark px-5 py-3 text-xs font-black uppercase tracking-wide shadow-[5px_5px_0_rgba(0,26,61,0.35)] hover:-translate-y-0.5 transition"
+      >
+        <Doodle name="chincheta" class="h-4 w-3" />
+        Ver tarifas completas
       </a>
     </div>
+  </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      {
-        destacados.map((item) => (
-          <a
-            href="/precios"
-            class="rounded-xl border border-line bg-white px-4 py-4 hover:border-brand/25 transition"
-          >
-            <p class="text-xs text-muted mb-1">{item.categoria}</p>
-            <h3 class="font-semibold text-ink text-[15px] leading-snug">
-              {item.nombre}
-            </h3>
-            <p class="mt-2 text-base font-bold text-ink">
-              {item.modo === 'consultar' || item.precio == null ? (
-                <span class="text-sm font-semibold text-brand">Consultar</span>
-              ) : (
-                <>
-                  {formatEuro(item.precio)}
-                  <span class="text-sm font-medium text-muted"> / {item.unidad}</span>
-                </>
-              )}
-            </p>
-          </a>
-        ))
-      }
+  <div class="relative bg-brand px-5 sm:px-8 py-10 sm:py-12 border-b-[8px] border-accent">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-[0.07]"
+      style="background-image: repeating-linear-gradient(transparent, transparent 27px, white 27px, white 28px)"
+      aria-hidden="true"
+    ></div>
+    <Doodle name="goma" rotate={10} class="doodle-float absolute bottom-6 left-6 h-8 w-14 opacity-40 hidden sm:block" />
+
+    <div class="relative max-w-4xl mx-auto reveal-on-scroll">
+      <ul class="space-y-0 border-[4px] border-accent bg-paper shadow-[10px_10px_0_rgba(232,194,0,0.55)]">
+        {
+          destacados.map((item, i) => (
+            <li>
+              <a
+                href="/precios"
+                class:list={[
+                  'group flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 border-b-[3px] border-brand/15 last:border-b-0 transition hover:bg-accent/25',
+                  i % 2 === 1 && 'bg-white/60',
+                ]}
+              >
+                <span class="flex items-center gap-3 min-w-0 flex-1">
+                  <Doodle
+                    name={doodles[i % doodles.length]}
+                    rotate={i % 2 === 0 ? 10 : -8}
+                    class="h-8 w-8 shrink-0 opacity-80"
+                  />
+                  <span class="min-w-0">
+                    <span class="block text-[10px] font-black uppercase tracking-[0.14em] text-coral">
+                      {item.categoria}
+                    </span>
+                    <span class="block font-extrabold text-ink text-base sm:text-lg leading-snug">
+                      {item.nombre}
+                    </span>
+                  </span>
+                </span>
+                <span class="sm:text-right shrink-0 pl-11 sm:pl-0">
+                  {item.modo === 'consultar' || item.precio == null ? (
+                    <span class="inline-block bg-coral text-white border-2 border-brand-dark px-3 py-1 text-xs font-black uppercase tracking-wide">
+                      Consultar
+                    </span>
+                  ) : (
+                    <span class="font-display text-2xl sm:text-3xl text-brand leading-none">
+                      {formatEuro(item.precio)}
+                      <span class="ml-1 font-sans text-xs font-bold text-muted uppercase tracking-wide">
+                        / {item.unidad}
+                      </span>
+                    </span>
+                  )}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </section>

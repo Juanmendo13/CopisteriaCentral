@@ -15,6 +15,7 @@ export const site = {
   phoneHref: 'tel:+34954625384',
   /** El fijo puede no tener WhatsApp; se usa el mismo número hasta confirmar móvil. */
   whatsappHref: 'https://wa.me/34954625384',
+  whatsappNumber: '34954625384',
   shopPhone: '+34 954 62 53 84',
   shopPhoneHref: 'tel:+34954625384',
   /** Sin correo público por ahora. */
@@ -41,5 +42,11 @@ export const site = {
     linkedin: '',
   },
 } as const;
+
+/** Deep link de WhatsApp con texto prellenado (pedidos, consultas, errores). */
+export function whatsappLink(message: string): string {
+  const text = encodeURIComponent(message.trim());
+  return `https://wa.me/${site.whatsappNumber}?text=${text}`;
+}
 
 export type Site = typeof site;

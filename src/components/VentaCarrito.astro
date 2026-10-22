@@ -14,8 +14,7 @@ const catalogoJson = JSON.stringify(
   })),
 );
 
-const inputClass =
-  'w-full border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20';
+const inputClass = 'field-stamp';
 ---
 
 <div class="grid lg:grid-cols-[1fr_22rem] gap-8 items-start" id="venta-app" data-catalogo={catalogoJson}>
@@ -23,11 +22,11 @@ const inputClass =
     {
       grupos.map((grupo) => (
         <section id={grupo.categoria.toLowerCase().replace(/[^a-z0-9]+/gi, '-')} class="scroll-mt-32">
-          <h2 class="font-display text-lg font-bold text-ink mb-4">{grupo.categoria}</h2>
-          <div class="grid sm:grid-cols-2 gap-3">
+          <h2 class="font-display text-xl sm:text-2xl text-brand mb-5">{grupo.categoria}</h2>
+          <div class="grid sm:grid-cols-2 gap-4">
             {grupo.items.map((item) => (
-              <article class="rounded-xl border border-line bg-white overflow-hidden flex flex-col hover:border-brand/25 transition">
-                <div class="aspect-[4/3] bg-paper overflow-hidden">
+              <article class="rounded-sm border-[2.5px] border-brand bg-white overflow-hidden flex flex-col shadow-[3px_3px_0_rgba(0,45,98,0.15)] hover:shadow-[5px_5px_0_rgba(0,45,98,0.2)] hover:-translate-y-0.5 transition">
+                <div class="aspect-[4/3] bg-paper-deep overflow-hidden border-b-2 border-brand">
                   <img
                     src={item.image}
                     alt={item.nombre}
@@ -38,15 +37,15 @@ const inputClass =
                 </div>
                 <div class="p-4 flex flex-col gap-3 flex-1">
                   <div class="flex-1">
-                    <h3 class="font-semibold text-ink leading-snug">{item.nombre}</h3>
+                    <h3 class="font-extrabold text-ink leading-snug">{item.nombre}</h3>
                     <p class="mt-1 text-sm text-muted leading-relaxed">{item.descripcion}</p>
-                    <p class="mt-2 text-sm font-bold text-ink">
+                    <p class="mt-2 text-base font-black text-brand">
                       {item.precio == null ? (
-                        <span class="text-sm font-semibold text-brand">Consultar</span>
+                        <span class="text-sm font-bold text-coral">Consultar</span>
                       ) : (
                         <>
                           {formatEuro(item.precio)}
-                          <span class="font-medium text-muted"> / {item.unidad}</span>
+                          <span class="font-semibold text-muted text-sm"> / {item.unidad}</span>
                         </>
                       )}
                     </p>
@@ -61,7 +60,7 @@ const inputClass =
                       min="1"
                       max="5000"
                       value="1"
-                      class="w-20 rounded-md border border-line px-2 py-2 text-sm"
+                      class="w-20 rounded-sm border-2 border-brand px-2 py-2 text-sm font-semibold"
                       data-qty-for={item.id}
                     />
                     <button type="button" class="btn-accent flex-1 px-3 py-2 text-sm" data-add={item.id}>
@@ -77,10 +76,10 @@ const inputClass =
     }
   </div>
 
-  <aside class="lg:sticky lg:top-28 rounded-xl border border-line bg-white p-5">
+  <aside class="lg:sticky lg:top-28 rounded-sm border-[2.5px] border-brand bg-accent-soft p-5 shadow-[4px_4px_0_rgba(0,45,98,0.2)]">
     <div class="flex items-center justify-between gap-2 mb-4">
       <h2 class="font-display text-lg font-bold text-ink">Lista de compra</h2>
-      <span id="cart-count" class="rounded-md bg-brand text-accent px-2.5 py-0.5 text-xs font-bold">0</span>
+      <span id="cart-count" class="rounded-md bg-brand-dark text-accent px-2.5 py-0.5 text-xs font-bold">0</span>
     </div>
 
     <ul id="cart-lines" class="space-y-3 text-sm max-h-64 overflow-y-auto"></ul>
@@ -95,26 +94,26 @@ const inputClass =
     </div>
 
     <form id="cart-checkout" class="mt-5 space-y-3" novalidate>
-      <label class="block text-sm font-medium text-slate-700">
+      <label class="block text-sm font-black uppercase tracking-wide text-brand">
         Nombre
-        <input class:list={[inputClass, 'mt-1']} type="text" name="nombre" required minlength="2" maxlength="80" autocomplete="name" />
+        <input class:list={[inputClass, 'mt-1 normal-case tracking-normal font-semibold']} type="text" name="nombre" required minlength="2" maxlength="80" autocomplete="name" />
       </label>
-      <label class="block text-sm font-medium text-slate-700">
+      <label class="block text-sm font-black uppercase tracking-wide text-brand">
         Email
-        <input class:list={[inputClass, 'mt-1']} type="email" name="email" required autocomplete="email" />
+        <input class:list={[inputClass, 'mt-1 normal-case tracking-normal font-semibold']} type="email" name="email" required autocomplete="email" />
       </label>
-      <label class="block text-sm font-medium text-slate-700">
+      <label class="block text-sm font-black uppercase tracking-wide text-brand">
         Teléfono
-        <input class:list={[inputClass, 'mt-1']} type="tel" name="telefono" required autocomplete="tel" />
+        <input class:list={[inputClass, 'mt-1 normal-case tracking-normal font-semibold']} type="tel" name="telefono" required autocomplete="tel" />
       </label>
-      <label class="block text-sm font-medium text-slate-700">
+      <label class="block text-sm font-black uppercase tracking-wide text-brand">
         Notas (opcional)
-        <textarea class:list={[inputClass, 'mt-1 min-h-20']} name="notas" maxlength="1000" placeholder="Cuándo pasas a recoger…"></textarea>
+        <textarea class:list={[inputClass, 'mt-1 min-h-20 normal-case tracking-normal font-semibold']} name="notas" maxlength="1000" placeholder="Cuándo pasas a recoger…"></textarea>
       </label>
-      <button type="submit" id="cart-submit" class="btn-accent w-full rounded-xl px-4 py-3 text-sm">
-        Solicitar reserva / presupuesto
+      <button type="submit" id="cart-submit" class="btn-navy w-full px-4 py-3 text-sm">
+        Solicitar reserva
       </button>
-      <p class="text-xs text-slate-500 leading-relaxed">
+      <p class="text-xs text-muted font-medium leading-relaxed">
         No es un cobro online: confirmamos stock y precio en el local ({site.phone}).
         {
           site.isPrototype && (
@@ -125,7 +124,7 @@ const inputClass =
           )
         }
       </p>
-      <p id="cart-status" class="text-sm hidden" role="status"></p>
+      <p id="cart-status" class="text-sm hidden font-semibold" role="status"></p>
     </form>
   </aside>
 </div>
@@ -193,7 +192,7 @@ const inputClass =
         const item = byId[line.id];
         if (!item) continue;
         const li = document.createElement('li');
-        li.className = 'rounded-xl border border-blue-100 bg-white p-3';
+        li.className = 'rounded-xl border border-line bg-white p-3';
 
         let priceLabel = 'Consultar';
         if (item.modo === 'fijo' && item.precio != null) {

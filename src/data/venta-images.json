@@ -1,898 +1,770 @@
 {
   "v-boli-gel": {
     "file": "/venta/v-boli-gel.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Gel_pen.jpg/960px-Gel_pen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Gel pen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:GelPen.jpg",
+    "title": "GelPen.jpg",
+    "creator": "PiccoloNamek on en.wikipedia",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-boli-bic": {
     "file": "/venta/v-boli-bic.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Ballpoint-pen-parts.jpg",
+    "title": "Ballpoint-pen-parts.jpg",
+    "creator": "No machine-readable author provided. Pavel Krok~commonswiki assumed (based on copyright claims).",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-boli-roller": {
     "file": "/venta/v-boli-roller.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Faber-Castell_Rollerball_Porsche-Design.jpg",
+    "title": "Faber-Castell_Rollerball_Porsche-Design.jpg",
+    "creator": "Matti Blume",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-boli-borrable": {
     "file": "/venta/v-boli-borrable.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Many_colored_pens.jpg",
+    "title": "Many_colored_pens.jpg",
     "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "license": "CC BY 2.0",
+    "provider": "Wikimedia Commons"
   },
   "v-recambio-borrable": {
     "file": "/venta/v-recambio-borrable.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Pen_stroke_with_gel_refill.jpg",
+    "title": "Pen_stroke_with_gel_refill.jpg",
+    "creator": "Saurabh R. Patil",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-mina-05": {
     "file": "/venta/v-mina-05.jpg",
-    "source": "generated",
-    "title": "Mina de grafito para portaminas (0.5 mm)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Mechanical_pencil_lead_spilling_out_051907.jpg",
+    "title": "Mechanical_pencil_lead_spilling_out_051907.jpg",
+    "creator": "Mrs Scarborough",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-mina-07": {
     "file": "/venta/v-mina-07.jpg",
-    "source": "generated",
-    "title": "Mina de grafito para portaminas (0.7 mm)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Mechanical_pencil_lead_spilling_out_051907.jpg",
+    "title": "Mechanical_pencil_lead_spilling_out_051907.jpg",
+    "creator": "Mrs Scarborough",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-portaminas": {
     "file": "/venta/v-portaminas.jpg",
-    "source": "generated",
-    "title": "Portaminas ergonómico",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Staedtprod_clutch_pencil.jpg",
+    "title": "Staedtprod_clutch_pencil.jpg",
+    "creator": "Wikipedia:en:User:Ian.P",
+    "license": "Copyrighted free use",
+    "provider": "Wikimedia Commons"
   },
   "v-lapiz-hb": {
     "file": "/venta/v-lapiz-hb.jpg",
-    "source": "generated",
-    "title": "Lápiz de grafito HB",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Pencils_hb.jpg",
+    "title": "Pencils_hb.jpg",
+    "creator": "Original uploader was Dmgerman at en.wikipedia",
+    "license": "CC BY 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-lapiz-2b": {
     "file": "/venta/v-lapiz-2b.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Compass_%28drawing_tool%29.jpg/960px-Compass_%28drawing_tool%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Compass (drawing tool).jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
-  },
-  "v-lapiz-bicolor": {
-    "file": "/venta/v-lapiz-bicolor.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Staedtler_Noris_products.jpg/960px-Staedtler_Noris_products.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Staedtler Noris products.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Pencils_hb.jpg",
+    "title": "Pencils_hb.jpg",
+    "creator": "Original uploader was Dmgerman at en.wikipedia",
+    "license": "CC BY 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-caja-colores": {
     "file": "/venta/v-caja-colores.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Colored_pencils_chevre.jpg",
+    "title": "Colored_pencils_chevre.jpg",
+    "creator": "Chevre",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-fluo-clasico": {
     "file": "/venta/v-fluo-clasico.jpg",
-    "source": "generated",
-    "title": "Rotulador fluorescente clásico",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Markeerstift-01_(xndr).jpg",
+    "title": "Markeerstift-01_(xndr).jpg",
+    "creator": "Svdmolen",
+    "license": "CC BY 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-fluo-pastel": {
     "file": "/venta/v-fluo-pastel.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Staedtler_Noris_products.jpg/960px-Staedtler_Noris_products.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Staedtler Noris products.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Markeerstift-01_(xndr).jpg",
+    "title": "Markeerstift-01_(xndr).jpg",
+    "creator": "Svdmolen",
+    "license": "CC BY 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-rotulador-fino": {
     "file": "/venta/v-rotulador-fino.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Staedtler_Noris_products.jpg/960px-Staedtler_Noris_products.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Staedtler Noris products.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Filzstifte1.jpg",
+    "title": "Filzstifte1.jpg",
+    "creator": "Peng",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-permanente-conica": {
     "file": "/venta/v-permanente-conica.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Staedtler_Noris_products.jpg/960px-Staedtler_Noris_products.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Staedtler Noris products.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Filzstifte1.jpg",
+    "title": "Filzstifte1.jpg",
+    "creator": "Peng",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-permanente-bisel": {
     "file": "/venta/v-permanente-bisel.jpg",
-    "source": "generated",
-    "title": "Rotulador permanente de punta biselada",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Filzstifte1.jpg",
+    "title": "Filzstifte1.jpg",
+    "creator": "Peng",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-pizarra": {
     "file": "/venta/v-pizarra.jpg",
-    "source": "generated",
-    "title": "Rotulador para pizarra blanca",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-rotulador-cd": {
-    "file": "/venta/v-rotulador-cd.jpg",
-    "source": "generated",
-    "title": "Rotulador para CD/DVD",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-cinta-correctora": {
-    "file": "/venta/v-cinta-correctora.jpg",
-    "source": "generated",
-    "title": "Cinta correctora en seco",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Filzstifte1.jpg",
+    "title": "Filzstifte1.jpg",
+    "creator": "Peng",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-corrector-liquido": {
     "file": "/venta/v-corrector-liquido.jpg",
-    "source": "generated",
-    "title": "Corrector líquido en frasco",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-boli-corrector": {
-    "file": "/venta/v-boli-corrector.jpg",
-    "source": "generated",
-    "title": "Bolígrafo corrector de punta metálica",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Tipp-Ex-Aqua-based.jpg",
+    "title": "Tipp-Ex-Aqua-based.jpg",
+    "creator": "S-T-U-D-E-X",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-goma-lapiz": {
     "file": "/venta/v-goma-lapiz.jpg",
-    "source": "generated",
-    "title": "Goma de borrar clásica para lápiz",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Pencil_Eraser.jpg",
+    "title": "Pencil_Eraser.jpg",
+    "creator": "en:User:Prosavage2600",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-goma-tinta": {
     "file": "/venta/v-goma-tinta.jpg",
-    "source": "generated",
-    "title": "Goma de borrar para tinta/bolígrafo",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Pencil_Eraser.jpg",
+    "title": "Pencil_Eraser.jpg",
+    "creator": "en:User:Prosavage2600",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-sacapuntas-simple": {
     "file": "/venta/v-sacapuntas-simple.jpg",
-    "source": "generated",
-    "title": "Sacapuntas simple",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Red_pencil_sharpener.jpg",
+    "title": "Red_pencil_sharpener.jpg",
+    "creator": "Kaldari",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-sacapuntas-deposito": {
     "file": "/venta/v-sacapuntas-deposito.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Index_cards.jpg/960px-Index_cards.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Index cards.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Red_pencil_sharpener.jpg",
+    "title": "Red_pencil_sharpener.jpg",
+    "creator": "Kaldari",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-cuaderno-a4": {
     "file": "/venta/v-cuaderno-a4.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Spiral-bound_notebooks.JPG",
+    "title": "Spiral-bound_notebooks.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-cuaderno-a5": {
     "file": "/venta/v-cuaderno-a5.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Sticky_Notes_in_different_colors.jpg/960px-Sticky_Notes_in_different_colors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Sticky Notes in different colors.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Spiral-bound_notebooks.JPG",
+    "title": "Spiral-bound_notebooks.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-libreta-dura": {
     "file": "/venta/v-libreta-dura.jpg",
-    "source": "generated",
-    "title": "Cuaderno de tapa dura / libreta de notas",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Spiral-bound_notebooks.JPG",
+    "title": "Spiral-bound_notebooks.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-libreta-bolsillo": {
     "file": "/venta/v-libreta-bolsillo.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Sticky_Notes_in_different_colors.jpg/960px-Sticky_Notes_in_different_colors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Sticky Notes in different colors.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Spiral-bound_notebooks.JPG",
+    "title": "Spiral-bound_notebooks.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-postit-clasico": {
     "file": "/venta/v-postit-clasico.jpg",
-    "source": "generated",
-    "title": "Bloc de notas adhesivas clásico",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Sticky_Notes_in_different_colors.jpg",
+    "title": "Sticky_Notes_in_different_colors.jpg",
+    "creator": "Ramesh NG",
+    "license": "CC BY-SA 2.0",
+    "provider": "Wikimedia Commons"
   },
   "v-postit-neon": {
     "file": "/venta/v-postit-neon.jpg",
-    "source": "generated",
-    "title": "Bloc de notas adhesivas neón",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Sticky_Notes_in_different_colors.jpg",
+    "title": "Sticky_Notes_in_different_colors.jpg",
+    "creator": "Ramesh NG",
+    "license": "CC BY-SA 2.0",
+    "provider": "Wikimedia Commons"
   },
   "v-banderitas": {
     "file": "/venta/v-banderitas.jpg",
-    "source": "generated",
-    "title": "Banderitas / marcapáginas adhesivos",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Sticky_Notes_in_different_colors.jpg",
+    "title": "Sticky_Notes_in_different_colors.jpg",
+    "creator": "Ramesh NG",
+    "license": "CC BY-SA 2.0",
+    "provider": "Wikimedia Commons"
   },
   "v-recambio-a4": {
     "file": "/venta/v-recambio-a4.jpg",
-    "source": "generated",
-    "title": "Bloc de recambio hojas perforadas A4",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:LooseLeafPaper.JPG",
+    "title": "LooseLeafPaper.JPG",
+    "creator": "Wikiman0831",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-milimetrado": {
     "file": "/venta/v-milimetrado.jpg",
-    "source": "generated",
-    "title": "Bloc de papel milimetrado",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Squared_paper.jpg",
+    "title": "Squared_paper.jpg",
+    "creator": "Sir1109",
+    "license": "CC BY 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-vegetal": {
     "file": "/venta/v-vegetal.jpg",
-    "source": "generated",
-    "title": "Bloc de papel vegetal",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Gateway-Tracing-Paper.jpg",
+    "title": "Gateway-Tracing-Paper.jpg",
+    "creator": "Wikimedia Commons",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-acuarela": {
     "file": "/venta/v-acuarela.jpg",
-    "source": "generated",
-    "title": "Bloc de papel acuarela / alto gramaje",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:LooseLeafPaper.JPG",
+    "title": "LooseLeafPaper.JPG",
+    "creator": "Wikiman0831",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-folios-a4": {
     "file": "/venta/v-folios-a4.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Hole_punch.jpg/960px-Hole_punch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Hole punch.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:LooseLeafPaper.JPG",
+    "title": "LooseLeafPaper.JPG",
+    "creator": "Wikiman0831",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-cartulinas-color": {
     "file": "/venta/v-cartulinas-color.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Sticky_Notes_in_different_colors.jpg/960px-Sticky_Notes_in_different_colors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Sticky Notes in different colors.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Sticky_Notes_in_different_colors.jpg",
+    "title": "Sticky_Notes_in_different_colors.jpg",
+    "creator": "Ramesh NG",
+    "license": "CC BY-SA 2.0",
+    "provider": "Wikimedia Commons"
   },
   "v-cartulinas-blancas": {
     "file": "/venta/v-cartulinas-blancas.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Sticky_Notes_in_different_colors.jpg/960px-Sticky_Notes_in_different_colors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Sticky Notes in different colors.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:LooseLeafPaper.JPG",
+    "title": "LooseLeafPaper.JPG",
+    "creator": "Wikiman0831",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-pliego-cartulina": {
     "file": "/venta/v-pliego-cartulina.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Sticky_Notes_in_different_colors.jpg/960px-Sticky_Notes_in_different_colors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Sticky Notes in different colors.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:LooseLeafPaper.JPG",
+    "title": "LooseLeafPaper.JPG",
+    "creator": "Wikiman0831",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-carton-pluma": {
     "file": "/venta/v-carton-pluma.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Sticky_Notes_in_different_colors.jpg/960px-Sticky_Notes_in_different_colors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Sticky Notes in different colors.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:LooseLeafPaper.JPG",
+    "title": "LooseLeafPaper.JPG",
+    "creator": "Wikiman0831",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-talonario-recibos": {
     "file": "/venta/v-talonario-recibos.jpg",
-    "source": "generated",
-    "title": "Talonario autocopiativo de recibos",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Spiral-bound_notebooks.JPG",
+    "title": "Spiral-bound_notebooks.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-talonario-facturas": {
     "file": "/venta/v-talonario-facturas.jpg",
-    "source": "generated",
-    "title": "Talonario autocopiativo de facturas",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Spiral-bound_notebooks.JPG",
+    "title": "Spiral-bound_notebooks.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-talonario-albaranes": {
     "file": "/venta/v-talonario-albaranes.jpg",
-    "source": "generated",
-    "title": "Talonario de albaranes / notas de entrega",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Spiral-bound_notebooks.JPG",
+    "title": "Spiral-bound_notebooks.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-archivador-definitivo": {
     "file": "/venta/v-archivador-definitivo.jpg",
-    "source": "generated",
-    "title": "Archivador definitivo de cartón",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Lever_arch_file.jpg",
+    "title": "Lever_arch_file.jpg",
+    "creator": "Pavel Krok.",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-palanca-ancho": {
     "file": "/venta/v-palanca-ancho.jpg",
-    "source": "generated",
-    "title": "Archivador de palanca A4 (lomo ancho)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Lever_arch_file.jpg",
+    "title": "Lever_arch_file.jpg",
+    "creator": "Pavel Krok.",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-palanca-estrecho": {
     "file": "/venta/v-palanca-estrecho.jpg",
-    "source": "generated",
-    "title": "Archivador de palanca A4 (lomo estrecho)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Lever_arch_file.jpg",
+    "title": "Lever_arch_file.jpg",
+    "creator": "Pavel Krok.",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-carpeta-4-anillas": {
     "file": "/venta/v-carpeta-4-anillas.jpg",
-    "source": "generated",
-    "title": "Carpeta de 4 anillas mixtas A4",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-carpeta-2-anillas": {
-    "file": "/venta/v-carpeta-2-anillas.jpg",
-    "source": "generated",
-    "title": "Carpeta de 2 anillas A4",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-carpeta-fundas": {
-    "file": "/venta/v-carpeta-fundas.jpg",
-    "source": "generated",
-    "title": "Carpeta con fundas soldadas",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-acordeon": {
-    "file": "/venta/v-acordeon.jpg",
-    "source": "generated",
-    "title": "Carpeta con fuelle / acordeón",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Lever_arch_file.jpg",
+    "title": "Lever_arch_file.jpg",
+    "creator": "Pavel Krok.",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-gomas-carton": {
     "file": "/venta/v-gomas-carton.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Utility_knife.jpg/960px-Utility_knife.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Utility knife.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
-  },
-  "v-gomas-pp": {
-    "file": "/venta/v-gomas-pp.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Clipboard.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "title": "Clipboard.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
-  },
-  "v-carpeta-pinza": {
-    "file": "/venta/v-carpeta-pinza.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Clipboard.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "title": "Clipboard.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
-  },
-  "v-clipboard": {
-    "file": "/venta/v-clipboard.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Index_cards.jpg/960px-Index_cards.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Index cards.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Lever_arch_file.jpg",
+    "title": "Lever_arch_file.jpg",
+    "creator": "Pavel Krok.",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-fundas-std": {
     "file": "/venta/v-fundas-std.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Index_cards.jpg/960px-Index_cards.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Index cards.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
-  },
-  "v-fundas-hd": {
-    "file": "/venta/v-fundas-hd.jpg",
-    "source": "generated",
-    "title": "Funda multitaladro alta densidad A4",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Lever_arch_file.jpg",
+    "title": "Lever_arch_file.jpg",
+    "creator": "Pavel Krok.",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-sobre-a4": {
     "file": "/venta/v-sobre-a4.jpg",
-    "source": "generated",
-    "title": "Funda tipo sobre A4 (velcro o broche)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Briefumschlag_(fcm).jpg",
+    "title": "Briefumschlag_(fcm).jpg",
+    "creator": "Photograph:  Frank C. Müller, Baden-Baden",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-sobre-a5": {
     "file": "/venta/v-sobre-a5.jpg",
-    "source": "generated",
-    "title": "Funda tipo sobre A5 con broche",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Briefumschlag_(fcm).jpg",
+    "title": "Briefumschlag_(fcm).jpg",
+    "creator": "Photograph:  Frank C. Müller, Baden-Baden",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-subcarpeta": {
     "file": "/venta/v-subcarpeta.jpg",
-    "source": "generated",
-    "title": "Subcarpeta de cartulina",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-separador-alf": {
-    "file": "/venta/v-separador-alf.jpg",
-    "source": "generated",
-    "title": "Separador numérico o alfabético",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-separador-colores": {
-    "file": "/venta/v-separador-colores.jpg",
-    "source": "generated",
-    "title": "Separador de cartulina de colores",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Lever_arch_file.jpg",
+    "title": "Lever_arch_file.jpg",
+    "creator": "Pavel Krok.",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-fichero": {
     "file": "/venta/v-fichero.jpg",
-    "source": "generated",
-    "title": "Fichero para tarjetas / fichas",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Index_cards.jpg",
+    "title": "Index_cards.jpg",
+    "creator": "Goatid",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-fichas": {
     "file": "/venta/v-fichas.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Utility_knife.jpg/960px-Utility_knife.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Utility knife.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Index_cards.jpg",
+    "title": "Index_cards.jpg",
+    "creator": "Goatid",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-tijeras-escolares": {
     "file": "/venta/v-tijeras-escolares.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/PENTEL_TECHNICLICK_MECHANICAL_PENCIL_0.7_POINT_SIZE.jpg/960px-PENTEL_TECHNICLICK_MECHANICAL_PENCIL_0.7_POINT_SIZE.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "PENTEL TECHNICLICK MECHANICAL PENCIL 0.7 POINT SIZE.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
-  },
-  "v-tijeras-oficina": {
-    "file": "/venta/v-tijeras-oficina.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mechanical_pencil_macro.jpg/960px-Mechanical_pencil_macro.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Mechanical pencil macro.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Safety_scissors_blue.jpg",
+    "title": "Safety_scissors_blue.jpg",
+    "creator": "Karen Arnold",
+    "license": "CC0",
+    "provider": "Wikimedia Commons"
   },
   "v-cutter-9": {
     "file": "/venta/v-cutter-9.jpg",
-    "source": "generated",
-    "title": "Cúter / bisturí estándar (9 mm)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:BoxCutter.jpg",
+    "title": "BoxCutter.jpg",
+    "creator": "BlueH2O",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-cutter-18": {
     "file": "/venta/v-cutter-18.jpg",
-    "source": "generated",
-    "title": "Cúter profesional ancho (18 mm)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:BoxCutter.jpg",
+    "title": "BoxCutter.jpg",
+    "creator": "BlueH2O",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-cuchillas": {
     "file": "/venta/v-cuchillas.jpg",
-    "source": "generated",
-    "title": "Cuchillas de recambio para cúter",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:BoxCutter.jpg",
+    "title": "BoxCutter.jpg",
+    "creator": "BlueH2O",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-base-corte": {
     "file": "/venta/v-base-corte.jpg",
-    "source": "generated",
-    "title": "Base de corte autocicatrizante",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Cutting_mat.jpg",
+    "title": "Cutting_mat.jpg",
+    "creator": "Lenore Edman",
+    "license": "CC BY 2.0",
+    "provider": "Wikimedia Commons"
   },
   "v-barra-pegamento": {
     "file": "/venta/v-barra-pegamento.jpg",
-    "source": "generated",
-    "title": "Barra de pegamento (tipo Pritt)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Elmer%27s_Office_Glue_Stick.JPG",
+    "title": "Elmer's_Office_Glue_Stick.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-pegamento-liquido": {
     "file": "/venta/v-pegamento-liquido.jpg",
-    "source": "generated",
-    "title": "Pegamento líquido multiusos transparente",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Elmer%27s_Office_Glue_Stick.JPG",
+    "title": "Elmer's_Office_Glue_Stick.JPG",
+    "creator": "Mk2010",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-cianocrilato": {
     "file": "/venta/v-cianocrilato.jpg",
-    "source": "generated",
-    "title": "Pegamento instantáneo (cianocrilato)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Super_glue.jpg",
+    "title": "Super_glue.jpg",
+    "creator": "Wikimedia Commons",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-blutack": {
     "file": "/venta/v-blutack.jpg",
-    "source": "generated",
-    "title": "Masilla adhesiva reutilizable",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Actual_blu_tack.jpg",
+    "title": "Actual_blu_tack.jpg",
+    "creator": "Fourohfour",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-cinta-transparente": {
     "file": "/venta/v-cinta-transparente.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Adhesive_tapes_clear.JPG",
+    "title": "Adhesive_tapes_clear.JPG",
+    "creator": "BarberJP",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-dispensador": {
     "file": "/venta/v-dispensador.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Tejph%C3%A5llare.jpg",
+    "title": "Tejphållare.jpg",
+    "creator": "Dnor",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-cinta-carrocero": {
     "file": "/venta/v-cinta-carrocero.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mechanical_pencil_macro.jpg/960px-Mechanical_pencil_macro.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Mechanical pencil macro.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Paper_tape_table_dispenser-01.jpg",
+    "title": "Paper_tape_table_dispenser-01.jpg",
+    "creator": "Lilly_M",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-doble-cara": {
     "file": "/venta/v-doble-cara.jpg",
-    "source": "generated",
-    "title": "Cinta adhesiva de doble cara",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Double_sided_tape_-_magnification.jpg",
+    "title": "Double_sided_tape_-_magnification.jpg",
+    "creator": "Featheredtar",
+    "license": "CC BY 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-cinta-embalar": {
     "file": "/venta/v-cinta-embalar.jpg",
-    "source": "generated",
-    "title": "Cinta de embalar marrón o transparente",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Sticky_tape.jpg",
+    "title": "Sticky_tape.jpg",
+    "creator": "André Karwath aka Aka\n",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-clips-std": {
     "file": "/venta/v-clips-std.jpg",
-    "source": "generated",
-    "title": "Caja de clips metálicos estándar",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Binder_clips.JPG",
+    "title": "Binder_clips.JPG",
+    "creator": "Polyparadigm",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-clips-mariposa": {
     "file": "/venta/v-clips-mariposa.jpg",
-    "source": "generated",
-    "title": "Caja de clips mariposa / grandes",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Binder_clips.JPG",
+    "title": "Binder_clips.JPG",
+    "creator": "Polyparadigm",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-binder": {
     "file": "/venta/v-binder.jpg",
-    "source": "generated",
-    "title": "Caja de pinzas metálicas (binder clips)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Binder_clips.JPG",
+    "title": "Binder_clips.JPG",
+    "creator": "Polyparadigm",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-chinchetas-laton": {
     "file": "/venta/v-chinchetas-laton.jpg",
-    "source": "generated",
-    "title": "Caja de chinchetas clásicas de latón",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Pin_for_a_pinboard_2013_PD.jpg",
+    "title": "Pin_for_a_pinboard_2013_PD.jpg",
+    "creator": "Bin im Garten",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-chinchetas-color": {
     "file": "/venta/v-chinchetas-color.jpg",
-    "source": "generated",
-    "title": "Caja de chinchetas con cabeza de colores",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Pin_for_a_pinboard_2013_PD.jpg",
+    "title": "Pin_for_a_pinboard_2013_PD.jpg",
+    "creator": "Bin im Garten",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-encuadernadores": {
     "file": "/venta/v-encuadernadores.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Protractor.jpg/960px-Protractor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Protractor.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Attache_parisienne.JPG",
+    "title": "Attache_parisienne.JPG",
+    "creator": "Zyzomis",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-gomas-elasticas": {
     "file": "/venta/v-gomas-elasticas.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Rubber_bands.jpg/960px-Rubber_bands.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Rubber bands.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Rubber_bands.jpg",
+    "title": "Rubber_bands.jpg",
+    "creator": "FML",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-grapadora": {
     "file": "/venta/v-grapadora.jpg",
-    "source": "generated",
-    "title": "Grapadora de sobremesa estándar",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Electric-stapler-small.jpg",
+    "title": "Electric-stapler-small.jpg",
+    "creator": "No machine-readable author provided. JonathanLamb~commonswiki assumed (based on copyright claims).",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-minigrapadora": {
     "file": "/venta/v-minigrapadora.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Electric-stapler-small.jpg",
+    "title": "Electric-stapler-small.jpg",
+    "creator": "No machine-readable author provided. JonathanLamb~commonswiki assumed (based on copyright claims).",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-grapas": {
     "file": "/venta/v-grapas.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mechanical_pencil_macro.jpg/960px-Mechanical_pencil_macro.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Mechanical pencil macro.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Copper_Staples_No_50,60.JPG",
+    "title": "Copper_Staples_No_50,60.JPG",
+    "creator": "“Keith S Brown (Ksbrown)”",
+    "license": "CC BY-SA 2.5",
+    "provider": "Wikimedia Commons"
   },
   "v-quitagrapas": {
     "file": "/venta/v-quitagrapas.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:SCEhardt_Staple_Remover.jpg",
+    "title": "SCEhardt_Staple_Remover.jpg",
+    "creator": "Scott Ehardt",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-taladradora": {
     "file": "/venta/v-taladradora.jpg",
-    "source": "generated",
-    "title": "Taladradora / perforadora de 2 agujeros",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Hole_Puncher_2004.jpg",
+    "title": "Hole_Puncher_2004.jpg",
+    "creator": "Wikimedia Commons",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-regla-plastico": {
     "file": "/venta/v-regla-plastico.jpg",
-    "source": "generated",
-    "title": "Regla graduada de plástico 30 cm",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Yellow_Transportation_ruler.jpg",
+    "title": "Yellow_Transportation_ruler.jpg",
+    "creator": "Xnatedawgx",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-regla-metal": {
     "file": "/venta/v-regla-metal.jpg",
-    "source": "generated",
-    "title": "Regla metálica de acero 30 cm",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Yellow_Transportation_ruler.jpg",
+    "title": "Yellow_Transportation_ruler.jpg",
+    "creator": "Xnatedawgx",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-escuadra": {
     "file": "/venta/v-escuadra.jpg",
-    "source": "generated",
-    "title": "Escuadra graduada para dibujo técnico",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Triangle30-60.jpg",
+    "title": "Triangle30-60.jpg",
+    "creator": "Cletzrodt",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-cartabon": {
     "file": "/venta/v-cartabon.jpg",
-    "source": "generated",
-    "title": "Cartabón graduado para dibujo técnico",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Triangle30-60.jpg",
+    "title": "Triangle30-60.jpg",
+    "creator": "Cletzrodt",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-transportador": {
     "file": "/venta/v-transportador.jpg",
-    "source": "generated",
-    "title": "Transportador de ángulos semicircular (180°)",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Protractor_katomierz.jpg",
+    "title": "Protractor_katomierz.jpg",
+    "creator": "Radomil",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-compas": {
     "file": "/venta/v-compas.jpg",
-    "source": "generated",
-    "title": "Compás escolar micrométrico",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Drawing-a-circle-with-the-compasses.jpg",
+    "title": "Drawing-a-circle-with-the-compasses.jpg",
+    "creator": "International Correspondence Schools, Scranton, PA., USA",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-escalimetro": {
     "file": "/venta/v-escalimetro.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Hole_punch.jpg/960px-Hole_punch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Hole punch.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Dreikantma%C3%9Fstab.JPG",
+    "title": "Dreikantmaßstab.JPG",
+    "creator": "Schorle",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-calc-basica": {
     "file": "/venta/v-calc-basica.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Stapler.jpg/960px-Stapler.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Stapler.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Aurora_electronic_calculator_DT210_02.jpg",
+    "title": "Aurora_electronic_calculator_DT210_02.jpg",
+    "creator": "Coyau\n",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-calc-cientifica": {
     "file": "/venta/v-calc-cientifica.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Protractor.jpg/960px-Protractor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Protractor.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Sharp_Scientific_Calculator.jpg",
+    "title": "Sharp_Scientific_Calculator.jpg",
+    "creator": "Matti Blume",
+    "license": "CC BY-SA 2.0",
+    "provider": "Wikimedia Commons"
   },
   "v-sobre-comercial": {
     "file": "/venta/v-sobre-comercial.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Envelope1.jpg",
+    "title": "Envelope1.jpg",
     "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-sobre-kraft": {
     "file": "/venta/v-sobre-kraft.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ballpen.jpg/960px-Ballpen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Ballpen.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Envelope1.jpg",
+    "title": "Envelope1.jpg",
     "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-sobre-burbujas": {
     "file": "/venta/v-sobre-burbujas.jpg",
-    "source": "generated",
-    "title": "Sobre acolchado de burbujas",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Bubble_Wrap.jpg",
+    "title": "Bubble_Wrap.jpg",
+    "creator": "User Consequencefree on en.wikipedia",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-tubo-planos": {
     "file": "/venta/v-tubo-planos.jpg",
-    "source": "generated",
-    "title": "Tubo rígido de cartón con tapas",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Twineball.jpg",
+    "title": "Twineball.jpg",
+    "creator": "Matthew Sachs",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-rollo-burbujas": {
     "file": "/venta/v-rollo-burbujas.jpg",
-    "source": "generated",
-    "title": "Rollo de plástico de burbujas",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Bubble_Wrap.jpg",
+    "title": "Bubble_Wrap.jpg",
+    "creator": "User Consequencefree on en.wikipedia",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-rollo-kraft": {
     "file": "/venta/v-rollo-kraft.jpg",
-    "source": "generated",
-    "title": "Rollo de papel kraft marrón",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:Twineball.jpg",
+    "title": "Twineball.jpg",
+    "creator": "Matthew Sachs",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-etiquetas": {
     "file": "/venta/v-etiquetas.jpg",
-    "source": "generated",
-    "title": "Etiquetas adhesivas blancas A4",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-usb-16": {
-    "file": "/venta/v-usb-16.jpg",
-    "source": "generated",
-    "title": "Pendrive / memoria USB 16 GB",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
-  },
-  "v-usb-32": {
-    "file": "/venta/v-usb-32.jpg",
-    "source": "generated",
-    "title": "Pendrive / memoria USB 32 GB",
-    "creator": "Copistería Central",
-    "license": "generated",
-    "provider": "svg-fallback"
+    "source": "https://commons.wikimedia.org/wiki/File:LooseLeafPaper.JPG",
+    "title": "LooseLeafPaper.JPG",
+    "creator": "Wikiman0831",
+    "license": "CC BY-SA 3.0",
+    "provider": "Wikimedia Commons"
   },
   "v-usb-64": {
     "file": "/venta/v-usb-64.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Protractor.jpg/960px-Protractor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Protractor.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:USB_flash_drive.jpg",
+    "title": "USB_flash_drive.jpg",
+    "creator": "Dori",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   },
   "v-bramante": {
     "file": "/venta/v-bramante.jpg",
-    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mechanical_pencil_macro.jpg/960px-Mechanical_pencil_macro.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "title": "Mechanical pencil macro.jpg",
-    "creator": "Wikimedia Commons",
-    "license": "cc-by-sa / public domain",
-    "provider": "wikimedia-curated"
+    "source": "https://commons.wikimedia.org/wiki/File:Twineball.jpg",
+    "title": "Twineball.jpg",
+    "creator": "Matthew Sachs",
+    "license": "Public domain",
+    "provider": "Wikimedia Commons"
   }
 }

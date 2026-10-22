@@ -2,19 +2,45 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import Doodle from '../components/Doodle.astro';
 import { site } from '../lib/site';
 ---
 
 <Layout title={`Página no encontrada | ${site.name}`}>
   <Navbar />
-  <main class="pt-32 pb-20 px-4 max-w-xl mx-auto text-center">
-    <p class="text-sm font-semibold text-brand">404</p>
-    <h1 class="mt-2 text-3xl font-semibold text-ink">No encontramos esa página</h1>
-    <p class="mt-3 text-slate-600">Prueba el listado de servicios o vuelve al inicio.</p>
-    <div class="mt-8 flex justify-center gap-3">
-      <a href="/" class="rounded-md bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark">Inicio</a>
-      <a href="/servicios" class="rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-ink">Servicios</a>
-    </div>
+  <main class="pt-28 pb-0">
+    <section class="relative min-h-[60vh] flex items-center bg-brand text-white overflow-hidden border-b-[10px] border-accent">
+      <div
+        class="pointer-events-none absolute inset-0 opacity-[0.1]"
+        style="background-image: repeating-linear-gradient(transparent, transparent 31px, white 31px, white 32px)"
+        aria-hidden="true"
+      ></div>
+      <Doodle name="tijeras" rotate={-14} class="doodle-wiggle absolute top-16 right-[12%] h-16 w-16 opacity-50 hidden sm:block" />
+      <Doodle name="folio" rotate={8} class="doodle-float absolute bottom-20 left-[8%] h-14 w-11 opacity-40" />
+      <Doodle name="chincheta" rotate={12} class="absolute top-24 left-[20%] h-10 w-8 opacity-45 hidden md:block" />
+
+      <div class="relative z-10 w-full max-w-3xl mx-auto px-5 sm:px-8 py-20 text-center">
+        <p class="inline-flex items-center gap-2 text-sm font-black text-accent uppercase tracking-[0.16em] mb-4">
+          <span class="stamp-mark h-9 w-9 text-xs">404</span>
+          Página cortada
+        </p>
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98]">
+          Esta hoja<br />no está en el taco
+        </h1>
+        <p class="mt-5 text-base sm:text-lg text-white/75 font-medium leading-relaxed max-w-md mx-auto">
+          Puede que el enlace esté mal o que hayamos movido la página. Del PDF al mostrador: aquí tienes atajos útiles.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-3">
+          <a href="/" class="btn-primary inline-flex items-center px-6 py-3.5 text-xs sm:text-sm">Inicio</a>
+          <a href="/pedido" class="btn-secondary inline-flex items-center px-6 py-3.5 text-xs sm:text-sm text-white">Enviar PDF</a>
+          <a href="/servicios" class="btn-secondary inline-flex items-center px-6 py-3.5 text-xs sm:text-sm text-white">Servicios</a>
+        </div>
+        <p class="mt-8 text-sm text-white/55 font-semibold">
+          O llámanos:
+          <a class="text-accent font-black hover:underline" href={site.phoneHref}>{site.phone}</a>
+        </p>
+      </div>
+    </section>
   </main>
   <Footer />
 </Layout>
