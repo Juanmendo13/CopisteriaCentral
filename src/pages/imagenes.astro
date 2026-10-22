@@ -9,7 +9,7 @@ import { site } from '../lib/site';
 
 <Layout
   title={`Imágenes | ${site.name}`}
-  description="Trabajos de copistería e impresión: planos, póster científicos, cartelería y papelería en Sevilla."
+  description="Imágenes de Copistería Central en Av. Reina Mercedes, Sevilla. Galería provisional hasta fotos reales del local."
 >
   <Navbar />
 
@@ -18,25 +18,34 @@ import { site } from '../lib/site';
       <SectionHeader
         eyebrow="Galería"
         title="Imágenes"
-        description="Fotos reales del local y de trabajos habituales: planos, póster, papelería y gran formato."
+        description="Aún no tenemos fotos propias del local publicadas aquí. Mientras tanto, esta ilustración de marca y la ficha en Google Maps."
       />
+      <p class="mt-4 text-sm text-ink/70">
+        <a href={site.mapsUrl} class="font-bold text-brand underline decoration-accent underline-offset-2 hover:text-brand-dark" target="_blank" rel="noopener noreferrer">
+          Ver Copistería Central en Google Maps
+        </a>
+      </p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-      {
-        fotos.map((item) => (
-          <figure class="group overflow-hidden rounded-xl border border-stone-200/90 bg-white shadow-sm aspect-square">
-            <img
-              src={item.image}
-              alt={item.alt}
-              class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
-        ))
-      }
-    </div>
+    {
+      fotos.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl">
+          {fotos.map((item) => (
+            <figure class="overflow-hidden rounded-xl border border-line bg-white shadow-sm aspect-[4/3]">
+              <img
+                src={item.image}
+                alt={item.alt}
+                class="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          ))}
+        </div>
+      ) : (
+        <p class="text-ink/70 text-base">Sin fotos en la galería por ahora.</p>
+      )
+    }
   </main>
 
   <Footer />
