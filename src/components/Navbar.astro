@@ -14,9 +14,16 @@ const links = [
 ];
 
 const current = Astro.url.pathname;
+const isVenta = current === '/venta' || current.startsWith('/venta/');
 ---
 
-<header class:list={['site-header fixed top-0 left-0 w-full z-50', site.isPrototype && 'has-banner']}>
+<header
+  class:list={[
+    'site-header fixed top-0 left-0 w-full z-50',
+    site.isPrototype && 'has-banner',
+    isVenta && 'has-venta-cart-bar',
+  ]}
+>
   <PrototypeBanner />
   <div class="bg-brand border-b-[6px] border-accent">
     <div class="max-w-6xl mx-auto px-5 sm:px-8 h-14 md:h-[3.85rem] flex items-center justify-between gap-4">
@@ -82,6 +89,39 @@ const current = Astro.url.pathname;
       </nav>
     </div>
   </div>
+
+  {
+    isVenta && (
+      <div
+        id="venta-cart-bar"
+        class="lg:hidden border-b-[3px] border-brand bg-accent shadow-[0_3px_0_rgba(0,45,98,0.18)]"
+      >
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+          <button
+            type="button"
+            id="venta-cart-jump"
+            class="flex w-full items-center justify-between gap-3 py-2.5 text-left"
+            aria-controls="lista-compra"
+          >
+            <span class="flex items-center gap-2 min-w-0">
+              <span class="rounded-sm border-2 border-brand bg-brand px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em] text-accent shrink-0">
+                Lista
+              </span>
+              <span id="venta-cart-bar-count" class="text-sm font-extrabold text-brand truncate">
+                0 artículos
+              </span>
+            </span>
+            <span
+              id="venta-cart-bar-subtotal"
+              class="shrink-0 rounded-sm border-2 border-brand bg-white px-2.5 py-0.5 text-sm font-black text-brand tabular-nums"
+            >
+              0,00 €
+            </span>
+          </button>
+        </div>
+      </div>
+    )
+  }
 </header>
 
 <script>
@@ -118,5 +158,25 @@ const current = Astro.url.pathname;
 
   mobileLinks.forEach((link) => {
     link.addEventListener('click', () => setOpen(false));
+  });
+
+  const cartBarCount = document.getElementById('venta-cart-bar-count');
+  const cartBarSubtotal = document.getElementById('venta-cart-bar-subtotal');
+  const cartJump = document.getElementById('venta-cart-jump');
+
+  function articulosLabel(qty: number) {
+    if (qty === 1) return '1 artículo';
+    return `${qty} artículos`;
+  }
+
+  window.addEventListener('cc-venta-cart', ((ev: CustomEvent<{ qty: number; formatted: string }>) => {
+    const { qty, formatted } = ev.detail;
+    if (cartBarCount) cartBarCount.textContent = articulosLabel(qty);
+    if (cartBarSubtotal) cartBarSubtotal.textContent = formatted;
+  }) as EventListener);
+
+  cartJump?.addEventListener('click', () => {
+    setOpen(false);
+    document.getElementById('lista-compra')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 </script>

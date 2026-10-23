@@ -489,6 +489,17 @@ body:has(.site-header.has-banner) main > section.pt-28 {
   }
 }
 
+/* Sticky venta cart bar under nav (mobile/tablet only; hidden at lg) */
+@media (max-width: 1023px) {
+  body:has(.site-header.has-venta-cart-bar) main.pt-28 {
+    padding-top: 9.5rem;
+  }
+
+  body:has(.site-header.has-banner.has-venta-cart-bar) main.pt-28 {
+    padding-top: 11.75rem;
+  }
+}
+
 /* Accessible focus — mustard ring on navy, navy on paper */
 :focus-visible {
   outline: 3px solid var(--color-accent);

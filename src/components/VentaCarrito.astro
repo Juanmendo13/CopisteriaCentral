@@ -99,7 +99,10 @@ const inputClass = 'field-stamp';
     </p>
   </div>
 
-  <aside class="lg:sticky lg:top-28 rounded-sm border-[2.5px] border-brand bg-accent-soft p-5 shadow-[4px_4px_0_rgba(0,45,98,0.2)]">
+  <aside
+    id="lista-compra"
+    class="lg:sticky lg:top-28 scroll-mt-36 rounded-sm border-[2.5px] border-brand bg-accent-soft p-5 shadow-[4px_4px_0_rgba(0,45,98,0.2)]"
+  >
     <div class="flex items-center justify-between gap-2 mb-4">
       <h2 class="font-display text-lg font-bold text-ink">Lista de compra</h2>
       <span id="cart-count" class="rounded-md bg-brand-dark text-accent px-2.5 py-0.5 text-xs font-bold">0</span>
@@ -258,6 +261,12 @@ const inputClass = 'field-stamp';
 
     subtotalEl.textContent = euro(subtotal);
     save(cart);
+
+    window.dispatchEvent(
+      new CustomEvent('cc-venta-cart', {
+        detail: { qty: totalQty, subtotal, formatted: euro(subtotal) },
+      }),
+    );
   }
 
   function add(id: string, qty: number) {
