@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import PedidoForm from '../components/PedidoForm.astro';
-import InboxSetupNote from '../components/InboxSetupNote.astro';
 import Doodle from '../components/Doodle.astro';
 import { isFormatoId } from '../data/formatos';
 import { site, whatsappLink } from '../lib/site';
@@ -54,7 +53,6 @@ const waPedido = whatsappLink(
     <div class="paper-ruled px-5 sm:px-8 py-12 sm:py-16">
       <div class="max-w-3xl mx-auto border-[4px] border-brand bg-white p-6 sm:p-8 shadow-[8px_8px_0_rgba(0,45,98,0.28)]">
         <PedidoForm defaultFormato={defaultFormato} />
-        <InboxSetupNote />
       </div>
 
       <p class="mt-8 max-w-3xl mx-auto text-sm text-muted font-medium">
