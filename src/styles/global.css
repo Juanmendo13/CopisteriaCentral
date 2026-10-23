@@ -583,6 +583,16 @@ body:has(.site-header.has-banner) main > section.pt-28 {
   box-shadow: 4px 4px 0 var(--color-accent);
 }
 
+.field-stamp:read-only {
+  background: color-mix(in srgb, var(--color-brand) 6%, white);
+  color: var(--color-brand);
+  cursor: default;
+}
+
+.field-stamp:read-only:focus {
+  box-shadow: none;
+}
+
 .choice-stamp {
   display: flex;
   height: 100%;

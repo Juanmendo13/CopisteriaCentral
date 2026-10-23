@@ -227,7 +227,6 @@ const waPedido = whatsappLink(
   const precioNotaEl = document.getElementById('pedido-precio-nota');
 
   let pageDetectToken = 0;
-  let lastAutoPages: number | null = null;
 
   function showError(message: string) {
     if (!errorEl || !okEl) return;
@@ -253,11 +252,11 @@ const waPedido = whatsappLink(
     paginasStatus.classList.toggle('text-red-700', tone === 'warn');
   }
 
-  function setPaginasValue(pages: number) {
+  function lockPaginasAuto(pages: number, statusText: string) {
     if (!paginasInput) return;
     paginasInput.value = String(pages);
-    paginasInput.readOnly = false;
-    lastAutoPages = pages;
+    paginasInput.readOnly = true;
+    setPaginasStatus(statusText, 'ok');
     renderPrecio();
   }
 
@@ -268,14 +267,12 @@ const waPedido = whatsappLink(
         paginasInput.value = '1';
       }
     }
-    lastAutoPages = null;
     setPaginasStatus(message, 'warn');
     renderPrecio();
   }
 
   function resetPaginasUi() {
     pageDetectToken += 1;
-    lastAutoPages = null;
     if (paginasInput) {
       paginasInput.readOnly = false;
       paginasInput.value = '1';
@@ -292,8 +289,7 @@ const waPedido = whatsappLink(
     }
 
     if (isImageFile(file)) {
-      setPaginasValue(1);
-      setPaginasStatus('Imagen: 1 página (puedes corregirlo si hace falta)', 'ok');
+      lockPaginasAuto(1, 'Imagen: 1 página (automático)');
       return;
     }
 
@@ -311,12 +307,11 @@ const waPedido = whatsappLink(
     if (token !== pageDetectToken) return;
 
     if (result.ok) {
-      setPaginasValue(result.pages);
       const label =
         result.pages === 1
           ? '1 página detectada'
           : `${result.pages} páginas detectadas`;
-      setPaginasStatus(`${label} · puedes corregirlo si hace falta`, 'ok');
+      lockPaginasAuto(result.pages, label);
       return;
     }
 
@@ -377,16 +372,7 @@ const waPedido = whatsappLink(
     input.addEventListener('change', renderPrecio);
   });
   form?.querySelectorAll('input[name="paginas"], input[name="copias"], input[name="medida"]').forEach((input) => {
-    input.addEventListener('input', () => {
-      if (input === paginasInput && lastAutoPages != null) {
-        const current = Number(paginasInput?.value);
-        if (current !== lastAutoPages) {
-          setPaginasStatus('Páginas corregidas a mano', 'muted');
-          lastAutoPages = null;
-        }
-      }
-      renderPrecio();
-    });
+    input.addEventListener('input', renderPrecio);
     input.addEventListener('change', renderPrecio);
   });
   toggleMedida();
