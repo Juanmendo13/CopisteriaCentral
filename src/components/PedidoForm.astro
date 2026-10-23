@@ -98,6 +98,7 @@ const waPedido = whatsappLink(
     <label class="block text-sm font-black uppercase tracking-wide text-brand">
       Páginas
       <input
+        id="pedido-paginas"
         class="field-stamp mt-1.5 normal-case tracking-normal font-semibold"
         type="number"
         name="paginas"
@@ -106,7 +107,13 @@ const waPedido = whatsappLink(
         value="1"
         required
       />
-      <span class="mt-1 block text-[11px] font-semibold normal-case tracking-normal text-muted">Del documento</span>
+      <span
+        id="pedido-paginas-status"
+        class="mt-1 block text-[11px] font-semibold normal-case tracking-normal text-muted"
+        aria-live="polite"
+      >
+        Se detectan al subir un PDF
+      </span>
     </label>
     <label class="block text-sm font-black uppercase tracking-wide text-brand">
       Copias
@@ -199,6 +206,7 @@ const waPedido = whatsappLink(
   import { upload } from '@vercel/blob/client';
   import { ALLOWED_MIME, MAX_FILE_BYTES } from '../data/formatos';
   import { estimarPrecioPedido, type PedidoPrecioEstimate } from '../lib/pedido-precio';
+  import { countPdfPages, isImageFile } from '../lib/pdf-page-count';
   import { sendShopWeb3Forms } from '../lib/client-web3forms';
   import { shopNotifyClientStatus } from '../lib/shop-notify-ui';
 
@@ -212,9 +220,14 @@ const waPedido = whatsappLink(
   const okExtra = document.getElementById('pedido-ok-extra');
   const medidaWrap = document.getElementById('pedido-medida-wrap');
   const submitBtn = document.getElementById('pedido-submit') as HTMLButtonElement | null;
+  const paginasInput = document.getElementById('pedido-paginas') as HTMLInputElement | null;
+  const paginasStatus = document.getElementById('pedido-paginas-status');
   const precioTotalEl = document.getElementById('pedido-precio-total');
   const precioDetalleEl = document.getElementById('pedido-precio-detalle');
   const precioNotaEl = document.getElementById('pedido-precio-nota');
+
+  let pageDetectToken = 0;
+  let lastAutoPages: number | null = null;
 
   function showError(message: string) {
     if (!errorEl || !okEl) return;
@@ -230,6 +243,84 @@ const waPedido = whatsappLink(
         ? `${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`
         : 'Ningún archivo seleccionado';
     }
+  }
+
+  function setPaginasStatus(text: string, tone: 'muted' | 'ok' | 'warn' = 'muted') {
+    if (!paginasStatus) return;
+    paginasStatus.textContent = text;
+    paginasStatus.classList.toggle('text-muted', tone === 'muted');
+    paginasStatus.classList.toggle('text-brand', tone === 'ok');
+    paginasStatus.classList.toggle('text-red-700', tone === 'warn');
+  }
+
+  function setPaginasValue(pages: number) {
+    if (!paginasInput) return;
+    paginasInput.value = String(pages);
+    paginasInput.readOnly = false;
+    lastAutoPages = pages;
+    renderPrecio();
+  }
+
+  function unlockPaginasManual(message: string) {
+    if (paginasInput) {
+      paginasInput.readOnly = false;
+      if (!paginasInput.value || Number(paginasInput.value) < 1) {
+        paginasInput.value = '1';
+      }
+    }
+    lastAutoPages = null;
+    setPaginasStatus(message, 'warn');
+    renderPrecio();
+  }
+
+  function resetPaginasUi() {
+    pageDetectToken += 1;
+    lastAutoPages = null;
+    if (paginasInput) {
+      paginasInput.readOnly = false;
+      paginasInput.value = '1';
+    }
+    setPaginasStatus('Se detectan al subir un PDF', 'muted');
+  }
+
+  async function detectPagesFromFile(file: File | undefined) {
+    const token = ++pageDetectToken;
+    if (!file) {
+      resetPaginasUi();
+      renderPrecio();
+      return;
+    }
+
+    if (isImageFile(file)) {
+      setPaginasValue(1);
+      setPaginasStatus('Imagen: 1 página (puedes corregirlo si hace falta)', 'ok');
+      return;
+    }
+
+    const looksPdf =
+      file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+    if (!looksPdf) {
+      unlockPaginasManual('Indica las páginas a mano.');
+      return;
+    }
+
+    setPaginasStatus('Detectando páginas…', 'muted');
+    if (paginasInput) paginasInput.readOnly = true;
+
+    const result = await countPdfPages(file);
+    if (token !== pageDetectToken) return;
+
+    if (result.ok) {
+      setPaginasValue(result.pages);
+      const label =
+        result.pages === 1
+          ? '1 página detectada'
+          : `${result.pages} páginas detectadas`;
+      setPaginasStatus(`${label} · puedes corregirlo si hace falta`, 'ok');
+      return;
+    }
+
+    unlockPaginasManual(result.message);
   }
 
   function toggleMedida() {
@@ -286,14 +377,25 @@ const waPedido = whatsappLink(
     input.addEventListener('change', renderPrecio);
   });
   form?.querySelectorAll('input[name="paginas"], input[name="copias"], input[name="medida"]').forEach((input) => {
-    input.addEventListener('input', renderPrecio);
+    input.addEventListener('input', () => {
+      if (input === paginasInput && lastAutoPages != null) {
+        const current = Number(paginasInput?.value);
+        if (current !== lastAutoPages) {
+          setPaginasStatus('Páginas corregidas a mano', 'muted');
+          lastAutoPages = null;
+        }
+      }
+      renderPrecio();
+    });
     input.addEventListener('change', renderPrecio);
   });
   toggleMedida();
   renderPrecio();
 
   fileInput?.addEventListener('change', () => {
-    setFileName(fileInput.files?.[0]);
+    const file = fileInput.files?.[0];
+    setFileName(file);
+    void detectPagesFromFile(file);
   });
 
   // Drag & drop
@@ -317,6 +419,7 @@ const waPedido = whatsappLink(
       transfer.items.add(file);
       fileInput.files = transfer.files;
       setFileName(file);
+      void detectPagesFromFile(file);
     }
   });
 
@@ -452,6 +555,7 @@ const waPedido = whatsappLink(
 
       form.reset();
       setFileName(undefined);
+      resetPaginasUi();
       toggleMedida();
       renderPrecio();
       if (okText) {
