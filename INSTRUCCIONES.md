@@ -21,8 +21,8 @@ Clonado y adaptado desde `a0-impresiones`. Marca, dirección, teléfono, horario
 
 ## Demo / Resend
 
-Formularios van al buzón `PEDIDOS_EMAIL` (hoy `bellamorenoeugenio820@gmail.com`).
+Formularios van al buzón `PEDIDOS_EMAIL` (hoy `pizzeriaformula1@outlook.es`).
 
-Con `RESEND_FROM=…<onboarding@resend.dev>` Resend solo entrega al email de prueba de la
-cuenta Resend (`pizzeriaformula1@outlook.es`), no al Gmail. Los envíos a Gmail fallan
-hasta verificar un dominio en https://resend.com/domains y cambiar `RESEND_FROM` a ese dominio.
+Con `RESEND_FROM=…<onboarding@resend.dev>` Resend solo entrega a ese email de prueba.
+Para `bellamorenoeugenio820@gmail.com`: verifica dominio en https://resend.com/domains,
+cambia `RESEND_FROM` a ese dominio y pon `PEDIDOS_EMAIL` al Gmail.
