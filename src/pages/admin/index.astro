@@ -1,0 +1,527 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import { adminUsername, isAdminConfigured, isAuthenticated } from '../../lib/admin-auth';
+import { site } from '../../lib/site';
+
+const configured = isAdminConfigured();
+const authenticated = configured ? await isAuthenticated(Astro.request) : false;
+const hintUser = adminUsername();
+
+// Middleware already redirects unauthenticated /admin → /admin/login.
+// Keep inline login as fallback if middleware is skipped.
+---
+
+<Layout
+  title={`Admin catálogo | ${site.name}`}
+  description="Gestión de productos y stock de venta (solo propietario)."
+>
+  <main class="admin-shell min-h-screen bg-[#f0f3f7] text-ink">
+    <header class="border-b-4 border-brand bg-brand text-white">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
+        <div>
+          <p class="text-[11px] font-black uppercase tracking-[0.16em] text-accent">Privado</p>
+          <h1 class="font-display text-2xl leading-none sm:text-3xl">Admin · venta</h1>
+        </div>
+        <div class="flex items-center gap-2 text-sm">
+          <a href="/venta" class="rounded-sm border-2 border-white/40 px-3 py-1.5 font-semibold hover:bg-white/10">
+            Ver /venta
+          </a>
+          {
+            authenticated && (
+              <button
+                type="button"
+                id="admin-logout"
+                class="rounded-sm border-2 border-accent bg-accent px-3 py-1.5 font-black text-brand hover:brightness-95"
+              >
+                Salir
+              </button>
+            )
+          }
+        </div>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6" id="admin-root" data-auth={authenticated ? '1' : '0'} data-configured={configured ? '1' : '0'}>
+      {
+        !configured && (
+          <section class="rounded-sm border-2 border-coral bg-white p-6 shadow-[3px_3px_0_rgba(0,45,98,0.12)]">
+            <h2 class="font-display text-xl text-brand">Falta configurar el acceso</h2>
+            <p class="mt-2 text-sm text-muted leading-relaxed">
+              En Vercel → Project → Settings → Environment Variables, añade
+              <code class="mx-1 rounded bg-paper-deep px-1.5 py-0.5 text-xs font-bold text-brand">ADMIN_PASSWORD</code>
+              y opcionalmente
+              <code class="mx-1 rounded bg-paper-deep px-1.5 py-0.5 text-xs font-bold text-brand">ADMIN_USER</code>
+              (por defecto <code class="text-xs">admin</code>). Opcional:
+              <code class="mx-1 rounded bg-paper-deep px-1.5 py-0.5 text-xs font-bold text-brand">ADMIN_SESSION_SECRET</code>
+              para firmar la cookie. Redeploy y vuelve aquí. Sin password el panel permanece cerrado.
+            </p>
+          </section>
+        )
+      }
+
+      {
+        configured && !authenticated && (
+          <section class="mx-auto max-w-md rounded-sm border-2 border-brand bg-white p-6 shadow-[4px_4px_0_rgba(0,45,98,0.15)]">
+            <h2 class="font-display text-xl text-brand">Entrar</h2>
+            <p class="mt-1 text-sm text-muted">Solo el propietario del local. Cookie HttpOnly.</p>
+            <form id="admin-login" class="mt-5 space-y-3" autocomplete="on">
+              <label class="block text-xs font-black uppercase tracking-wide text-brand">
+                Usuario
+                <input
+                  class="field-stamp mt-1.5 normal-case tracking-normal font-semibold"
+                  type="text"
+                  name="username"
+                  value={hintUser}
+                  required
+                  autocomplete="username"
+                />
+              </label>
+              <label class="block text-xs font-black uppercase tracking-wide text-brand">
+                Contraseña
+                <input
+                  class="field-stamp mt-1.5 normal-case tracking-normal font-semibold"
+                  type="password"
+                  name="password"
+                  required
+                  minlength="8"
+                  autocomplete="current-password"
+                />
+              </label>
+              <button type="submit" class="btn-navy w-full min-h-11 text-sm">Entrar</button>
+              <p id="login-error" class="hidden text-sm font-semibold text-coral" role="alert"></p>
+            </form>
+          </section>
+        )
+      }
+
+      {
+        configured && authenticated && (
+          <div id="admin-app" class="space-y-6">
+            <section class="flex flex-wrap items-end justify-between gap-3 rounded-sm border-2 border-brand bg-white p-4 shadow-[3px_3px_0_rgba(0,45,98,0.1)]">
+              <div>
+                <h2 class="font-display text-xl text-brand">Productos del mostrador</h2>
+                <p class="mt-1 text-sm text-muted" id="admin-meta">Cargando…</p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" id="btn-seed" class="rounded-sm border-2 border-brand bg-white px-3 py-2 text-xs font-bold text-brand hover:bg-brand hover:text-accent">
+                  Importar catálogo base
+                </button>
+                <button type="button" id="btn-new" class="btn-accent px-3 py-2 text-xs">
+                  + Nuevo producto
+                </button>
+              </div>
+            </section>
+
+            <section class="rounded-sm border-2 border-brand bg-white p-4 shadow-[3px_3px_0_rgba(0,45,98,0.1)]">
+              <label class="block text-xs font-black uppercase tracking-wide text-brand mb-2" for="admin-filter">
+                Buscar / filtrar
+              </label>
+              <div class="flex flex-wrap gap-2">
+                <input id="admin-filter" type="search" placeholder="Nombre, categoría…" class="field-stamp flex-1 min-w-[12rem] !py-2 text-sm" />
+                <select id="admin-filter-activo" class="field-stamp !py-2 text-sm w-auto">
+                  <option value="all">Todos</option>
+                  <option value="1" selected>Activos</option>
+                  <option value="0">Desactivados</option>
+                </select>
+              </div>
+            </section>
+
+            <section id="admin-form-wrap" class="hidden rounded-sm border-2 border-accent bg-accent-soft p-4 shadow-[3px_3px_0_rgba(0,45,98,0.12)]">
+              <h3 class="font-display text-lg text-brand" id="form-title">Nuevo producto</h3>
+              <form id="admin-product-form" class="mt-4 grid gap-3 sm:grid-cols-2">
+                <input type="hidden" name="id" id="f-id" />
+                <label class="block text-xs font-black uppercase tracking-wide text-brand sm:col-span-2">
+                  Nombre
+                  <input class="field-stamp mt-1 normal-case tracking-normal font-semibold" name="nombre" id="f-nombre" required maxlength="120" />
+                </label>
+                <label class="block text-xs font-black uppercase tracking-wide text-brand sm:col-span-2">
+                  Descripción
+                  <textarea class="field-stamp mt-1 min-h-20 normal-case tracking-normal font-semibold" name="descripcion" id="f-descripcion" maxlength="500"></textarea>
+                </label>
+                <label class="block text-xs font-black uppercase tracking-wide text-brand">
+                  Categoría
+                  <input class="field-stamp mt-1 normal-case tracking-normal font-semibold" name="categoria" id="f-categoria" list="cat-list" required maxlength="80" />
+                  <datalist id="cat-list"></datalist>
+                </label>
+                <label class="block text-xs font-black uppercase tracking-wide text-brand">
+                  Unidad
+                  <input class="field-stamp mt-1 normal-case tracking-normal font-semibold" name="unidad" id="f-unidad" value="ud" maxlength="20" />
+                </label>
+                <label class="block text-xs font-black uppercase tracking-wide text-brand">
+                  Precio (€)
+                  <input class="field-stamp mt-1 normal-case tracking-normal font-semibold" name="precio" id="f-precio" type="number" min="0" step="0.01" />
+                </label>
+                <label class="block text-xs font-black uppercase tracking-wide text-brand">
+                  Modo precio
+                  <select class="field-stamp mt-1 normal-case tracking-normal font-semibold" name="modo" id="f-modo">
+                    <option value="fijo">Precio fijo</option>
+                    <option value="consultar">Consultar (sin precio)</option>
+                  </select>
+                </label>
+                <label class="block text-xs font-black uppercase tracking-wide text-brand">
+                  Stock
+                  <input class="field-stamp mt-1 normal-case tracking-normal font-semibold" name="stock" id="f-stock" type="number" min="0" step="1" placeholder="Vacío = consultar" />
+                  <span class="mt-1 block text-[11px] font-medium normal-case tracking-normal text-muted">Deja vacío para «Sin stock / consultar».</span>
+                </label>
+                <label class="flex items-center gap-2 text-sm font-bold text-brand self-end pb-2">
+                  <input type="checkbox" name="activo" id="f-activo" checked class="h-4 w-4 accent-[#002d62]" />
+                  Activo (visible en /venta)
+                </label>
+                <label class="block text-xs font-black uppercase tracking-wide text-brand sm:col-span-2">
+                  URL de imagen (opcional)
+                  <input class="field-stamp mt-1 normal-case tracking-normal font-semibold" name="image" id="f-image" type="url" placeholder="https://… o /venta/…" />
+                </label>
+                <div class="sm:col-span-2 flex flex-wrap items-center gap-3">
+                  <label class="text-xs font-black uppercase tracking-wide text-brand">
+                    O subir imagen
+                    <input type="file" id="f-file" accept="image/jpeg,image/png,image/webp,image/gif" class="mt-1 block text-sm font-semibold normal-case tracking-normal" />
+                  </label>
+                  <button type="button" id="btn-upload" class="rounded-sm border-2 border-brand bg-white px-3 py-2 text-xs font-bold text-brand hover:bg-brand hover:text-accent">
+                    Subir a Blob
+                  </button>
+                  <img id="f-preview" src="" alt="" class="hidden h-14 w-20 rounded-sm border-2 border-brand object-cover" />
+                </div>
+                <div class="sm:col-span-2 flex flex-wrap gap-2 pt-2">
+                  <button type="submit" class="btn-navy px-4 py-2.5 text-xs">Guardar</button>
+                  <button type="button" id="btn-cancel" class="rounded-sm border-2 border-brand px-4 py-2.5 text-xs font-bold text-brand hover:bg-white">
+                    Cancelar
+                  </button>
+                  <p id="form-error" class="hidden w-full text-sm font-semibold text-coral" role="alert"></p>
+                  <p id="form-ok" class="hidden w-full text-sm font-semibold text-brand" role="status"></p>
+                </div>
+              </form>
+            </section>
+
+            <section class="overflow-x-auto rounded-sm border-2 border-brand bg-white shadow-[3px_3px_0_rgba(0,45,98,0.1)]">
+              <table class="min-w-full text-left text-sm">
+                <thead class="bg-brand text-accent text-xs uppercase tracking-wide">
+                  <tr>
+                    <th class="px-3 py-2.5 font-black">Producto</th>
+                    <th class="px-3 py-2.5 font-black">Precio</th>
+                    <th class="px-3 py-2.5 font-black">Stock</th>
+                    <th class="px-3 py-2.5 font-black">Estado</th>
+                    <th class="px-3 py-2.5 font-black">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-tbody" class="divide-y divide-brand/10"></tbody>
+              </table>
+              <p id="admin-empty" class="hidden px-4 py-8 text-center text-sm text-muted font-medium">No hay productos con ese filtro.</p>
+            </section>
+          </div>
+        )
+      }
+    </div>
+  </main>
+</Layout>
+
+<script>
+  type Product = {
+    id: string;
+    nombre: string;
+    descripcion: string;
+    categoria: string;
+    precio: number | null;
+    unidad: string;
+    modo: 'fijo' | 'consultar';
+    image?: string;
+    stock: number | null;
+    activo: boolean;
+  };
+
+  const root = document.getElementById('admin-root');
+  if (!root) throw new Error('admin-root');
+
+  const euro = (n: number) =>
+    new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(n);
+
+  async function api(path: string, init?: RequestInit) {
+    const res = await fetch(path, {
+      ...init,
+      headers: {
+        ...(init?.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+        ...(init?.headers || {}),
+      },
+      credentials: 'same-origin',
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error((data as { error?: string }).error || `Error ${res.status}`);
+    return data as Record<string, unknown>;
+  }
+
+  const loginForm = document.getElementById('admin-login') as HTMLFormElement | null;
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const err = document.getElementById('login-error');
+      if (err) {
+        err.classList.add('hidden');
+        err.textContent = '';
+      }
+      const fd = new FormData(loginForm);
+      try {
+        await api('/api/admin/login', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: String(fd.get('username') || ''),
+            password: String(fd.get('password') || ''),
+          }),
+        });
+        location.reload();
+      } catch (ex) {
+        if (err) {
+          err.textContent = ex instanceof Error ? ex.message : 'No se pudo entrar.';
+          err.classList.remove('hidden');
+        }
+      }
+    });
+  }
+
+  document.getElementById('admin-logout')?.addEventListener('click', async () => {
+    await api('/api/admin/logout', { method: 'POST', body: '{}' });
+    location.reload();
+  });
+
+  if (root.dataset.auth !== '1') {
+    // login-only view
+  } else {
+    let products: Product[] = [];
+    let categorias: string[] = [];
+
+    const tbody = document.getElementById('admin-tbody')!;
+    const emptyEl = document.getElementById('admin-empty')!;
+    const meta = document.getElementById('admin-meta')!;
+    const formWrap = document.getElementById('admin-form-wrap')!;
+    const form = document.getElementById('admin-product-form') as HTMLFormElement;
+    const catList = document.getElementById('cat-list') as HTMLDataListElement;
+    const formError = document.getElementById('form-error')!;
+    const formOk = document.getElementById('form-ok')!;
+    const preview = document.getElementById('f-preview') as HTMLImageElement;
+
+    function setFormMessage(ok: string | null, err: string | null) {
+      formOk.classList.toggle('hidden', !ok);
+      formError.classList.toggle('hidden', !err);
+      formOk.textContent = ok || '';
+      formError.textContent = err || '';
+    }
+
+    function fillCats() {
+      catList.innerHTML = categorias.map((c) => `<option value="${c.replace(/"/g, '&quot;')}"></option>`).join('');
+    }
+
+    function filtered(): Product[] {
+      const q = ((document.getElementById('admin-filter') as HTMLInputElement)?.value || '')
+        .trim()
+        .toLowerCase();
+      const act = (document.getElementById('admin-filter-activo') as HTMLSelectElement)?.value || 'all';
+      return products.filter((p) => {
+        if (act === '1' && !p.activo) return false;
+        if (act === '0' && p.activo) return false;
+        if (!q) return true;
+        const hay = `${p.nombre} ${p.descripcion} ${p.categoria} ${p.id}`.toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    function renderTable() {
+      const rows = filtered();
+      emptyEl.classList.toggle('hidden', rows.length > 0);
+      tbody.innerHTML = rows
+        .map((p) => {
+          const price =
+            p.modo === 'consultar' || p.precio == null
+              ? '<span class="text-coral font-bold">Consultar</span>'
+              : `${euro(p.precio)} <span class="text-muted">/${p.unidad}</span>`;
+          const stock = p.stock == null ? 'Consultar' : String(p.stock);
+          const estado = p.activo
+            ? '<span class="rounded-sm bg-brand px-1.5 py-0.5 text-[10px] font-black uppercase text-accent">Activo</span>'
+            : '<span class="rounded-sm bg-paper-deep px-1.5 py-0.5 text-[10px] font-black uppercase text-muted">Off</span>';
+          return `<tr class="align-top" data-id="${p.id}">
+            <td class="px-3 py-3">
+              <div class="flex gap-2.5">
+                <img src="${p.image || '/venta/_placeholder.svg'}" alt="" class="h-12 w-16 shrink-0 rounded-sm border border-brand/30 object-cover" loading="lazy" />
+                <div class="min-w-0">
+                  <p class="font-extrabold text-ink leading-snug">${escapeHtml(p.nombre)}</p>
+                  <p class="text-xs text-muted mt-0.5">${escapeHtml(p.categoria)}</p>
+                </div>
+              </div>
+            </td>
+            <td class="px-3 py-3 font-semibold whitespace-nowrap">${price}</td>
+            <td class="px-3 py-3 font-semibold tabular-nums">${stock}</td>
+            <td class="px-3 py-3">${estado}</td>
+            <td class="px-3 py-3">
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" data-edit="${p.id}" class="rounded-sm border-2 border-brand px-2 py-1 text-[11px] font-bold hover:bg-brand hover:text-accent">Editar</button>
+                <button type="button" data-toggle="${p.id}" class="rounded-sm border-2 border-brand px-2 py-1 text-[11px] font-bold hover:bg-brand hover:text-accent">${p.activo ? 'Desactivar' : 'Activar'}</button>
+              </div>
+            </td>
+          </tr>`;
+        })
+        .join('');
+    }
+
+    function escapeHtml(s: string) {
+      return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function load() {
+      meta.textContent = 'Cargando…';
+      const data = await api('/api/admin/products');
+      products = (data.products as Product[]) || [];
+      categorias = (data.categorias as string[]) || [];
+      fillCats();
+      const seeded = data.seeded ? ' · sin guardar aún en Blob (semilla en memoria)' : '';
+      meta.textContent = `${products.length} productos · fuente: ${data.source}${seeded}${data.updatedAt ? ` · ${data.updatedAt}` : ''}`;
+      renderTable();
+    }
+
+    function openForm(product?: Product) {
+      formWrap.classList.remove('hidden');
+      setFormMessage(null, null);
+      (document.getElementById('form-title')!).textContent = product ? 'Editar producto' : 'Nuevo producto';
+      (document.getElementById('f-id') as HTMLInputElement).value = product?.id || '';
+      (document.getElementById('f-nombre') as HTMLInputElement).value = product?.nombre || '';
+      (document.getElementById('f-descripcion') as HTMLTextAreaElement).value = product?.descripcion || '';
+      (document.getElementById('f-categoria') as HTMLInputElement).value = product?.categoria || '';
+      (document.getElementById('f-unidad') as HTMLInputElement).value = product?.unidad || 'ud';
+      (document.getElementById('f-precio') as HTMLInputElement).value =
+        product?.precio != null ? String(product.precio) : '';
+      (document.getElementById('f-modo') as HTMLSelectElement).value = product?.modo || 'fijo';
+      (document.getElementById('f-stock') as HTMLInputElement).value =
+        product?.stock != null ? String(product.stock) : '';
+      (document.getElementById('f-activo') as HTMLInputElement).checked = product ? product.activo : true;
+      (document.getElementById('f-image') as HTMLInputElement).value = product?.image || '';
+      (document.getElementById('f-file') as HTMLInputElement).value = '';
+      if (product?.image) {
+        preview.src = product.image;
+        preview.classList.remove('hidden');
+      } else {
+        preview.removeAttribute('src');
+        preview.classList.add('hidden');
+      }
+      formWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.getElementById('btn-new')?.addEventListener('click', () => openForm());
+    document.getElementById('btn-cancel')?.addEventListener('click', () => {
+      formWrap.classList.add('hidden');
+      form.reset();
+    });
+
+    document.getElementById('admin-filter')?.addEventListener('input', renderTable);
+    document.getElementById('admin-filter-activo')?.addEventListener('change', renderTable);
+
+    tbody.addEventListener('click', async (e) => {
+      const t = e.target as HTMLElement;
+      const editId = t.closest('[data-edit]')?.getAttribute('data-edit');
+      const toggleId = t.closest('[data-toggle]')?.getAttribute('data-toggle');
+      if (editId) {
+        const p = products.find((x) => x.id === editId);
+        if (p) openForm(p);
+        return;
+      }
+      if (toggleId) {
+        const p = products.find((x) => x.id === toggleId);
+        if (!p) return;
+        try {
+          await api(`/api/admin/products/${encodeURIComponent(toggleId)}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+              ...p,
+              activo: !p.activo,
+              stock: p.stock,
+            }),
+          });
+          await load();
+        } catch (ex) {
+          alert(ex instanceof Error ? ex.message : 'Error');
+        }
+      }
+    });
+
+    document.getElementById('btn-upload')?.addEventListener('click', async () => {
+      const fileInput = document.getElementById('f-file') as HTMLInputElement;
+      const file = fileInput.files?.[0];
+      if (!file) {
+        setFormMessage(null, 'Elige un archivo primero.');
+        return;
+      }
+      setFormMessage(null, null);
+      const fd = new FormData();
+      fd.append('file', file);
+      try {
+        const res = await fetch('/api/admin/upload-image', { method: 'POST', body: fd, credentials: 'same-origin' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error al subir');
+        const url = data.url as string;
+        (document.getElementById('f-image') as HTMLInputElement).value = url;
+        preview.src = url;
+        preview.classList.remove('hidden');
+        setFormMessage('Imagen subida. Guarda el producto para aplicarla.', null);
+      } catch (ex) {
+        setFormMessage(null, ex instanceof Error ? ex.message : 'Error al subir');
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setFormMessage(null, null);
+      const id = (document.getElementById('f-id') as HTMLInputElement).value.trim();
+      const stockRaw = (document.getElementById('f-stock') as HTMLInputElement).value.trim();
+      const precioRaw = (document.getElementById('f-precio') as HTMLInputElement).value.trim();
+      const modo = (document.getElementById('f-modo') as HTMLSelectElement).value as 'fijo' | 'consultar';
+      const payload = {
+        nombre: (document.getElementById('f-nombre') as HTMLInputElement).value,
+        descripcion: (document.getElementById('f-descripcion') as HTMLTextAreaElement).value,
+        categoria: (document.getElementById('f-categoria') as HTMLInputElement).value,
+        unidad: (document.getElementById('f-unidad') as HTMLInputElement).value,
+        modo,
+        precio: modo === 'consultar' ? null : precioRaw === '' ? null : Number(precioRaw),
+        stock: stockRaw === '' ? null : Number(stockRaw),
+        activo: (document.getElementById('f-activo') as HTMLInputElement).checked,
+        image: (document.getElementById('f-image') as HTMLInputElement).value.trim(),
+      };
+      try {
+        if (id) {
+          await api(`/api/admin/products/${encodeURIComponent(id)}`, {
+            method: 'PUT',
+            body: JSON.stringify({ ...payload, id }),
+          });
+        } else {
+          await api('/api/admin/products', { method: 'POST', body: JSON.stringify(payload) });
+        }
+        setFormMessage('Guardado.', null);
+        formWrap.classList.add('hidden');
+        await load();
+      } catch (ex) {
+        setFormMessage(null, ex instanceof Error ? ex.message : 'No se pudo guardar');
+      }
+    });
+
+    document.getElementById('btn-seed')?.addEventListener('click', async () => {
+      if (
+        !confirm(
+          'Esto escribe el catálogo base (código) en Blob y puede sobrescribir cambios no respaldados. ¿Continuar?',
+        )
+      ) {
+        return;
+      }
+      try {
+        const data = await api('/api/admin/seed', { method: 'POST', body: '{}' });
+        alert(`Importados ${data.count} productos.`);
+        await load();
+      } catch (ex) {
+        alert(ex instanceof Error ? ex.message : 'Error');
+      }
+    });
+
+    load().catch((ex) => {
+      meta.textContent = ex instanceof Error ? ex.message : 'Error al cargar';
+    });
+  }
+</script>

@@ -1,8 +1,14 @@
 ---
-import { formatEuro, ventaPorCategoria, type VentaItem } from '../data/venta';
+import { formatEuro, type VentaItem } from '../data/venta';
 import { site } from '../lib/site';
+import type { CatalogProduct } from '../lib/venta-catalog';
 
-const grupos = ventaPorCategoria();
+interface Props {
+  grupos: { categoria: string; items: CatalogProduct[] }[];
+}
+
+const { grupos } = Astro.props;
+
 const catalogoJson = JSON.stringify(
   grupos.flatMap((g) => g.items).map((item: VentaItem) => ({
     id: item.id,
@@ -15,6 +21,13 @@ const catalogoJson = JSON.stringify(
 );
 
 const inputClass = 'field-stamp !py-2 !px-2.5 min-h-11 text-sm';
+
+function stockLabel(item: CatalogProduct): string | null {
+  if (item.stock === undefined) return null;
+  if (item.stock === null) return 'Consultar stock';
+  if (item.stock === 0) return 'Sin stock';
+  return `Stock: ${item.stock}`;
+}
 ---
 
 <div class="grid lg:grid-cols-[1fr_19rem] gap-6 lg:gap-7 items-start" id="venta-app" data-catalogo={catalogoJson}>
@@ -57,6 +70,13 @@ const inputClass = 'field-stamp !py-2 !px-2.5 min-h-11 text-sm';
                           </>
                         )}
                       </p>
+                      {
+                        stockLabel(item) && (
+                          <p class="mt-1 text-[11px] sm:text-xs font-bold text-muted uppercase tracking-wide">
+                            {stockLabel(item)}
+                          </p>
+                        )
+                      }
                     </div>
                     <div class="flex items-stretch gap-1.5 sm:gap-2">
                       <label class="sr-only" for={`qty-${item.id}`}>

@@ -13,7 +13,7 @@ Página pública del local: servicios de fotocopias e impresión, catálogo de p
 - [Astro](https://astro.build) 7
 - [Tailwind CSS](https://tailwindcss.com) 4
 - Despliegue en [Vercel](https://vercel.com) (`@astrojs/vercel`)
-- [Vercel Blob](https://vercel.com/docs/storage/vercel-blob) — subida de PDF en `/pedido`
+- [Vercel Blob](https://vercel.com/docs/storage/vercel-blob) — subida de PDF en `/pedido` y catálogo JSON del admin
 - [Web3Forms](https://web3forms.com) — avisos de pedido/presupuesto al Gmail de la tienda
 - Resend — copia de seguridad opcional si Web3Forms no está configurado
 
@@ -24,7 +24,8 @@ Página pública del local: servicios de fotocopias e impresión, catálogo de p
 | `/` | Home con marca, servicios y presupuestos rápidos |
 | `/servicios` | Catálogo de servicios |
 | `/pedido` | Subida de PDF + opciones de impresión → aviso a la tienda |
-| `/venta` | Papelería: búsqueda, cards densas en móvil, carrito con subtotal en cabecera |
+| `/venta` | Papelería: catálogo en vivo (Blob) con fallback estático, búsqueda, carrito |
+| `/admin` | Gestión de productos y stock (login + cookie HttpOnly) |
 | `/precios` | Precios orientativos |
 | `/contacto` | Teléfono, WhatsApp, horario y mapa |
 | `/imagenes` | Galería del local |
@@ -49,8 +50,26 @@ Variables (ver `.env.example`; **no** commits de `.env` / secretos):
 | `PEDIDOS_EMAIL` | Buzón Gmail de pedidos |
 | `SITE_URL` | URL pública (prod: `https://copisteria-central.vercel.app`) |
 | `WEB3FORMS_ACCESS_KEY` | Access key de Web3Forms (creada con el Gmail de pedidos) |
-| `BLOB_READ_WRITE_TOKEN` | Token de Vercel Blob para subir PDFs |
+| `BLOB_READ_WRITE_TOKEN` | Token de Vercel Blob (PDFs + JSON del catálogo `/admin`) |
+| `ADMIN_USER` | Usuario del panel `/admin` (por defecto `admin`) |
+| `ADMIN_PASSWORD` | Contraseña del panel (obligatoria; sin ella el admin permanece cerrado) |
+| `ADMIN_SESSION_SECRET` | Opcional — secreto HMAC de la cookie (también acepta `ADMIN_SECRET`) |
 | `RESEND_API_KEY` / `RESEND_FROM` | Opcional — respaldo Resend |
+
+### Admin del catálogo (`/admin`)
+
+1. En Vercel → Project → **Settings → Environment Variables**, crea:
+   - `ADMIN_PASSWORD` (Production + Preview) — contraseña fuerte
+   - Opcional: `ADMIN_USER` (default `admin`)
+   - Opcional: `ADMIN_SESSION_SECRET` — cadena larga aleatoria para firmar la cookie
+2. Redeploy.
+3. Entra en `https://copisteria-central.vercel.app/admin` (redirige a `/admin/login` si no hay sesión).
+4. Tras entrar:
+   - **Importar catálogo base** (una vez) para copiar el listado estático a Blob (`catalog/venta.json`)
+   - Añadir / editar / desactivar productos (nombre, descripción, categoría, precio, unidad, stock o «consultar», imagen URL o subida)
+5. `/venta` lee el catálogo vivo; si Blob está vacío o falla, usa el catálogo de `src/data/venta.ts`.
+
+Cookie de sesión: `cc_admin_session` (**HttpOnly**, `SameSite=Lax`, `Secure` en Vercel). Middleware cierra `/admin/*` y `/api/admin/*` sin sesión válida (excepto login/logout).
 
 ```bash
 pnpm build

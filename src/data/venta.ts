@@ -12,8 +12,12 @@ export interface VentaItem {
   precio: number | null;
   unidad: string;
   modo: VentaModo;
-  /** Ruta local bajo /venta/ (generada por scripts/fetch-venta-images.mjs). */
+  /** Ruta local bajo /venta/ o URL (admin / Blob). */
   image?: string;
+  /** Unidades en stock. null = sin stock / consultar. Solo en catálogo en vivo. */
+  stock?: number | null;
+  /** false = oculto en /venta. Solo en catálogo en vivo. */
+  activo?: boolean;
 }
 
 export const ventaCategorias = [

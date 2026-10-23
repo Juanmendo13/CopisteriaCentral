@@ -1,0 +1,79 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import {
+  ADMIN_COOKIE,
+  adminPasswordConfigured,
+  adminUsername,
+  parseSessionToken,
+} from '../../lib/admin-auth';
+
+const session = parseSessionToken(Astro.cookies.get(ADMIN_COOKIE)?.value);
+if (session) {
+  return Astro.redirect('/admin');
+}
+
+const configured = adminPasswordConfigured();
+const hintUser = adminUsername();
+const error = Astro.url.searchParams.get('error');
+---
+
+<Layout title="Admin · acceso" description="Acceso restringido al panel de Copistería Central.">
+  <main class="min-h-[70vh] flex items-center justify-center px-4 py-12">
+    <section class="w-full max-w-md border-[3px] border-brand bg-white/90 shadow-[4px_4px_0_rgba(0,45,98,0.25)] p-6 sm:p-8">
+      <p class="text-xs font-black uppercase tracking-[0.16em] text-brand mb-2">Copistería Central</p>
+      <h1 class="font-display text-3xl text-brand leading-none mb-2">Admin</h1>
+      <p class="text-sm text-muted mb-6">Solo personal del local. Sesión con cookie HttpOnly.</p>
+
+      {!configured ? (
+        <div class="border-2 border-coral bg-coral/10 p-3 text-sm text-ink mb-4" role="alert">
+          Falta <code class="font-mono text-xs">ADMIN_PASSWORD</code> en el entorno. El panel permanece cerrado.
+        </div>
+      ) : null}
+
+      {error ? (
+        <div class="border-2 border-coral bg-coral/10 p-3 text-sm text-ink mb-4" role="alert">
+          {error === 'creds' ? 'Usuario o contraseña incorrectos.' : 'No se pudo iniciar sesión.'}
+        </div>
+      ) : null}
+
+      <form method="POST" action="/api/admin/login" class="space-y-4" autocomplete="on">
+        <div>
+          <label for="username" class="block text-xs font-black uppercase tracking-wider text-brand mb-1">
+            Usuario
+          </label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            required
+            value={hintUser}
+            autocomplete="username"
+            class="w-full border-[2.5px] border-brand bg-paper px-3 py-2.5 text-ink font-semibold focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+        </div>
+        <div>
+          <label for="password" class="block text-xs font-black uppercase tracking-wider text-brand mb-1">
+            Contraseña
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            autocomplete="current-password"
+            class="w-full border-[2.5px] border-brand bg-paper px-3 py-2.5 text-ink font-semibold focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={!configured}
+          class="w-full border-[3px] border-brand bg-accent text-brand font-black uppercase tracking-wide py-3 hover:bg-accent-soft disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Entrar
+        </button>
+      </form>
+    </section>
+  </main>
+</Layout>

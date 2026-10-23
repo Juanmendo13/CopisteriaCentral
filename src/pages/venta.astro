@@ -1,11 +1,16 @@
 ---
+export const prerender = false;
+
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import VentaCarrito from '../components/VentaCarrito.astro';
 import Doodle from '../components/Doodle.astro';
-import { venta, ventaCategorias } from '../data/venta';
+import { groupByCategoria, loadPublicCatalog } from '../lib/venta-catalog';
 import { site } from '../lib/site';
+
+const { products, categorias, total } = await loadPublicCatalog();
+const grupos = groupByCategoria(products, categorias);
 ---
 
 <Layout
@@ -28,7 +33,7 @@ import { site } from '../lib/site';
           Papelería para el día a día
         </h1>
         <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
-          Bolis, libretas, carpetas y lo que siempre se te olvida ({venta.length} artículos, precios orientativos).
+          Bolis, libretas, carpetas y lo que siempre se te olvida ({total} artículos, precios orientativos).
           Haz tu lista y te lo reservamos para cuando pases.
         </p>
       </div>
@@ -67,7 +72,7 @@ import { site } from '../lib/site';
         </div>
         <nav class="flex flex-wrap gap-2" aria-label="Categorías" id="venta-cat-nav">
           {
-            ventaCategorias.map((cat) => (
+            categorias.map((cat) => (
               <a
                 href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}`}
                 data-venta-cat={cat.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}
@@ -83,7 +88,7 @@ import { site } from '../lib/site';
 
     <div class="relative paper-dots px-3 sm:px-8 py-8 sm:py-14">
       <div class="relative max-w-6xl mx-auto">
-        <VentaCarrito />
+        <VentaCarrito grupos={grupos} />
       </div>
     </div>
   </main>
