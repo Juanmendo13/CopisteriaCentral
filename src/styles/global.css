@@ -489,14 +489,56 @@ body:has(.site-header.has-banner) main > section.pt-28 {
   }
 }
 
-/* Sticky venta cart bar under nav (mobile/tablet only; hidden at lg) */
+/* Sticky venta cart companion under nav (mobile/tablet; tucked when Lista is on screen) */
 @media (max-width: 1023px) {
   body:has(.site-header.has-venta-cart-bar) main.pt-28 {
-    padding-top: 9.5rem;
+    padding-top: 9.75rem;
   }
 
   body:has(.site-header.has-banner.has-venta-cart-bar) main.pt-28 {
-    padding-top: 11.75rem;
+    padding-top: 12rem;
+  }
+
+  body:has(.site-header.has-venta-cart-bar.venta-cart-bar-tucked) main.pt-28 {
+    padding-top: 7rem;
+  }
+
+  body:has(.site-header.has-banner.has-venta-cart-bar.venta-cart-bar-tucked) main.pt-28 {
+    padding-top: 9.25rem;
+  }
+
+  .venta-cart-bar.venta-cart-bar--tucked {
+    max-height: 0 !important;
+    opacity: 0;
+    pointer-events: none;
+    border-bottom-width: 0;
+  }
+
+  /* Stick Lista summary under fixed header while scrolling the form */
+  .lista-compra-head {
+    top: 5.5rem;
+  }
+
+  body:has(.site-header.has-banner) .lista-compra-head {
+    top: 7.75rem;
+  }
+
+  body:has(.site-header.has-venta-cart-bar:not(.venta-cart-bar-tucked)) .lista-compra-head {
+    top: 8.25rem;
+  }
+
+  body:has(.site-header.has-banner.has-venta-cart-bar:not(.venta-cart-bar-tucked)) .lista-compra-head {
+    top: 10.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lista-compra {
+    top: 7.5rem;
+  }
+
+  body:has(.site-header.has-banner) .lista-compra {
+    top: 9.5rem;
   }
 }
 
