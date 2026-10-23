@@ -18,62 +18,79 @@ const inputClass = 'field-stamp';
 ---
 
 <div class="grid lg:grid-cols-[1fr_22rem] gap-8 items-start" id="venta-app" data-catalogo={catalogoJson}>
-  <div class="space-y-12">
+  <div class="space-y-12" id="venta-catalogo">
     {
-      grupos.map((grupo) => (
-        <section id={grupo.categoria.toLowerCase().replace(/[^a-z0-9]+/gi, '-')} class="scroll-mt-32">
-          <h2 class="font-display text-xl sm:text-2xl text-brand mb-5">{grupo.categoria}</h2>
-          <div class="grid sm:grid-cols-2 gap-4">
-            {grupo.items.map((item) => (
-              <article class="rounded-sm border-[2.5px] border-brand bg-white overflow-hidden flex flex-col shadow-[3px_3px_0_rgba(0,45,98,0.15)] hover:shadow-[5px_5px_0_rgba(0,45,98,0.2)] hover:-translate-y-0.5 transition">
-                <div class="aspect-[4/3] bg-paper-deep overflow-hidden border-b-2 border-brand">
-                  <img
-                    src={item.image}
-                    alt={item.nombre}
-                    loading="lazy"
-                    decoding="async"
-                    class="h-full w-full object-cover"
-                  />
-                </div>
-                <div class="p-4 flex flex-col gap-3 flex-1">
-                  <div class="flex-1">
-                    <h3 class="font-extrabold text-ink leading-snug">{item.nombre}</h3>
-                    <p class="mt-1 text-sm text-muted leading-relaxed">{item.descripcion}</p>
-                    <p class="mt-2 text-base font-black text-brand">
-                      {item.precio == null ? (
-                        <span class="text-sm font-bold text-coral">Consultar</span>
-                      ) : (
-                        <>
-                          {formatEuro(item.precio)}
-                          <span class="font-semibold text-muted text-sm"> / {item.unidad}</span>
-                        </>
-                      )}
-                    </p>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <label class="sr-only" for={`qty-${item.id}`}>
-                      Cantidad {item.nombre}
-                    </label>
-                    <input
-                      id={`qty-${item.id}`}
-                      type="number"
-                      min="1"
-                      max="5000"
-                      value="1"
-                      class="w-20 rounded-sm border-2 border-brand px-2 py-2 text-sm font-semibold"
-                      data-qty-for={item.id}
+      grupos.map((grupo) => {
+        const catId = grupo.categoria.toLowerCase().replace(/[^a-z0-9]+/gi, '-');
+        return (
+          <section id={catId} class="scroll-mt-32" data-venta-section={catId}>
+            <h2 class="font-display text-xl sm:text-2xl text-brand mb-5">{grupo.categoria}</h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              {grupo.items.map((item) => (
+                <article
+                  class="rounded-sm border-[2.5px] border-brand bg-white overflow-hidden flex flex-col shadow-[3px_3px_0_rgba(0,45,98,0.15)] hover:shadow-[5px_5px_0_rgba(0,45,98,0.2)] hover:-translate-y-0.5 transition"
+                  data-venta-product
+                  data-haystack={`${item.nombre} ${item.descripcion} ${item.categoria}`}
+                >
+                  <div class="aspect-[4/3] bg-paper-deep overflow-hidden border-b-2 border-brand">
+                    <img
+                      src={item.image}
+                      alt={item.nombre}
+                      loading="lazy"
+                      decoding="async"
+                      class="h-full w-full object-cover"
                     />
-                    <button type="button" class="btn-accent flex-1 px-3 py-2 text-sm" data-add={item.id}>
-                      Añadir
-                    </button>
                   </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))
+                  <div class="p-4 flex flex-col gap-3 flex-1">
+                    <div class="flex-1">
+                      <h3 class="font-extrabold text-ink leading-snug">{item.nombre}</h3>
+                      <p class="mt-1 text-sm text-muted leading-relaxed">{item.descripcion}</p>
+                      <p class="mt-2 text-base font-black text-brand">
+                        {item.precio == null ? (
+                          <span class="text-sm font-bold text-coral">Consultar</span>
+                        ) : (
+                          <>
+                            {formatEuro(item.precio)}
+                            <span class="font-semibold text-muted text-sm"> / {item.unidad}</span>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <label class="sr-only" for={`qty-${item.id}`}>
+                        Cantidad {item.nombre}
+                      </label>
+                      <input
+                        id={`qty-${item.id}`}
+                        type="number"
+                        min="1"
+                        max="5000"
+                        value="1"
+                        class="w-20 rounded-sm border-2 border-brand px-2 py-2 text-sm font-semibold"
+                        data-qty-for={item.id}
+                      />
+                      <button type="button" class="btn-accent flex-1 px-3 py-2 text-sm" data-add={item.id}>
+                        Añadir
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        );
+      })
     }
+
+    <p
+      id="venta-search-empty"
+      class="hidden rounded-sm border-[2.5px] border-dashed border-brand bg-white/80 px-5 py-8 text-center text-brand font-semibold leading-relaxed shadow-[3px_3px_0_rgba(0,45,98,0.12)]"
+      role="status"
+      aria-live="polite"
+    >
+      No hay nada con ese nombre en el mostrador.
+      <span class="block mt-1 text-sm font-medium text-muted">Prueba otra palabra o borra la búsqueda.</span>
+    </p>
   </div>
 
   <aside class="lg:sticky lg:top-28 rounded-sm border-[2.5px] border-brand bg-accent-soft p-5 shadow-[4px_4px_0_rgba(0,45,98,0.2)]">
@@ -328,4 +345,58 @@ const inputClass = 'field-stamp';
   });
 
   render();
+
+  /* —— Búsqueda en catálogo —— */
+  const searchInput = document.getElementById('venta-search') as HTMLInputElement | null;
+  const searchClear = document.getElementById('venta-search-clear') as HTMLButtonElement | null;
+  const searchEmpty = document.getElementById('venta-search-empty');
+  const products = Array.from(document.querySelectorAll<HTMLElement>('[data-venta-product]'));
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-venta-section]'));
+  const catLinks = Array.from(document.querySelectorAll<HTMLElement>('[data-venta-cat]'));
+
+  function fold(s: string) {
+    return s
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim();
+  }
+
+  function applySearch(raw: string) {
+    const q = fold(raw);
+    const tokens = q.split(/\s+/).filter(Boolean);
+    let visibleCount = 0;
+
+    for (const product of products) {
+      const hay = fold(product.dataset.haystack || '');
+      const match = tokens.length === 0 || tokens.every((t) => hay.includes(t));
+      product.classList.toggle('hidden', !match);
+      if (match) visibleCount += 1;
+    }
+
+    for (const section of sections) {
+      const anyVisible = section.querySelectorAll('[data-venta-product]:not(.hidden)').length > 0;
+      section.classList.toggle('hidden', !anyVisible);
+      const catId = section.dataset.ventaSection;
+      if (catId) {
+        for (const link of catLinks) {
+          if (link.dataset.ventaCat === catId) {
+            link.classList.toggle('hidden', !anyVisible);
+          }
+        }
+      }
+    }
+
+    const searching = tokens.length > 0;
+    searchEmpty?.classList.toggle('hidden', !(searching && visibleCount === 0));
+    searchClear?.classList.toggle('hidden', !raw.trim());
+  }
+
+  searchInput?.addEventListener('input', () => applySearch(searchInput.value));
+  searchClear?.addEventListener('click', () => {
+    if (!searchInput) return;
+    searchInput.value = '';
+    applySearch('');
+    searchInput.focus();
+  });
 </script>
