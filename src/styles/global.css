@@ -31,13 +31,14 @@
 
 html {
   scroll-behavior: smooth;
+  /* clip no crea scrollport: sticky del carrito sigue funcionando */
+  overflow-x: clip;
 }
 
 body {
   font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
   background-color: var(--color-paper);
   color: var(--color-ink);
-  overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
