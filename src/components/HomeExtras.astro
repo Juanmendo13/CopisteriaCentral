@@ -1,41 +1,46 @@
 ---
 import { site } from '../lib/site';
 
-const features = [
+const notes = [
   {
-    title: 'Junto al campus',
-    text: 'En Reina Mercedes, cerca de ETSII. Pasas, fotocopias y recoges.',
+    title: 'A un paso del campus',
+    text: 'Reina Mercedes, Local B, al lado de la ETSII. Sales de clase y entras.',
   },
   {
-    title: 'Horario largo',
-    text: 'De las primeras en abrir y de las últimas en cerrar en la avenida.',
+    title: 'La persiana sube pronto',
+    text: 'De las primeras en abrir la avenida y de las últimas en bajarla.',
   },
   {
-    title: 'Todo lo básico',
-    text: 'Fotocopias, color, encuadernación, plastificados y papelería.',
+    title: 'Lo de siempre, bien hecho',
+    text: 'Copias, color, espiral, plastificado y la grapadora que ya no encuentras.',
   },
   {
-    title: 'Trato directo',
-    text: 'Rápidos, baratos y con el material que pedís a última hora.',
+    title: 'Te lo decimos de frente',
+    text: 'Si el PDF va mal, te avisamos antes de gastar papel. Y si es para mañana, dínoslo.',
   },
 ];
 ---
 
-<section class="px-5 sm:px-8 py-14 sm:py-16 bg-white">
+<section class="px-5 sm:px-8 py-14 sm:py-16">
   <div class="max-w-6xl mx-auto">
     <div class="max-w-xl mb-8">
-      <p class="text-sm font-medium text-brand mb-2">Por qué venir aquí</p>
-      <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-ink">
-        La copistería de referencia en Reina Mercedes
+      <p class="stamp text-brand mb-4">Así es el mostrador</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-ink leading-tight">
+        No es una web de imprenta. Es el mostrador de siempre.
       </h2>
     </div>
-    <div class="grid sm:grid-cols-2 gap-x-10 gap-y-8">
+    <div class="grid sm:grid-cols-2 gap-4">
       {
-        features.map((item) => (
-          <div>
-            <h3 class="font-semibold text-ink">{item.title}</h3>
-            <p class="mt-1.5 text-sm leading-relaxed text-muted">{item.text}</p>
-          </div>
+        notes.map((item, index) => (
+          <article
+            class:list={[
+              'counter-note px-5 py-5',
+              index % 2 === 1 ? 'sm:rotate-[0.4deg]' : 'sm:-rotate-[0.35deg]',
+            ]}
+          >
+            <h3 class="font-display italic text-xl text-brand">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink/80">{item.text}</p>
+          </article>
         ))
       }
     </div>
@@ -43,20 +48,20 @@ const features = [
 </section>
 
 <section class="mx-5 sm:mx-8 mb-14">
-  <div class="max-w-6xl mx-auto rounded-2xl bg-brand text-white px-6 py-9 sm:px-10 sm:py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+  <div class="max-w-6xl mx-auto bg-brand text-white px-6 py-9 sm:px-10 sm:py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
     <div>
-      <p class="text-sm text-accent mb-2 font-medium">Papelería</p>
-      <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight">Bolígrafos, libretas y más</h2>
-      <p class="mt-2 max-w-lg text-white/65 text-sm leading-relaxed">
-        Mira el catálogo, haz tu lista y recoge en {site.addressLine}.
+      <p class="font-display italic text-accent mb-2">El estante de al lado</p>
+      <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tight">Bolis, libretas y lo que se acaba</h2>
+      <p class="mt-2 max-w-lg text-white/70 text-sm leading-relaxed">
+        Haz la lista desde casa y recógela en {site.addressLine}. Si falta algo, te lo decimos por teléfono.
       </p>
     </div>
     <div class="flex flex-wrap gap-3 shrink-0">
       <a href="/venta" class="btn-accent inline-flex items-center px-5 py-2.5 text-sm">
-        Ir a venta
+        Ver el estante
       </a>
       <a href={site.phoneHref} class="btn-secondary inline-flex items-center px-5 py-2.5 text-sm text-white">
-        Llamar
+        Llamar al local
       </a>
     </div>
   </div>

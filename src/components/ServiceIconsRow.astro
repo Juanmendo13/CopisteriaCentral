@@ -35,18 +35,16 @@ const items = [
 
 <section class="bg-paper py-10 px-5 sm:px-8">
   <div class="max-w-6xl mx-auto">
-    <p class="text-sm text-muted mb-5">Lo que hacemos a diario</p>
-    <ul class="flex flex-wrap gap-x-6 gap-y-5">
+    <p class="font-display italic text-brand mb-5">Lo que sale cada día por el mostrador</p>
+    <ul class="flex flex-wrap gap-x-3 gap-y-3">
       {
         items.map((item) => (
           <li>
-            <a href={item.href} class="group inline-flex items-center gap-2.5 text-ink hover:text-brand transition">
-              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-accent">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d={item.path} />
-                </svg>
-              </span>
-              <span class="text-sm font-semibold">{item.label}</span>
+            <a href={item.href} class="price-ticket group inline-flex items-center gap-2.5 border border-line pl-3.5 pr-3.5 py-2 text-ink hover:border-brand/40 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-brand" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d={item.path} />
+              </svg>
+              <span class="text-sm font-medium">{item.label}</span>
             </a>
           </li>
         ))
