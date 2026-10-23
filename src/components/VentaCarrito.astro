@@ -14,10 +14,10 @@ const catalogoJson = JSON.stringify(
   })),
 );
 
-const inputClass = 'field-stamp';
+const inputClass = 'field-stamp !py-2 !px-2.5 min-h-11 text-sm';
 ---
 
-<div class="grid lg:grid-cols-[1fr_22rem] gap-8 items-start" id="venta-app" data-catalogo={catalogoJson}>
+<div class="grid lg:grid-cols-[1fr_19rem] gap-6 lg:gap-7 items-start" id="venta-app" data-catalogo={catalogoJson}>
   <div class="space-y-8 sm:space-y-12" id="venta-catalogo">
     {
       grupos.map((grupo) => {
@@ -101,44 +101,44 @@ const inputClass = 'field-stamp';
 
   <aside
     id="lista-compra"
-    class="lista-compra lg:sticky lg:top-28 lg:self-start lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto scroll-mt-36 rounded-sm border-[2.5px] border-brand bg-accent-soft p-5 shadow-[4px_4px_0_rgba(0,45,98,0.2)]"
+    class="lista-compra lg:sticky lg:top-28 lg:self-start lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto scroll-mt-36 rounded-sm border-[2.5px] border-brand bg-accent-soft p-4 shadow-[4px_4px_0_rgba(0,45,98,0.2)]"
   >
-    <div class="lista-compra-head sticky z-20 -mx-5 -mt-5 mb-4 px-5 pt-4 pb-3 bg-accent-soft border-b border-brand/15 lg:static lg:z-auto lg:mx-0 lg:mt-0 lg:mb-4 lg:px-0 lg:pt-0 lg:pb-0 lg:border-0">
+    <div class="lista-compra-head sticky z-20 -mx-4 -mt-4 mb-3 px-4 pt-3.5 pb-2.5 bg-accent-soft border-b border-brand/15 lg:static lg:z-auto lg:mx-0 lg:mt-0 lg:mb-3 lg:px-0 lg:pt-0 lg:pb-0 lg:border-0">
       <div class="flex items-center justify-between gap-2">
-        <h2 class="font-display text-lg font-bold text-ink">Lista de compra</h2>
-        <span id="cart-count" class="rounded-md bg-brand-dark text-accent px-2.5 py-0.5 text-xs font-bold tabular-nums">0</span>
+        <h2 class="font-display text-base font-bold text-ink">Lista de compra</h2>
+        <span id="cart-count" class="rounded-md bg-brand-dark text-accent px-2 py-0.5 text-[11px] font-bold tabular-nums">0</span>
       </div>
-      <div class="mt-2 flex justify-between items-baseline gap-2 text-sm font-black text-ink">
+      <div class="mt-1.5 flex justify-between items-baseline gap-2 text-xs font-black text-ink">
         <span>Subtotal orientativo</span>
         <span id="cart-subtotal" class="tabular-nums">{formatEuro(0)}</span>
       </div>
-      <p class="mt-0.5 text-xs text-muted font-medium">Precios orientativos. Se confirman en el local.</p>
+      <p class="mt-0.5 text-[11px] text-muted font-medium leading-snug">Precios orientativos. Se confirman en el local.</p>
     </div>
 
-    <ul id="cart-lines" class="space-y-3 text-sm max-h-64 overflow-y-auto"></ul>
-    <p id="cart-empty" class="text-sm text-muted font-medium">Aún no has añadido nada.</p>
+    <ul id="cart-lines" class="space-y-2.5 text-sm max-h-56 overflow-y-auto"></ul>
+    <p id="cart-empty" class="text-xs text-muted font-medium">Aún no has añadido nada.</p>
 
-    <form id="cart-checkout" class="mt-5 space-y-3" novalidate>
-      <label class="block text-sm font-black uppercase tracking-wide text-brand">
+    <form id="cart-checkout" class="mt-4 space-y-2.5" novalidate>
+      <label class="block text-xs font-black uppercase tracking-wide text-brand">
         Nombre
         <input class:list={[inputClass, 'mt-1 normal-case tracking-normal font-semibold']} type="text" name="nombre" required minlength="2" maxlength="80" autocomplete="name" />
       </label>
-      <label class="block text-sm font-black uppercase tracking-wide text-brand">
+      <label class="block text-xs font-black uppercase tracking-wide text-brand">
         Email
         <input class:list={[inputClass, 'mt-1 normal-case tracking-normal font-semibold']} type="email" name="email" required autocomplete="email" />
       </label>
-      <label class="block text-sm font-black uppercase tracking-wide text-brand">
+      <label class="block text-xs font-black uppercase tracking-wide text-brand">
         Teléfono
         <input class:list={[inputClass, 'mt-1 normal-case tracking-normal font-semibold']} type="tel" name="telefono" required autocomplete="tel" />
       </label>
-      <label class="block text-sm font-black uppercase tracking-wide text-brand">
+      <label class="block text-xs font-black uppercase tracking-wide text-brand">
         Notas (opcional)
-        <textarea class:list={[inputClass, 'mt-1 min-h-20 normal-case tracking-normal font-semibold']} name="notas" maxlength="1000" placeholder="Cuándo pasas a recoger…"></textarea>
+        <textarea class:list={[inputClass, 'mt-1 min-h-16 normal-case tracking-normal font-semibold']} name="notas" maxlength="1000" placeholder="Cuándo pasas a recoger…"></textarea>
       </label>
-      <button type="submit" id="cart-submit" class="btn-navy w-full px-4 py-3 text-sm">
+      <button type="submit" id="cart-submit" class="btn-navy w-full min-h-11 px-3 py-2.5 text-xs">
         Solicitar reserva
       </button>
-      <p class="text-xs text-muted font-medium leading-relaxed">
+      <p class="text-[11px] text-muted font-medium leading-relaxed">
         No es un cobro online: confirmamos stock y precio en el local ({site.phone}).
         {
           site.isPrototype && (
@@ -149,7 +149,7 @@ const inputClass = 'field-stamp';
           )
         }
       </p>
-      <p id="cart-status" class="text-sm hidden font-semibold" role="status"></p>
+      <p id="cart-status" class="text-xs hidden font-semibold" role="status"></p>
     </form>
   </aside>
 </div>
