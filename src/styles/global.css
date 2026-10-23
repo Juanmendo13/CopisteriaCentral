@@ -26,7 +26,8 @@ body {
   font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
   background-color: var(--color-paper);
   color: var(--color-ink);
-  overflow-x: hidden;
+  /* clip (not hidden): overflow-x:hidden forces overflow-y:auto and breaks position:sticky */
+  overflow-x: clip;
   /* Ruled paper only — no fixed attachment / SVG feTurbulence (paint cost). */
   background-image:
     repeating-linear-gradient(
@@ -533,12 +534,13 @@ body:has(.site-header.has-banner) main > section.pt-28 {
 }
 
 @media (min-width: 1024px) {
+  /* Under fixed site header (h-14 / ~3.85rem) + breathing room */
   .lista-compra {
-    top: 7.5rem;
+    top: 7rem;
   }
 
   body:has(.site-header.has-banner) .lista-compra {
-    top: 9.5rem;
+    top: 9.25rem;
   }
 }
 

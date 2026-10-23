@@ -14,8 +14,9 @@ import { site } from '../lib/site';
 >
   <Navbar />
 
-  <main class="pt-28 pb-0 relative overflow-hidden">
-    <section class="page-hero-block px-5 sm:px-8 py-12 sm:py-16">
+  {/* No overflow-hidden on main — it creates a scrollport and kills sticky Lista de compra. */}
+  <main class="pt-28 pb-0 relative">
+    <section class="page-hero-block relative overflow-x-clip px-5 sm:px-8 py-12 sm:py-16">
       <Doodle name="boli" rotate={14} class="doodle-float absolute top-10 right-8 h-16 w-6 opacity-50 hidden lg:block" />
       <Doodle name="postit" rotate={-8} class="doodle-wiggle absolute bottom-12 left-8 h-12 w-12 opacity-40 hidden md:block" />
       <div class="relative max-w-6xl mx-auto">
