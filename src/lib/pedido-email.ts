@@ -1,4 +1,4 @@
-import { prepareShopNotify, type Web3FormsPayload } from './shop-notify';
+import { formSubmitPayload, notifyShopFallback } from './shop-notify';
 import { site } from './site';
 
 export interface PedidoPayload {
@@ -101,9 +101,8 @@ export async function enviarPedidoResend(
   | {
       ok: true;
       modo: 'enlace';
-      web3forms: Web3FormsPayload;
-      via: string;
-      to: string;
+      formsubmit: ReturnType<typeof formSubmitPayload>;
+      via?: string;
     }
   | { error: string }
 > {
@@ -115,22 +114,29 @@ export async function enviarPedidoResend(
   ].join('\n');
   const message = pedidoTexto(pedido, extra);
 
-  const prepared = await prepareShopNotify({
+  const formsubmit = formSubmitPayload({
     subject,
     message,
     replyTo: pedido.email,
     name: pedido.nombre,
   });
 
-  if ('error' in prepared) {
-    return { error: prepared.error };
+  const fallback = await notifyShopFallback({
+    subject,
+    message,
+    replyTo: pedido.email,
+    intendedTo: formsubmit.to,
+  });
+
+  if ('error' in fallback) {
+    // Aun si falla el respaldo, devolvemos formsubmit para el cliente.
+    return {
+      ok: true,
+      modo: 'enlace',
+      formsubmit,
+      via: 'client-formsubmit-only',
+    };
   }
 
-  return {
-    ok: true,
-    modo: 'enlace',
-    web3forms: prepared.web3forms,
-    via: prepared.via,
-    to: prepared.to,
-  };
+  return { ok: true, modo: 'enlace', formsubmit, via: fallback.via };
 }

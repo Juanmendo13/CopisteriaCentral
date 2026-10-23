@@ -1,11 +1,11 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { prepareShopNotify, shopInbox } from '../../lib/shop-notify';
+import { formSubmitPayload, notifyShopFallback, shopInbox } from '../../lib/shop-notify';
 
 /**
- * Smoke test: returns Web3Forms client payload + Resend backup status.
- * Browser proof should POST the returned web3forms payload to api.web3forms.com.
+ * Smoke test: returns FormSubmit client payload + Resend backup status.
+ * Browser proof should POST the returned formsubmit payload to formsubmit.co/ajax/{to}.
  */
 export const POST: APIRoute = async ({ request }) => {
   const required = (process.env.NOTIFY_HEALTH_SECRET || '').trim();
@@ -22,28 +22,31 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const stamp = new Date().toISOString();
-  const prepared = await prepareShopNotify({
+  const formsubmit = formSubmitPayload({
     subject: `PROOF notify-health · ${stamp}`,
     message: [
       'Prueba automática de entrega de pedidos/presupuestos.',
       `Buzón esperado: ${shopInbox()}`,
       `Marca de tiempo: ${stamp}`,
-      'Si ves este correo en Gmail, la access key de Web3Forms apunta a ese buzón.',
+      'Si ves este correo en Gmail, FormSubmit está activado para ese buzón.',
     ].join('\n'),
     replyTo: 'noreply@copisteria-central.vercel.app',
     name: 'Notify Health',
   });
 
-  if ('error' in prepared) {
-    return Response.json({ ok: false, error: prepared.error, intendedTo: shopInbox() }, { status: 502 });
-  }
+  const fallback = await notifyShopFallback({
+    subject: formsubmit.subject,
+    message: formsubmit.message,
+    replyTo: formsubmit.replyTo,
+    intendedTo: formsubmit.to,
+  });
 
   return Response.json({
     ok: true,
-    via: prepared.via,
-    to: prepared.to,
+    via: 'error' in fallback ? 'client-formsubmit-only' : fallback.via,
+    to: formsubmit.to,
     intendedTo: shopInbox(),
-    web3forms: prepared.web3forms,
+    formsubmit,
     stamp,
   });
 };

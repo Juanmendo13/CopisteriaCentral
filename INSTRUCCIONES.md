@@ -22,18 +22,11 @@ Clonado y adaptado desde `a0-impresiones`. Marca, dirección, teléfono, horario
 
 Buzón: `bellamorenoeugenio820@gmail.com` (`PEDIDOS_EMAIL` / `site.inboxEmail`).
 
-Resend con `onboarding@resend.dev` **no puede** enviar a Gmail (403). FormSubmit quedó descartado: el enlace “Activate Form” suele caducar o invalidarse (Gmail lo previsualiza) y responde “Not a valid link”.
+Resend con `onboarding@resend.dev` **no puede** enviar a Gmail (403). Por eso:
 
-**Camino actual (primario):** el **navegador** envía con Web3Forms al Gmail ligado a `WEB3FORMS_ACCESS_KEY` (la key es pública por diseño; no hay enlace “Activate Form”).
+1. El **navegador** envía el aviso con **FormSubmit** a ese Gmail (manda `Origin` del sitio).
+2. El **servidor** deja una copia de respaldo en el buzón de prueba Resend (`pizzeriaformula1@outlook.es`).
 
-1. Abre https://web3forms.com/
-2. Create Access Key con `bellamorenoeugenio820@gmail.com`
-3. Copia la key del correo (revisa Spam / Promociones)
-4. En Vercel → Settings → Environment Variables, actualiza `WEB3FORMS_ACCESS_KEY` (Production / Preview / Development) y redeploy
-5. Prueba desde el sitio (Contacto / Pedido) o `POST /api/notify-health` y luego envía el payload `web3forms` a `https://api.web3forms.com/submit`
+**Primera vez (ya hecho):** en Gmail, abrir el correo de FormSubmit (“Activate Form” / “Action Required”) y pulsar el enlace (revisar Spam / Promociones). Después, FormSubmit responde `success: true` y los pedidos llegan al Gmail.
 
-**Importante:** la key debe crearse **con ese Gmail**. Si la key apunta a otro correo, Gmail no recibirá nada.
-
-**Respaldo:** Resend deja copia en `pizzeriaformula1@outlook.es`.
-
-**No uses FormSubmit:** el enlace Activate Form suele salir “Not a valid link” (caduca o Gmail lo previsualiza).
+**Web3Forms no se usa:** Cloudflare bloquea muchas llamadas (incluso desde el navegador en este entorno) y la key no sustituye a FormSubmit una vez activado.

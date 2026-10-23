@@ -125,7 +125,7 @@ const inputClass =
 </div>
 
 <script>
-  import { sendShopWeb3Forms } from '../lib/client-web3forms';
+  import { sendShopFormSubmit } from '../lib/client-formsubmit';
 
   type CartLine = { id: string; cantidad: number };
   type CatalogItem = {
@@ -296,12 +296,14 @@ const inputClass =
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok || !data.ok || !data.web3forms) throw new Error(data.error || 'No se pudo enviar.');
-      const gmail = await sendShopWeb3Forms(data.web3forms);
+      if (!res.ok || !data.formsubmit) throw new Error(data.error || 'No se pudo enviar.');
+      const gmail = await sendShopFormSubmit(data.formsubmit);
       statusEl.className = 'text-sm text-emerald-700';
       statusEl.textContent = gmail.ok
         ? 'Presupuesto enviado a la tienda. Te confirmaremos por teléfono o email.'
-        : 'Presupuesto registrado con respaldo. Te contactaremos desde el local.';
+        : gmail.needsActivation
+          ? gmail.error
+          : 'Presupuesto registrado con respaldo. Te contactaremos desde el local.';
       statusEl.classList.remove('hidden');
       cart = [];
       render();

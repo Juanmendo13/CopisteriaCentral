@@ -23,7 +23,7 @@ export const site = {
   isPrototype: true,
   /**
    * Buzón de pedidos (fallback si falta PEDIDOS_EMAIL).
-   * Los avisos van por Web3Forms a este Gmail (access key creada con este email).
+   * Los avisos van por FormSubmit (navegador) a este Gmail.
    */
   inboxEmail: 'bellamorenoeugenio820@gmail.com',
   privacyEmail: '',

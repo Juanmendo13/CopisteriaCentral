@@ -1,6 +1,6 @@
 import { formatEuro, getPrecioItem } from '../data/precios';
 import { getVentaItem } from '../data/venta';
-import { prepareShopNotify, type Web3FormsPayload } from './shop-notify';
+import { formSubmitPayload, notifyShopFallback } from './shop-notify';
 import { site } from './site';
 
 type CartCatalogItem = {
@@ -134,31 +134,31 @@ export async function enviarPresupuestoCarrito(
   | {
       ok: true;
       clienteDemo: boolean;
-      web3forms: Web3FormsPayload;
-      via: string;
-      to: string;
+      formsubmit: ReturnType<typeof formSubmitPayload>;
+      via?: string;
     }
   | { error: string }
 > {
   const subjectShop = `Presupuesto carrito · ${payload.nombre}`;
   const message = textoTienda(payload);
-
-  const prepared = await prepareShopNotify({
+  const formsubmit = formSubmitPayload({
     subject: subjectShop,
     message,
     replyTo: payload.email,
     name: payload.nombre,
   });
 
-  if ('error' in prepared) {
-    return { error: prepared.error };
-  }
+  const fallback = await notifyShopFallback({
+    subject: subjectShop,
+    message,
+    replyTo: payload.email,
+    intendedTo: formsubmit.to,
+  });
 
   return {
     ok: true,
     clienteDemo: false,
-    web3forms: prepared.web3forms,
-    via: prepared.via,
-    to: prepared.to,
+    formsubmit,
+    via: 'error' in fallback ? 'client-formsubmit-only' : fallback.via,
   };
 }
