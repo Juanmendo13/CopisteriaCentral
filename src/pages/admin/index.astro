@@ -171,7 +171,16 @@ const hintUser = adminUsername();
                 </label>
                 <label class="block text-xs font-black uppercase tracking-wide text-brand sm:col-span-2">
                   URL de imagen (opcional)
-                  <input class="field-stamp mt-1 normal-case tracking-normal font-semibold" name="image" id="f-image" type="url" placeholder="https://… o /venta/…" />
+                  <input
+                    class="field-stamp mt-1 normal-case tracking-normal font-semibold"
+                    name="image"
+                    id="f-image"
+                    type="text"
+                    inputmode="url"
+                    placeholder="https://… o /venta/…"
+                    pattern="https://.+|/.*"
+                    title="Ruta relativa (/venta/…) o URL https://"
+                  />
                 </label>
                 <div class="sm:col-span-2 flex flex-wrap items-center gap-3">
                   <label class="text-xs font-black uppercase tracking-wide text-brand">

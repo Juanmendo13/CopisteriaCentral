@@ -454,6 +454,11 @@ export function validateProductInput(body: unknown): { ok: true; data: ProductIn
     stock = Math.floor(n);
   }
 
+  const image = typeof b.image === 'string' ? b.image.trim().slice(0, 500) : '';
+  if (image && !isAllowedProductImageUrl(image)) {
+    return { ok: false, error: 'La imagen debe ser una ruta relativa (/…) o una URL https://.' };
+  }
+
   return {
     ok: true,
     data: {
@@ -466,9 +471,22 @@ export function validateProductInput(body: unknown): { ok: true; data: ProductIn
       modo,
       stock,
       activo: b.activo !== false && b.activo !== 'false',
-      image: typeof b.image === 'string' ? b.image.trim().slice(0, 500) : '',
+      image,
     },
   };
+}
+
+/** Relative path (/venta/…) or absolute https URL. Empty is handled by callers. */
+export function isAllowedProductImageUrl(value: string): boolean {
+  const v = value.trim();
+  if (!v) return true;
+  if (v.startsWith('/') && !v.startsWith('//')) return true;
+  try {
+    const u = new URL(v);
+    return u.protocol === 'https:';
+  } catch {
+    return false;
+  }
 }
 
 export function upsertProduct(
