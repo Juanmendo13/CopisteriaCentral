@@ -511,6 +511,7 @@ const waPedido = whatsappLink(
         via?: string;
         primaryReady?: boolean;
         backupOk?: boolean;
+        primaryOk?: boolean;
         backupTo?: string;
         intendedTo?: string;
         clienteEmailOk?: boolean;
@@ -523,16 +524,20 @@ const waPedido = whatsappLink(
           replyTo: string;
           name?: string;
           fromName?: string;
-        };
+        } | null;
       };
 
-      if (!response.ok || !result.ok || !result.web3forms) {
+      if (!response.ok || !result.ok) {
         showError(result.error || 'No se pudo enviar el pedido.');
         return;
       }
 
-      const gmail = await sendShopWeb3Forms(result.web3forms);
-      const status = shopNotifyClientStatus(gmail.ok, result, 'pedido');
+      let secondaryOk = false;
+      if (result.web3forms?.accessKey) {
+        const secondary = await sendShopWeb3Forms(result.web3forms);
+        secondaryOk = secondary.ok;
+      }
+      const status = shopNotifyClientStatus(secondaryOk, result, 'pedido');
 
       if (!status.ok && !status.partial) {
         showError(status.text);

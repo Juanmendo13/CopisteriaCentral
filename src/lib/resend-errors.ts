@@ -13,9 +13,9 @@ export function formatResendError(message: string | undefined, fallback: string)
     return [
       'Resend en modo prueba solo entrega a la cuenta verificada del proyecto',
       '(con FROM onboarding@resend.dev).',
-      'Para bellamorenoeugenio820@gmail.com: verifica un dominio en https://resend.com/domains,',
-      'pon RESEND_FROM en ese dominio y PEDIDOS_EMAIL=bellamorenoeugenio820@gmail.com.',
-      'Mientras tanto usa PEDIDOS_EMAIL=pizzeriaformula1@outlook.es.',
+      'Los avisos de tienda usan PEDIDOS_EMAIL=pizzeriaformula1@outlook.es.',
+      'Para enviar a otros destinatarios (p. ej. clientes), verifica un dominio en',
+      'https://resend.com/domains y pon RESEND_FROM en ese dominio.',
       `Detalle: ${raw}`,
     ].join(' ');
   }

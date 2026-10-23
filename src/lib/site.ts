@@ -25,7 +25,7 @@ export const site = {
    * Buzón de pedidos (fallback si falta PEDIDOS_EMAIL).
    * Los avisos van por Web3Forms a este Gmail (access key creada con este email).
    */
-  inboxEmail: 'bellamorenoeugenio820@gmail.com',
+  inboxEmail: 'pizzeriaformula1@outlook.es',
   privacyEmail: '',
   currentWeb:
     'https://www.google.com/maps/place/Copister%C3%ADa+Central/@37.3587595,-5.9861024,17z',

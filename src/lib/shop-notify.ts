@@ -5,18 +5,15 @@ function env(name: string): string | undefined {
   return process.env[name] || (import.meta.env as Record<string, string | undefined>)[name];
 }
 
+/** Buzón único de avisos de tienda (Outlook). */
 export function shopInbox(): string {
   return env('PEDIDOS_EMAIL') || site.inboxEmail;
 }
 
-/** Buzón Resend (modo prueba) como copia de seguridad. */
-export function fallbackInbox(): string {
-  return env('PEDIDOS_FALLBACK_EMAIL') || 'pizzeriaformula1@outlook.es';
-}
-
 /**
- * Access keys conocidas ligadas a Outlook (p. ej. copiadas de A0), no al Gmail de la tienda.
- * Web3Forms “success” con estas keys NO significa entrega a bellamorenoeugenio820@gmail.com.
+ * Access keys conocidas ligadas a Outlook (p. ej. A0).
+ * Solo estas se usan como canal secundario en el navegador.
+ * Keys creadas con Gmail se ignoran a propósito (no reenviar al Gmail antiguo).
  */
 const OUTLOOK_BOUND_WEB3FORMS_KEYS = new Set([
   'e4a429cd-6cf5-4fca-956b-5915f6ce5da8',
@@ -33,23 +30,22 @@ export type Web3FormsPayload = {
 };
 
 export type ShopNotifyResult =
-  | { ok: true; via: 'web3forms' | 'resend-fallback'; to: string }
+  | { ok: true; via: 'resend' | 'web3forms-secondary'; to: string }
   | { error: string };
 
-/**
- * True si la key puede ser el canal primario hacia el Gmail de la tienda.
- * Cualquier access key que no esté en la lista Outlook-bound cuenta como lista
- * (WEB3FORMS_ACCESS_KEY ya apunta al Gmail de la tienda).
- */
-export function web3FormsPrimaryReady(accessKey?: string): boolean {
+/** True solo si WEB3FORMS_ACCESS_KEY entrega a Outlook (no a Gmail). */
+export function web3FormsOutlookReady(accessKey?: string): boolean {
   const key = (accessKey ?? env('WEB3FORMS_ACCESS_KEY') ?? '').trim();
-  if (!key) return false;
-  if (OUTLOOK_BOUND_WEB3FORMS_KEYS.has(key)) return false;
-  return true;
+  return Boolean(key) && OUTLOOK_BOUND_WEB3FORMS_KEYS.has(key);
+}
+
+/** @deprecated El canal primario es Resend → Outlook. */
+export function web3FormsPrimaryReady(accessKey?: string): boolean {
+  return web3FormsOutlookReady(accessKey);
 }
 
 /**
- * Payload para que el navegador envíe a Web3Forms (la access key es pública por diseño).
+ * Payload opcional para el navegador → Web3Forms (solo key Outlook-bound).
  * El servidor no usa Web3Forms: Cloudflare suele bloquear IPs de Functions.
  */
 export function web3FormsPayload(opts: {
@@ -57,15 +53,11 @@ export function web3FormsPayload(opts: {
   message: string;
   replyTo: string;
   name?: string;
-}): Web3FormsPayload | { error: string } {
+}): Web3FormsPayload | null {
   const accessKey = (env('WEB3FORMS_ACCESS_KEY') || '').trim();
-  if (!accessKey) {
-    return {
-      error:
-        'Falta WEB3FORMS_ACCESS_KEY. Crea una en https://web3forms.com/ con ' +
-        shopInbox() +
-        ' y configúrala en Vercel.',
-    };
+  if (!accessKey) return null;
+  if (!OUTLOOK_BOUND_WEB3FORMS_KEYS.has(accessKey)) {
+    return null;
   }
   return {
     accessKey,
@@ -78,17 +70,15 @@ export function web3FormsPayload(opts: {
   };
 }
 
-/** Copia de seguridad server-side: Resend → Outlook (onboarding@resend.dev no puede a Gmail). */
-export async function notifyShopFallback(opts: {
+/** Canal primario: Resend → PEDIDOS_EMAIL / Outlook. */
+export async function notifyShopResend(opts: {
   subject: string;
   message: string;
   replyTo: string;
-  intendedTo?: string;
 }): Promise<ShopNotifyResult> {
   const apiKey = env('RESEND_API_KEY');
   const from = env('RESEND_FROM') || 'Copistería Central <onboarding@resend.dev>';
-  const to = fallbackInbox();
-  const intended = opts.intendedTo || shopInbox();
+  const to = shopInbox();
 
   if (!apiKey) {
     return { error: 'Falta RESEND_API_KEY.' };
@@ -99,26 +89,17 @@ export async function notifyShopFallback(opts: {
     from,
     to: [to],
     replyTo: opts.replyTo,
-    subject: `[Copia de seguridad · Gmail ${intended}] ${opts.subject}`,
-    text: [
-      `Destino deseado (Web3Forms / Gmail): ${intended}`,
-      `Copia de seguridad vía Resend (modo prueba) → ${to}.`,
-      'El navegador intenta Web3Forms al Gmail solo si WEB3FORMS_ACCESS_KEY se creó con ese correo.',
-      '',
-      opts.message,
-    ].join('\n'),
+    subject: opts.subject,
+    text: opts.message,
   });
 
   if (error) {
     return { error: error.message };
   }
-  return { ok: true, via: 'resend-fallback', to };
+  return { ok: true, via: 'resend', to };
 }
 
-/**
- * Prepara el aviso: payload Web3Forms para el cliente + copia de seguridad Resend.
- * Aunque falle el respaldo, devolvemos web3forms para que el navegador complete el envío.
- */
+/** Resend → Outlook (obligatorio) + Web3Forms opcional si la key es Outlook-bound. */
 export async function prepareShopNotify(opts: {
   subject: string;
   message: string;
@@ -127,38 +108,39 @@ export async function prepareShopNotify(opts: {
 }): Promise<
   | {
       ok: true;
-      web3forms: Web3FormsPayload;
-      via: 'resend-fallback' | 'client-web3forms-only';
+      web3forms: Web3FormsPayload | null;
+      via: 'resend';
       to: string;
       intendedTo: string;
       backupTo: string;
       primaryReady: boolean;
       backupOk: boolean;
+      primaryOk: boolean;
     }
   | { error: string }
 > {
-  const web3forms = web3FormsPayload(opts);
-  if ('error' in web3forms) {
-    return { error: web3forms.error };
-  }
-
-  const fallback = await notifyShopFallback({
+  const primary = await notifyShopResend({
     subject: opts.subject,
     message: opts.message,
     replyTo: opts.replyTo,
-    intendedTo: web3forms.to,
   });
 
-  const backupOk = !('error' in fallback);
+  if ('error' in primary) {
+    return { error: primary.error };
+  }
+
+  const web3forms = web3FormsPayload(opts);
+  const to = primary.to;
 
   return {
     ok: true,
     web3forms,
-    via: backupOk ? fallback.via : 'client-web3forms-only',
-    to: web3forms.to,
-    intendedTo: web3forms.to,
-    backupTo: fallbackInbox(),
-    primaryReady: web3FormsPrimaryReady(web3forms.accessKey),
-    backupOk,
+    via: 'resend',
+    to,
+    intendedTo: to,
+    backupTo: to,
+    primaryReady: true,
+    backupOk: true,
+    primaryOk: true,
   };
 }

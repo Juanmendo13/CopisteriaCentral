@@ -30,7 +30,7 @@ Página pública del local: servicios de fotocopias e impresión, catálogo de p
 | `/contacto` | Teléfono, WhatsApp, horario y mapa |
 | `/imagenes` | Galería del local |
 
-Flujo de avisos: el navegador envía el formulario con **Web3Forms** al buzón de la tienda (`PEDIDOS_EMAIL`). WhatsApp (`wa.me`) queda como alternativa si el archivo es grande o hay duda.
+Flujo de avisos: el servidor envía con **Resend** al buzón Outlook de la tienda (`PEDIDOS_EMAIL`). WhatsApp (`wa.me`) queda como alternativa si el archivo es grande o hay duda.
 
 ## Desarrollo local
 
@@ -47,14 +47,14 @@ Variables (ver `.env.example`; **no** commits de `.env` / secretos):
 
 | Variable | Uso |
 |----------|-----|
-| `PEDIDOS_EMAIL` | Buzón Gmail de pedidos |
+| `PEDIDOS_EMAIL` | Buzón Outlook de pedidos (`pizzeriaformula1@outlook.es`) |
 | `SITE_URL` | URL pública (prod: `https://copisteria-central.vercel.app`) |
-| `WEB3FORMS_ACCESS_KEY` | Access key de Web3Forms (creada con el Gmail de pedidos) |
+| `WEB3FORMS_ACCESS_KEY` | Opcional — solo si la key está ligada a Outlook |
 | `BLOB_READ_WRITE_TOKEN` | Token de Vercel Blob (PDFs + JSON del catálogo `/admin`) |
 | `ADMIN_USER` | Usuario del panel `/admin` (por defecto `admin`) |
 | `ADMIN_PASSWORD` | Contraseña del panel (obligatoria; sin ella el admin permanece cerrado) |
 | `ADMIN_SESSION_SECRET` | Opcional — secreto HMAC de la cookie (también acepta `ADMIN_SECRET`) |
-| `RESEND_API_KEY` / `RESEND_FROM` | Opcional — respaldo Resend |
+| `RESEND_API_KEY` / `RESEND_FROM` | Primario — Resend → Outlook (modo prueba: onboarding@resend.dev) |
 
 ### Admin del catálogo (`/admin`)
 

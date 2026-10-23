@@ -1,47 +1,32 @@
 /**
- * Proof: FormSubmit shop notify returns success:true (not Resend 403).
- * Usage:
- *   node scripts/proof-shop-notify.mjs                         # Gmail (needs prior Activate Form)
- *   node scripts/proof-shop-notify.mjs you@activated.example   # already-activated inbox
+ * Proof: Resend shop notify delivers to Outlook (PEDIDOS_EMAIL).
  */
-const to = process.argv[2] || 'bellamorenoeugenio820@gmail.com';
-const origin = process.env.SITE_URL || 'https://copisteria-central.vercel.app';
+import { Resend } from 'resend';
 
-const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    Origin: origin,
-    Referer: `${origin}/`,
-  },
-  body: JSON.stringify({
-    name: 'Copistería Central Proof',
-    email: 'prueba-cliente@example.com',
-    _replyto: 'prueba-cliente@example.com',
-    _subject: `PROOF shop-notify · ${new Date().toISOString()}`,
-    message: [
-      'Prueba de entrega FormSubmit (sustituye Resend onboarding@resend.dev).',
-      `Destino: ${to}`,
-      `Origin: ${origin}`,
-    ].join('\n'),
-  }),
+const to = process.argv[2] || process.env.PEDIDOS_EMAIL || 'pizzeriaformula1@outlook.es';
+const apiKey = process.env.RESEND_API_KEY;
+const from = process.env.RESEND_FROM || 'Copisteria Central <onboarding@resend.dev>';
+
+if (!apiKey) {
+  console.error('Set RESEND_API_KEY to run this proof.');
+  process.exit(1);
+}
+
+const resend = new Resend(apiKey);
+const stamp = new Date().toISOString();
+const { data, error } = await resend.emails.send({
+  from,
+  to: [to],
+  subject: `PROOF shop-notify · ${stamp}`,
+  text: [
+    'Prueba de entrega Resend → Outlook (buzón de tienda).',
+    `TO: ${to}`,
+    `Stamp: ${stamp}`,
+  ].join('\n'),
 });
 
-const body = await res.json().catch(() => ({}));
-console.log(JSON.stringify({ httpStatus: res.status, to, body }, null, 2));
-
-if (String(body.success) === 'true') {
-  console.log('\nOK: send succeeded (not 403).');
-  process.exit(0);
+if (error) {
+  console.error('FAIL', error);
+  process.exit(1);
 }
-
-if (/activat/i.test(String(body.message || ''))) {
-  console.error(
-    '\nPENDING: FormSubmit needs one-time Activate Form click in this inbox, then re-run.',
-  );
-  process.exit(2);
-}
-
-console.error('\nFAIL: unexpected FormSubmit response.');
-process.exit(1);
+console.log('OK', { to, id: data?.id });

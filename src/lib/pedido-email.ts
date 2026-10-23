@@ -191,7 +191,7 @@ export async function enviarPedidoResend(
   | {
       ok: true;
       modo: 'enlace';
-      web3forms: Web3FormsPayload;
+      web3forms: Web3FormsPayload | null;
       via: string;
       to: string;
       intendedTo: string;

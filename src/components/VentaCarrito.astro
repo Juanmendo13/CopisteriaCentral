@@ -426,9 +426,13 @@ function stockLabel(item: CatalogProduct): string | null {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok || !data.ok || !data.web3forms) throw new Error(data.error || 'No se pudo enviar.');
-      const gmail = await sendShopWeb3Forms(data.web3forms);
-      const status = shopNotifyClientStatus(gmail.ok, data, 'venta');
+      if (!res.ok || !data.ok) throw new Error(data.error || 'No se pudo enviar.');
+      let secondaryOk = false;
+      if (data.web3forms?.accessKey) {
+        const secondary = await sendShopWeb3Forms(data.web3forms);
+        secondaryOk = secondary.ok;
+      }
+      const status = shopNotifyClientStatus(secondaryOk, data, 'venta');
       if (!status.ok && !status.partial) throw new Error(status.text);
       statusEl.className = status.ok ? 'text-sm text-emerald-700' : 'text-sm text-amber-800';
       statusEl.textContent = status.text;

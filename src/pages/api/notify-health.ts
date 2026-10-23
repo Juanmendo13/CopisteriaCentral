@@ -4,8 +4,7 @@ import type { APIRoute } from 'astro';
 import { prepareShopNotify, shopInbox } from '../../lib/shop-notify';
 
 /**
- * Smoke test: returns Web3Forms client payload + Resend backup status.
- * Browser proof should POST the returned web3forms payload to api.web3forms.com.
+ * Smoke test: Resend → Outlook (primary). Optional web3forms payload if Outlook-bound key.
  */
 export const POST: APIRoute = async ({ request }) => {
   const required = (process.env.NOTIFY_HEALTH_SECRET || '').trim();
@@ -28,7 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
       'Prueba automática de entrega de pedidos/presupuestos.',
       `Buzón esperado: ${shopInbox()}`,
       `Marca de tiempo: ${stamp}`,
-      'Si ves este correo en Gmail, la access key de Web3Forms apunta a ese buzón.',
+      'Si ves este correo en Outlook, Resend → PEDIDOS_EMAIL funciona.',
     ].join('\n'),
     replyTo: 'noreply@copisteria-central.vercel.app',
     name: 'Notify Health',
@@ -45,11 +44,10 @@ export const POST: APIRoute = async ({ request }) => {
     intendedTo: shopInbox(),
     backupTo: prepared.backupTo,
     primaryReady: prepared.primaryReady,
+    primaryOk: prepared.primaryOk,
     backupOk: prepared.backupOk,
     web3forms: prepared.web3forms,
     stamp,
-    note: prepared.primaryReady
-      ? 'Canal primario listo (Web3Forms → Gmail de la tienda).'
-      : 'Falta WEB3FORMS_ACCESS_KEY o la key está marcada como Outlook-bound. Crea una Access Key en web3forms.com con el Gmail de la tienda.',
+    note: 'Canal primario: Resend → Outlook (PEDIDOS_EMAIL). Web3Forms solo si la key es Outlook-bound.',
   });
 };

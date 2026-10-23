@@ -178,7 +178,7 @@ export async function enviarPresupuestoCarrito(
   | {
       ok: true;
       clienteDemo: boolean;
-      web3forms: Web3FormsPayload;
+      web3forms: Web3FormsPayload | null;
       via: string;
       to: string;
       intendedTo: string;

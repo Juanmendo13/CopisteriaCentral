@@ -3,6 +3,7 @@
 export type ShopNotifyMeta = {
   primaryReady?: boolean;
   backupOk?: boolean;
+  primaryOk?: boolean;
   via?: string;
   backupTo?: string;
   intendedTo?: string;
@@ -17,27 +18,26 @@ const OK: Record<ShopNotifyKind, string> = {
 };
 
 /**
- * Interpreta Web3Forms (cliente) + metadatos del API.
- * Si Web3Forms responde OK → éxito limpio (canal primario a la tienda).
+ * Interpreta el resultado del API (Resend primario → Outlook) + Web3Forms opcional.
+ * Si el servidor ya entregó vía Resend → éxito limpio.
  */
 export function shopNotifyClientStatus(
-  primarySubmitOk: boolean,
+  secondarySubmitOk: boolean,
   meta: ShopNotifyMeta,
   kind: ShopNotifyKind,
 ): { ok: boolean; partial: boolean; text: string } {
-  const backupOk = meta.backupOk === true || meta.via === 'resend-fallback';
+  const serverOk =
+    meta.primaryOk === true ||
+    meta.via === 'resend' ||
+    meta.backupOk === true ||
+    meta.via === 'resend-fallback';
 
-  if (primarySubmitOk) {
+  if (serverOk) {
     return { ok: true, partial: false, text: OK[kind] };
   }
 
-  if (backupOk) {
-    return {
-      ok: false,
-      partial: true,
-      text:
-        'El aviso principal no se completó. Si no te llaman pronto, escribe o llama al local.',
-    };
+  if (secondarySubmitOk) {
+    return { ok: true, partial: false, text: OK[kind] };
   }
 
   return {

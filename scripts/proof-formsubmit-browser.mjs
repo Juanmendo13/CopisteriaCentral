@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
 
 const origin = 'https://copisteria-central.vercel.app';
 const activated = process.argv[2]; // optional already-activated inbox
-const gmail = 'bellamorenoeugenio820@gmail.com';
+const gmail = 'pizzeriaformula1@outlook.es';
 
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({

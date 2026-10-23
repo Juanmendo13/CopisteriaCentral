@@ -151,6 +151,7 @@ const inputClass = 'field-stamp';
         via?: string;
         primaryReady?: boolean;
         backupOk?: boolean;
+        primaryOk?: boolean;
         backupTo?: string;
         intendedTo?: string;
         web3forms?: {
@@ -160,16 +161,20 @@ const inputClass = 'field-stamp';
           replyTo: string;
           name?: string;
           fromName?: string;
-        };
+        } | null;
       };
 
-      if (!submit.ok || !result.ok || !result.web3forms) {
+      if (!submit.ok || !result.ok) {
         showError(result.error || result.message || 'No se pudo enviar. Prueba por teléfono o email.');
         return;
       }
 
-      const gmail = await sendShopWeb3Forms(result.web3forms);
-      const status = shopNotifyClientStatus(gmail.ok, result, 'presupuesto');
+      let secondaryOk = false;
+      if (result.web3forms?.accessKey) {
+        const secondary = await sendShopWeb3Forms(result.web3forms);
+        secondaryOk = secondary.ok;
+      }
+      const status = shopNotifyClientStatus(secondaryOk, result, 'presupuesto');
       if (!status.ok && !status.partial) {
         showError(status.text);
         return;
