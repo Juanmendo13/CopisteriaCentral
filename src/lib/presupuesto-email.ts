@@ -137,6 +137,10 @@ export async function enviarPresupuestoCarrito(
       web3forms: Web3FormsPayload;
       via: string;
       to: string;
+      intendedTo: string;
+      backupTo: string;
+      primaryReady: boolean;
+      backupOk: boolean;
     }
   | { error: string }
 > {
@@ -160,5 +164,9 @@ export async function enviarPresupuestoCarrito(
     web3forms: prepared.web3forms,
     via: prepared.via,
     to: prepared.to,
+    intendedTo: prepared.intendedTo,
+    backupTo: prepared.backupTo,
+    primaryReady: prepared.primaryReady,
+    backupOk: prepared.backupOk,
   };
 }

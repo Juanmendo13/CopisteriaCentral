@@ -170,6 +170,7 @@ const waPedido = whatsappLink(
   import { upload } from '@vercel/blob/client';
   import { ALLOWED_MIME, MAX_FILE_BYTES } from '../data/formatos';
   import { sendShopWeb3Forms } from '../lib/client-web3forms';
+  import { shopNotifyClientStatus } from '../lib/shop-notify-ui';
 
   const form = document.getElementById('pedido-form') as HTMLFormElement | null;
   const fileInput = document.getElementById('pedido-archivo') as HTMLInputElement | null;
@@ -325,6 +326,10 @@ const waPedido = whatsappLink(
         mensaje?: string;
         modo?: 'adjunto' | 'enlace';
         via?: string;
+        primaryReady?: boolean;
+        backupOk?: boolean;
+        backupTo?: string;
+        intendedTo?: string;
         web3forms?: {
           accessKey: string;
           subject: string;
@@ -341,18 +346,24 @@ const waPedido = whatsappLink(
       }
 
       const gmail = await sendShopWeb3Forms(result.web3forms);
+      const status = shopNotifyClientStatus(gmail.ok, result, 'pedido');
+
+      if (!status.ok && !status.partial) {
+        showError(status.text);
+        return;
+      }
 
       form.reset();
       setFileName(undefined);
       toggleMedida();
       if (okText) {
-        okText.textContent = gmail.ok
-          ? 'Pedido enviado. La tienda recibe el aviso con el enlace al archivo.'
-          : 'Pedido registrado con respaldo. Si no te llaman, escribe o llama al local.';
+        okText.textContent = status.text;
       }
       okEl?.classList.remove('hidden');
       if (okExtra) {
-        okExtra.textContent = 'El PDF va como enlace de descarga en el correo de la tienda.';
+        okExtra.textContent = status.partial
+          ? 'Copia de seguridad ≠ entrega a Gmail. Hasta configurar Web3Forms con el Gmail de la tienda, revisa Outlook o llama al local.'
+          : 'El PDF va como enlace de descarga en el correo de la tienda.';
         okExtra.classList.remove('hidden');
       }
       okEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

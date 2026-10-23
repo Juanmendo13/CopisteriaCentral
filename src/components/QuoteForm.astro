@@ -88,6 +88,7 @@ const inputClass = 'field-stamp';
 
 <script>
   import { sendShopWeb3Forms } from '../lib/client-web3forms';
+  import { shopNotifyClientStatus } from '../lib/shop-notify-ui';
 
   const form = document.getElementById('quote-form') as HTMLFormElement | null;
   const errorEl = document.getElementById('quote-error');
@@ -148,6 +149,10 @@ const inputClass = 'field-stamp';
         message?: string;
         mensaje?: string;
         via?: string;
+        primaryReady?: boolean;
+        backupOk?: boolean;
+        backupTo?: string;
+        intendedTo?: string;
         web3forms?: {
           accessKey: string;
           subject: string;
@@ -164,11 +169,16 @@ const inputClass = 'field-stamp';
       }
 
       const gmail = await sendShopWeb3Forms(result.web3forms);
+      const status = shopNotifyClientStatus(gmail.ok, result, 'presupuesto');
+      if (!status.ok && !status.partial) {
+        showError(status.text);
+        return;
+      }
       form.reset();
       if (okEl) {
-        okEl.textContent = gmail.ok
-          ? 'Presupuesto enviado a la tienda. Te responderemos por email o teléfono.'
-          : 'Presupuesto registrado con respaldo. Si no te llaman, escribe o llama al local.';
+        okEl.textContent = status.text;
+        okEl.classList.toggle('alert-stamp-ok', status.ok);
+        if (status.partial) okEl.classList.add('alert-stamp-ok');
       }
       okEl?.classList.remove('hidden');
     } catch {

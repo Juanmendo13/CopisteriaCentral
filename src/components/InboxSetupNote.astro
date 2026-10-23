@@ -1,0 +1,34 @@
+---
+import { site } from '../lib/site';
+
+/**
+ * Nota operativa (prototipo): Gmail solo recibe avisos si WEB3FORMS_ACCESS_KEY
+ * se creó en web3forms.com con ese correo. Resend → Outlook es solo copia de seguridad.
+ */
+---
+
+{
+  site.isPrototype && (
+    <aside class="mt-6 rounded-none border-[3px] border-brand/25 bg-white/80 px-4 py-3 text-sm text-ink leading-relaxed">
+      <p class="font-extrabold text-brand uppercase tracking-wide text-xs mb-1">Aviso de pedidos (Gmail)</p>
+      <p class="font-medium text-muted">
+        Los avisos deben llegar a <span class="font-bold text-ink">{site.inboxEmail}</span>.
+        Hoy el canal primario es Web3Forms: crea una Access Key en{' '}
+        <a
+          href="https://web3forms.com/"
+          class="font-bold text-brand underline decoration-2 underline-offset-2"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          web3forms.com
+        </a>{' '}
+        <strong>con ese Gmail</strong>, ponla en Vercel como <code class="text-xs">WEB3FORMS_ACCESS_KEY</code>,
+        marca <code class="text-xs">WEB3FORMS_GMAIL_READY=1</code> y redeploy.
+        Resend deja una <strong>copia de seguridad</strong> en Outlook de prueba; eso no cuenta como entrega a Gmail.
+      </p>
+      <p class="mt-2 text-xs font-semibold text-muted">
+        Detalle en <code class="text-[11px]">INSTRUCCIONES.md</code> del repo.
+      </p>
+    </aside>
+  )
+}

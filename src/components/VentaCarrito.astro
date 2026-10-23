@@ -119,7 +119,7 @@ const inputClass = 'field-stamp';
           site.isPrototype && (
             <>
               {' '}
-              Los pedidos llegan a {site.inboxEmail}.
+              Destino previsto: {site.inboxEmail} (Web3Forms). Outlook = copia de seguridad.
             </>
           )
         }
@@ -131,6 +131,7 @@ const inputClass = 'field-stamp';
 
 <script>
   import { sendShopWeb3Forms } from '../lib/client-web3forms';
+  import { shopNotifyClientStatus } from '../lib/shop-notify-ui';
 
   type CartLine = { id: string; cantidad: number };
   type CatalogItem = {
@@ -308,10 +309,10 @@ const inputClass = 'field-stamp';
       const data = await res.json();
       if (!res.ok || !data.ok || !data.web3forms) throw new Error(data.error || 'No se pudo enviar.');
       const gmail = await sendShopWeb3Forms(data.web3forms);
-      statusEl.className = 'text-sm text-emerald-700';
-      statusEl.textContent = gmail.ok
-        ? 'Solicitud enviada a la tienda. Te confirmaremos stock y precio.'
-        : 'Solicitud registrada con respaldo. Te contactaremos desde el local.';
+      const status = shopNotifyClientStatus(gmail.ok, data, 'venta');
+      if (!status.ok && !status.partial) throw new Error(status.text);
+      statusEl.className = status.ok ? 'text-sm text-emerald-700' : 'text-sm text-amber-800';
+      statusEl.textContent = status.text;
       statusEl.classList.remove('hidden');
       cart = [];
       render();

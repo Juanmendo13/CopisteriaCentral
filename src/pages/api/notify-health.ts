@@ -43,7 +43,13 @@ export const POST: APIRoute = async ({ request }) => {
     via: prepared.via,
     to: prepared.to,
     intendedTo: shopInbox(),
+    backupTo: prepared.backupTo,
+    primaryReady: prepared.primaryReady,
+    backupOk: prepared.backupOk,
     web3forms: prepared.web3forms,
     stamp,
+    note: prepared.primaryReady
+      ? 'Canal primario listo (WEB3FORMS_GMAIL_READY).'
+      : 'Gmail no confirmado: crea Access Key en web3forms.com con el Gmail de la tienda, actualiza WEB3FORMS_ACCESS_KEY, pon WEB3FORMS_GMAIL_READY=1 y redeploy. Resend → Outlook es solo copia de seguridad.',
   });
 };

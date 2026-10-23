@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import QuoteForm from '../components/QuoteForm.astro';
+import InboxSetupNote from '../components/InboxSetupNote.astro';
 import Doodle from '../components/Doodle.astro';
 import { site, whatsappLink } from '../lib/site';
 
@@ -37,6 +38,7 @@ const wa = whatsappLink('Hola Copistería Central — quería preguntaros algo.'
         <div class="border-[4px] border-brand bg-white p-6 sm:p-8 shadow-[8px_8px_0_rgba(0,45,98,0.28)]">
           <h2 class="font-display text-xl sm:text-2xl text-brand mb-5">Pedir presupuesto</h2>
           <QuoteForm />
+          <InboxSetupNote />
         </div>
 
         <div class="space-y-6">
