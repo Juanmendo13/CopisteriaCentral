@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
     ok: true,
     modo: result.modo,
     via: result.via,
-    formsubmit: result.formsubmit,
-    mensaje: 'Pedido preparado. Enviando aviso a la tienda…',
+    to: result.to,
+    mensaje: 'Pedido enviado a la tienda.',
   });
 };

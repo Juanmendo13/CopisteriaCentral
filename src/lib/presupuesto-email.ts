@@ -1,6 +1,6 @@
 import { formatEuro, getPrecioItem } from '../data/precios';
 import { getVentaItem } from '../data/venta';
-import { formSubmitPayload, notifyShopFallback } from './shop-notify';
+import { notifyShop } from './shop-notify';
 import { site } from './site';
 
 type CartCatalogItem = {
@@ -134,31 +134,29 @@ export async function enviarPresupuestoCarrito(
   | {
       ok: true;
       clienteDemo: boolean;
-      formsubmit: ReturnType<typeof formSubmitPayload>;
-      via?: string;
+      via: string;
+      to: string;
     }
   | { error: string }
 > {
   const subjectShop = `Presupuesto carrito · ${payload.nombre}`;
   const message = textoTienda(payload);
-  const formsubmit = formSubmitPayload({
+
+  const result = await notifyShop({
     subject: subjectShop,
     message,
     replyTo: payload.email,
     name: payload.nombre,
   });
 
-  const fallback = await notifyShopFallback({
-    subject: subjectShop,
-    message,
-    replyTo: payload.email,
-    intendedTo: formsubmit.to,
-  });
+  if ('error' in result) {
+    return { error: result.error };
+  }
 
   return {
     ok: true,
     clienteDemo: false,
-    formsubmit,
-    via: 'error' in fallback ? 'client-formsubmit-only' : fallback.via,
+    via: result.via,
+    to: result.to,
   };
 }

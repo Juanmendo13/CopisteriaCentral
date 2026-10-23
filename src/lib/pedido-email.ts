@@ -1,4 +1,4 @@
-import { formSubmitPayload, notifyShopFallback } from './shop-notify';
+import { notifyShop } from './shop-notify';
 import { site } from './site';
 
 export interface PedidoPayload {
@@ -101,8 +101,8 @@ export async function enviarPedidoResend(
   | {
       ok: true;
       modo: 'enlace';
-      formsubmit: ReturnType<typeof formSubmitPayload>;
-      via?: string;
+      via: string;
+      to: string;
     }
   | { error: string }
 > {
@@ -114,29 +114,16 @@ export async function enviarPedidoResend(
   ].join('\n');
   const message = pedidoTexto(pedido, extra);
 
-  const formsubmit = formSubmitPayload({
+  const result = await notifyShop({
     subject,
     message,
     replyTo: pedido.email,
     name: pedido.nombre,
   });
 
-  const fallback = await notifyShopFallback({
-    subject,
-    message,
-    replyTo: pedido.email,
-    intendedTo: formsubmit.to,
-  });
-
-  if ('error' in fallback) {
-    // Aun si falla el respaldo, devolvemos formsubmit para el cliente.
-    return {
-      ok: true,
-      modo: 'enlace',
-      formsubmit,
-      via: 'client-formsubmit-only',
-    };
+  if ('error' in result) {
+    return { error: result.error };
   }
 
-  return { ok: true, modo: 'enlace', formsubmit, via: fallback.via };
+  return { ok: true, modo: 'enlace', via: result.via, to: result.to };
 }

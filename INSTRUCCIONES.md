@@ -22,9 +22,14 @@ Clonado y adaptado desde `a0-impresiones`. Marca, dirección, teléfono, horario
 
 Buzón: `bellamorenoeugenio820@gmail.com` (`PEDIDOS_EMAIL` / `site.inboxEmail`).
 
-Resend en modo `onboarding@resend.dev` **no puede** enviar a Gmail (403). Por eso:
+Resend con `onboarding@resend.dev` **no puede** enviar a Gmail (403). FormSubmit quedó descartado: el enlace “Activate Form” suele caducar o invalidarse (Gmail lo previsualiza) y responde “Not a valid link”.
 
-1. El **navegador** envía el aviso con **FormSubmit** a ese Gmail (sí puede, porque manda `Origin` del sitio).
-2. El **servidor** deja una copia de respaldo en el buzón de prueba Resend (`pizzeriaformula1@outlook.es`) por si FormSubmit aún no está activado.
+**Camino actual (primario):** Web3Forms → Gmail ligado a `WEB3FORMS_ACCESS_KEY`.
 
-**Un solo paso la primera vez:** en Gmail, abrir el correo de FormSubmit (“Activate Form” / “Action Required”) y pulsar el enlace (revisar Spam / Promociones). Después, FormSubmit responde `success: true` y los pedidos llegan al Gmail.
+1. Abre https://web3forms.com/
+2. Create Access Key con `bellamorenoeugenio820@gmail.com`
+3. Copia la key del correo (revisa Spam)
+4. En Vercel → Project → Settings → Environment Variables, pon `WEB3FORMS_ACCESS_KEY` (Production / Preview / Development) y redeploy
+5. Prueba: `POST https://copisteria-central.vercel.app/api/notify-health` → debe devolver `"via":"web3forms"`
+
+**Respaldo:** Resend deja copia en `pizzeriaformula1@outlook.es` si Web3Forms falla.

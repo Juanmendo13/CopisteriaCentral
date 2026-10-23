@@ -1,7 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { formSubmitPayload, notifyShopFallback } from '../../lib/shop-notify';
+import { notifyShop } from '../../lib/shop-notify';
 import { site } from '../../lib/site';
 
 function asString(value: unknown): string {
@@ -53,24 +53,21 @@ export const POST: APIRoute = async ({ request }) => {
     .join('\n');
 
   const subject = `Presupuesto · ${nombre}${servicio ? ` · ${servicio}` : ''}`;
-  const formsubmit = formSubmitPayload({
+  const result = await notifyShop({
     subject,
     message: lines,
     replyTo: email,
     name: nombre,
   });
 
-  const fallback = await notifyShopFallback({
-    subject,
-    message: lines,
-    replyTo: email,
-    intendedTo: formsubmit.to,
-  });
+  if ('error' in result) {
+    return Response.json({ error: result.error }, { status: 502 });
+  }
 
   return Response.json({
     ok: true,
-    via: 'error' in fallback ? 'client-formsubmit-only' : fallback.via,
-    formsubmit,
-    mensaje: 'Presupuesto preparado. Enviando aviso a la tienda…',
+    via: result.via,
+    to: result.to,
+    mensaje: 'Presupuesto enviado a la tienda.',
   });
 };
