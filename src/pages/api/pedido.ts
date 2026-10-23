@@ -30,9 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
     ok: true,
     modo: result.modo,
     via: result.via,
-    needsActivation: result.needsActivation ?? false,
-    mensaje: result.needsActivation
-      ? 'Pedido recibido (respaldo). Activa FormSubmit en el Gmail de la tienda (correo “Activate Form”) para que los siguientes lleguen solo ahí.'
-      : 'Pedido enviado. La tienda recibe el aviso con el enlace al archivo.',
+    formsubmit: result.formsubmit,
+    mensaje: 'Pedido preparado. Enviando aviso a la tienda…',
   });
 };

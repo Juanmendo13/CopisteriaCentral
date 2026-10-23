@@ -22,8 +22,9 @@ Clonado y adaptado desde `a0-impresiones`. Marca, dirección, teléfono, horario
 
 Buzón: `bellamorenoeugenio820@gmail.com` (`PEDIDOS_EMAIL` / `site.inboxEmail`).
 
-Los avisos (pedido con PDF, carrito, presupuesto contacto) van por **FormSubmit** a ese Gmail.
-No hace falta dominio verificado en Resend.
+Resend en modo `onboarding@resend.dev` **no puede** enviar a Gmail (403). Por eso:
 
-**Un solo paso la primera vez:** FormSubmit manda un correo “Activate Form” / “Action Required” a ese Gmail.
-Hay que abrir el enlace una vez (revisar Spam / Promociones). Después, los envíos responden `success: true` y llegan al inbox.
+1. El **navegador** envía el aviso con **FormSubmit** a ese Gmail (sí puede, porque manda `Origin` del sitio).
+2. El **servidor** deja una copia de respaldo en el buzón de prueba Resend (`pizzeriaformula1@outlook.es`) por si FormSubmit aún no está activado.
+
+**Un solo paso la primera vez:** en Gmail, abrir el correo de FormSubmit (“Activate Form” / “Action Required”) y pulsar el enlace (revisar Spam / Promociones). Después, FormSubmit responde `success: true` y los pedidos llegan al Gmail.

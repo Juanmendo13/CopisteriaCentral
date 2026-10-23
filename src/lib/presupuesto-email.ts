@@ -1,6 +1,6 @@
 import { formatEuro, getPrecioItem } from '../data/precios';
 import { getVentaItem } from '../data/venta';
-import { notifyShop } from './shop-notify';
+import { formSubmitPayload, notifyShopFallback } from './shop-notify';
 import { site } from './site';
 
 type CartCatalogItem = {
@@ -131,27 +131,34 @@ function textoTienda(payload: PresupuestoCarritoPayload): string {
 export async function enviarPresupuestoCarrito(
   payload: PresupuestoCarritoPayload,
 ): Promise<
-  { ok: true; clienteDemo: boolean; needsActivation?: boolean; via?: string } | { error: string }
+  | {
+      ok: true;
+      clienteDemo: boolean;
+      formsubmit: ReturnType<typeof formSubmitPayload>;
+      via?: string;
+    }
+  | { error: string }
 > {
   const subjectShop = `Presupuesto carrito · ${payload.nombre}`;
-
-  const shop = await notifyShop({
+  const message = textoTienda(payload);
+  const formsubmit = formSubmitPayload({
     subject: subjectShop,
-    message: textoTienda(payload),
+    message,
     replyTo: payload.email,
     name: payload.nombre,
   });
 
-  if ('error' in shop) {
-    return { error: shop.error };
-  }
+  const fallback = await notifyShopFallback({
+    subject: subjectShop,
+    message,
+    replyTo: payload.email,
+    intendedTo: formsubmit.to,
+  });
 
-  // Sin dominio de envío verificado no mandamos confirmación al cliente;
-  // la tienda responde por teléfono/email.
   return {
     ok: true,
     clienteDemo: false,
-    via: shop.via,
-    ...(shop.needsActivation ? { needsActivation: true } : {}),
+    formsubmit,
+    via: 'error' in fallback ? 'client-formsubmit-only' : fallback.via,
   };
 }

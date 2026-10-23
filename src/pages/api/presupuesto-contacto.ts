@@ -1,7 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { notifyShop } from '../../lib/shop-notify';
+import { formSubmitPayload, notifyShopFallback } from '../../lib/shop-notify';
 import { site } from '../../lib/site';
 
 function asString(value: unknown): string {
@@ -52,23 +52,25 @@ export const POST: APIRoute = async ({ request }) => {
     .filter((line) => line !== '')
     .join('\n');
 
-  const result = await notifyShop({
-    subject: `Presupuesto · ${nombre}${servicio ? ` · ${servicio}` : ''}`,
+  const subject = `Presupuesto · ${nombre}${servicio ? ` · ${servicio}` : ''}`;
+  const formsubmit = formSubmitPayload({
+    subject,
     message: lines,
     replyTo: email,
     name: nombre,
   });
 
-  if ('error' in result) {
-    return Response.json({ error: result.error, needsActivation: result.needsActivation }, { status: 502 });
-  }
+  const fallback = await notifyShopFallback({
+    subject,
+    message: lines,
+    replyTo: email,
+    intendedTo: formsubmit.to,
+  });
 
   return Response.json({
     ok: true,
-    via: result.via,
-    needsActivation: result.needsActivation ?? false,
-    mensaje: result.needsActivation
-      ? 'Presupuesto recibido (respaldo). Activa FormSubmit en el Gmail de la tienda para entrega directa.'
-      : 'Presupuesto enviado. Te responderemos por email o teléfono.',
+    via: 'error' in fallback ? 'client-formsubmit-only' : fallback.via,
+    formsubmit,
+    mensaje: 'Presupuesto preparado. Enviando aviso a la tienda…',
   });
 };

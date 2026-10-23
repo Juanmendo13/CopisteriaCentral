@@ -1,5 +1,4 @@
-import { RESEND_ATTACH_BYTES } from '../data/formatos';
-import { notifyShop } from './shop-notify';
+import { formSubmitPayload, notifyShopFallback } from './shop-notify';
 import { site } from './site';
 
 export interface PedidoPayload {
@@ -99,33 +98,45 @@ export function pedidoTexto(pedido: PedidoPayload, extra?: string): string {
 export async function enviarPedidoResend(
   pedido: PedidoPayload,
 ): Promise<
-  { ok: true; modo: 'adjunto' | 'enlace'; needsActivation?: boolean; via?: string } | { error: string }
+  | {
+      ok: true;
+      modo: 'enlace';
+      formsubmit: ReturnType<typeof formSubmitPayload>;
+      via?: string;
+    }
+  | { error: string }
 > {
   const subject = `Pedido impresión · ${pedido.formato} · ${pedido.nombre}`;
-  const modo: 'adjunto' | 'enlace' =
-    pedido.archivoSize <= RESEND_ATTACH_BYTES ? 'adjunto' : 'enlace';
-
   const extra = [
     'El archivo está en este enlace (Vercel Blob):',
     `Nombre: ${pedido.archivoNombre}`,
     `URL: ${pedido.archivoUrl}`,
   ].join('\n');
+  const message = pedidoTexto(pedido, extra);
 
-  const result = await notifyShop({
+  const formsubmit = formSubmitPayload({
     subject,
-    message: pedidoTexto(pedido, extra),
+    message,
     replyTo: pedido.email,
     name: pedido.nombre,
   });
 
-  if ('error' in result) {
-    return { error: result.error };
+  const fallback = await notifyShopFallback({
+    subject,
+    message,
+    replyTo: pedido.email,
+    intendedTo: formsubmit.to,
+  });
+
+  if ('error' in fallback) {
+    // Aun si falla el respaldo, devolvemos formsubmit para el cliente.
+    return {
+      ok: true,
+      modo: 'enlace',
+      formsubmit,
+      via: 'client-formsubmit-only',
+    };
   }
 
-  return {
-    ok: true,
-    modo: 'enlace',
-    via: result.via,
-    ...(result.needsActivation ? { needsActivation: true } : {}),
-  };
+  return { ok: true, modo: 'enlace', formsubmit, via: fallback.via };
 }

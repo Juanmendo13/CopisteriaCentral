@@ -130,6 +130,8 @@ const inputClass = 'field-stamp';
 </div>
 
 <script>
+  import { sendShopFormSubmit } from '../lib/client-formsubmit';
+
   type CartLine = { id: string; cantidad: number };
   type CatalogItem = {
     id: string;
@@ -304,9 +306,14 @@ const inputClass = 'field-stamp';
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'No se pudo enviar.');
+      if (!res.ok || !data.formsubmit) throw new Error(data.error || 'No se pudo enviar.');
+      const gmail = await sendShopFormSubmit(data.formsubmit);
       statusEl.className = 'text-sm text-emerald-700';
-      statusEl.textContent = data.mensaje || 'Solicitud enviada.';
+      statusEl.textContent = gmail.ok
+        ? 'Solicitud enviada a la tienda. Te confirmaremos stock y precio.'
+        : gmail.needsActivation
+          ? gmail.error
+          : 'Solicitud registrada con respaldo. Te contactaremos desde el local.';
       statusEl.classList.remove('hidden');
       cart = [];
       render();

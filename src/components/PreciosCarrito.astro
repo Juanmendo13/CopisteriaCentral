@@ -125,6 +125,8 @@ const inputClass =
 </div>
 
 <script>
+  import { sendShopFormSubmit } from '../lib/client-formsubmit';
+
   type CartLine = { id: string; cantidad: number };
   type CatalogItem = {
     id: string;
@@ -294,9 +296,14 @@ const inputClass =
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'No se pudo enviar.');
+      if (!res.ok || !data.formsubmit) throw new Error(data.error || 'No se pudo enviar.');
+      const gmail = await sendShopFormSubmit(data.formsubmit);
       statusEl.className = 'text-sm text-emerald-700';
-      statusEl.textContent = data.mensaje || 'Presupuesto enviado. Revisa tu correo.';
+      statusEl.textContent = gmail.ok
+        ? 'Presupuesto enviado a la tienda. Te confirmaremos por teléfono o email.'
+        : gmail.needsActivation
+          ? gmail.error
+          : 'Presupuesto registrado con respaldo. Te contactaremos desde el local.';
       statusEl.classList.remove('hidden');
       cart = [];
       render();
