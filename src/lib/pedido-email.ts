@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import { RESEND_ATTACH_BYTES } from '../data/formatos';
+import { formatResendError } from './resend-errors';
 import { site } from './site';
 
 export interface PedidoPayload {
@@ -138,7 +139,9 @@ export async function enviarPedidoResend(
       ],
     });
 
-    if (error) return { error: error.message || 'Resend no pudo enviar el pedido.' };
+    if (error) {
+      return { error: formatResendError(error.message, 'Resend no pudo enviar el pedido.') };
+    }
     return { ok: true, modo: 'adjunto' };
   }
 
@@ -158,6 +161,8 @@ export async function enviarPedidoResend(
     ),
   });
 
-  if (error) return { error: error.message || 'Resend no pudo enviar el pedido.' };
+  if (error) {
+    return { error: formatResendError(error.message, 'Resend no pudo enviar el pedido.') };
+  }
   return { ok: true, modo: 'enlace' };
 }

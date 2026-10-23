@@ -19,6 +19,10 @@ Clonado y adaptado desde `a0-impresiones`. Marca, dirección, teléfono, horario
 - Qué servicios ofrecen de verdad (gran formato, plotter, etc.).
 - Precios del mostrador.
 
-## Demo
+## Demo / Resend
 
-Formularios van al buzón demo (`PEDIDOS_EMAIL`) hasta producción.
+Formularios van al buzón `PEDIDOS_EMAIL` (hoy `pizzeriaformula1@outlook.es`).
+
+Con `RESEND_FROM=…<onboarding@resend.dev>` Resend solo entrega a ese email de prueba.
+Para `bellamorenoeugenio820@gmail.com`: verifica dominio en https://resend.com/domains,
+cambia `RESEND_FROM` a ese dominio y pon `PEDIDOS_EMAIL` al Gmail.

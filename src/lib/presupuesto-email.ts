@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import { formatEuro, getPrecioItem } from '../data/precios';
 import { getVentaItem } from '../data/venta';
+import { formatResendError } from './resend-errors';
 import { site } from './site';
 
 type CartCatalogItem = {
@@ -186,7 +187,9 @@ export async function enviarPresupuestoCarrito(
     text: textoTienda(payload),
   });
   if (shop.error) {
-    return { error: shop.error.message || 'No se pudo avisar a la tienda.' };
+    return {
+      error: formatResendError(shop.error.message, 'No se pudo avisar a la tienda.'),
+    };
   }
 
   const canEmailClient =
@@ -205,9 +208,10 @@ export async function enviarPresupuestoCarrito(
   });
   if (client.error) {
     return {
-      error:
-        client.error.message ||
+      error: formatResendError(
+        client.error.message,
         'El aviso a la tienda salió, pero no se pudo enviar el correo de confirmación.',
+      ),
     };
   }
 
