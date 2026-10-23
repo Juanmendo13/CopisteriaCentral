@@ -1,9 +1,13 @@
 /**
  * Catálogo de venta en vivo (Vercel Blob JSON) con fallback al catálogo estático.
- * Pathname fijo: catalog/venta.json
+ *
+ * Public Blob stores ignore `useCache: false`, so overwriting a single pathname can
+ * serve stale JSON from the CDN for up to ~60s. We write immutable versioned files
+ * under `catalog/versions/` and discover the latest via `list()` (Blob API, not CDN).
+ * `catalog/venta.json` is kept as a legacy mirror for debugging / older deploys.
  */
 
-import { get, put } from '@vercel/blob';
+import { del, get, list, put } from '@vercel/blob';
 import {
   venta as staticVenta,
   ventaCategorias as staticCategorias,
@@ -13,7 +17,14 @@ import {
 import { getVentaImage } from '../data/venta-images';
 
 export const CATALOG_BLOB_PATH = 'catalog/venta.json';
+export const CATALOG_VERSION_PREFIX = 'catalog/versions/venta-';
+const CATALOG_VERSIONS_TO_KEEP = 8;
 export const PLACEHOLDER_IMAGE = '/venta/_placeholder.svg';
+
+type CatalogReadResult =
+  | { status: 'ok'; catalog: VentaCatalogFile }
+  | { status: 'missing' }
+  | { status: 'error'; error: unknown };
 
 export type CatalogProduct = VentaItem & {
   /**
@@ -129,16 +140,77 @@ function parseCatalogJson(text: string): VentaCatalogFile | null {
   }
 }
 
+async function fetchCatalogJson(urlOrPathname: string): Promise<VentaCatalogFile | null> {
+  // Prefer direct URL fetch with a cache-buster; pathname get() for public blobs is CDN-backed.
+  if (/^https?:\/\//i.test(urlOrPathname)) {
+    const sep = urlOrPathname.includes('?') ? '&' : '?';
+    const res = await fetch(`${urlOrPathname}${sep}cb=${Date.now()}`, {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' },
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`No se pudo leer el catálogo (${res.status}).`);
+    return parseCatalogJson(await res.text());
+  }
+
+  const result = await get(urlOrPathname, { access: 'public' });
+  if (!result) return null;
+  if (result.statusCode !== 200 || !result.stream) return null;
+  return parseCatalogJson(await new Response(result.stream).text());
+}
+
+async function readLatestVersionedCatalog(): Promise<VentaCatalogFile | null> {
+  const { blobs } = await list({ prefix: CATALOG_VERSION_PREFIX });
+  const versions = blobs.filter(
+    (b) => b.pathname.startsWith(CATALOG_VERSION_PREFIX) && b.pathname.endsWith('.json'),
+  );
+  if (versions.length === 0) return null;
+  const latest = versions.reduce((a, b) => (a.uploadedAt >= b.uploadedAt ? a : b));
+  return fetchCatalogJson(latest.url);
+}
+
+/**
+ * Lee el catálogo desde Blob.
+ * - null: no hay catálogo (404 / vacío) — seguro sembrar
+ * - throws: error de red/API — NO sembrar encima (evitar borrar productos del admin)
+ */
 export async function readCatalogFromBlob(): Promise<VentaCatalogFile | null> {
-  if (!hasBlobToken()) return null;
+  const result = await readCatalogFromBlobDetailed();
+  if (result.status === 'ok') return result.catalog;
+  if (result.status === 'missing') return null;
+  throw result.error instanceof Error ? result.error : new Error('No se pudo leer el catálogo.');
+}
+
+export async function readCatalogFromBlobDetailed(): Promise<CatalogReadResult> {
+  if (!hasBlobToken()) return { status: 'missing' };
   try {
-    // Store del proyecto es público (mismo que PDFs de pedido).
-    const result = await get(CATALOG_BLOB_PATH, { access: 'public', useCache: false });
-    if (!result || result.statusCode !== 200 || !result.stream) return null;
-    const text = await new Response(result.stream).text();
-    return parseCatalogJson(text);
+    const versioned = await readLatestVersionedCatalog();
+    if (versioned && versioned.products.length > 0) {
+      return { status: 'ok', catalog: versioned };
+    }
+
+    // Legacy mirror (pre-versioned deploys).
+    const legacy = await fetchCatalogJson(CATALOG_BLOB_PATH);
+    if (legacy && legacy.products.length > 0) {
+      return { status: 'ok', catalog: legacy };
+    }
+    return { status: 'missing' };
+  } catch (error) {
+    return { status: 'error', error };
+  }
+}
+
+async function pruneOldCatalogVersions(): Promise<void> {
+  try {
+    const { blobs } = await list({ prefix: CATALOG_VERSION_PREFIX });
+    const versions = blobs
+      .filter((b) => b.pathname.startsWith(CATALOG_VERSION_PREFIX) && b.pathname.endsWith('.json'))
+      .sort((a, b) => b.uploadedAt.getTime() - a.uploadedAt.getTime());
+    const stale = versions.slice(CATALOG_VERSIONS_TO_KEEP);
+    if (stale.length === 0) return;
+    await del(stale.map((b) => b.url));
   } catch {
-    return null;
+    // Best-effort cleanup; never fail a save because of pruning.
   }
 }
 
@@ -151,13 +223,27 @@ export async function writeCatalogToBlob(catalog: VentaCatalogFile): Promise<voi
     updatedAt: nowIso(),
     products: catalog.products,
   };
-  await put(CATALOG_BLOB_PATH, JSON.stringify(body, null, 2), {
+  const payload = JSON.stringify(body, null, 2);
+  const versionPath = `${CATALOG_VERSION_PREFIX}${Date.now()}.json`;
+
+  // Immutable version → CDN may cache forever; list() always finds the newest pathname.
+  await put(versionPath, payload, {
+    access: 'public',
+    addRandomSuffix: false,
+    contentType: 'application/json',
+    cacheControlMaxAge: 60 * 60 * 24 * 30,
+  });
+
+  // Legacy mirror for older readers / manual inspection (may lag up to ~60s on CDN).
+  await put(CATALOG_BLOB_PATH, payload, {
     access: 'public',
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType: 'application/json',
     cacheControlMaxAge: 60,
   });
+
+  await pruneOldCatalogVersions();
 }
 
 /** Catálogo admin (incluye desactivados). Si Blob vacío → semilla estática en memoria (no escribe hasta guardar). */
@@ -166,14 +252,17 @@ export async function loadAdminCatalog(): Promise<{
   source: CatalogSource;
   seeded: boolean;
 }> {
-  const fromBlob = await readCatalogFromBlob();
-  if (fromBlob && fromBlob.products.length > 0) {
-    return { catalog: fromBlob, source: 'blob', seeded: false };
+  const result = await readCatalogFromBlobDetailed();
+  if (result.status === 'error') {
+    throw result.error instanceof Error ? result.error : new Error('No se pudo leer el catálogo.');
+  }
+  if (result.status === 'ok') {
+    return { catalog: result.catalog, source: 'blob', seeded: false };
   }
   const products = staticToCatalogProducts({ withRandomStock: true });
   return {
     catalog: { version: 1, updatedAt: nowIso(), products },
-    source: fromBlob ? 'blob' : 'static',
+    source: 'static',
     seeded: true,
   };
 }
@@ -213,13 +302,17 @@ export function backfillMissingRandomStock(catalog: VentaCatalogFile): {
 /**
  * Si el Blob no tiene catálogo, lo siembra desde el estático con stock aleatorio.
  * Si hay catálogo pero faltan stocks numéricos, rellena y persiste.
+ * Nunca siembra encima si la lectura falla (protegería mal productos del admin).
  */
 export async function ensureCatalogSeeded(): Promise<VentaCatalogFile> {
-  const fromBlob = await readCatalogFromBlob();
-  if (!fromBlob || fromBlob.products.length === 0) {
+  const result = await readCatalogFromBlobDetailed();
+  if (result.status === 'error') {
+    throw result.error instanceof Error ? result.error : new Error('No se pudo leer el catálogo.');
+  }
+  if (result.status === 'missing') {
     return seedCatalogFromStatic();
   }
-  const { catalog, changed } = backfillMissingRandomStock(fromBlob);
+  const { catalog, changed } = backfillMissingRandomStock(result.catalog);
   if (changed) {
     await writeCatalogToBlob(catalog);
   }
@@ -354,10 +447,13 @@ export async function loadPublicCatalog(): Promise<{
     try {
       fromBlob = await ensureCatalogSeeded();
     } catch {
-      fromBlob = await readCatalogFromBlob();
+      // Read/seed failed: try a non-destructive read; never wipe Blob from a public page.
+      const fallback = await readCatalogFromBlobDetailed();
+      if (fallback.status === 'ok') fromBlob = fallback.catalog;
     }
   } else {
-    fromBlob = await readCatalogFromBlob();
+    const fallback = await readCatalogFromBlobDetailed();
+    if (fallback.status === 'ok') fromBlob = fallback.catalog;
   }
 
   if (fromBlob && fromBlob.products.length > 0) {

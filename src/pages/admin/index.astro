@@ -130,7 +130,7 @@ const hintUser = adminUsername();
 
             <section id="admin-form-wrap" class="hidden rounded-sm border-2 border-accent bg-accent-soft p-4 shadow-[3px_3px_0_rgba(0,45,98,0.12)]">
               <h3 class="font-display text-lg text-brand" id="form-title">Nuevo producto</h3>
-              <form id="admin-product-form" class="mt-4 grid gap-3 sm:grid-cols-2">
+              <form id="admin-product-form" class="mt-4 grid gap-3 sm:grid-cols-2" novalidate>
                 <input type="hidden" name="id" id="f-id" />
                 <label class="block text-xs font-black uppercase tracking-wide text-brand sm:col-span-2">
                   Nombre
@@ -177,10 +177,13 @@ const hintUser = adminUsername();
                     id="f-image"
                     type="text"
                     inputmode="url"
-                    placeholder="https://… o /venta/…"
-                    pattern="https://.+|/.*"
-                    title="Ruta relativa (/venta/…) o URL https://"
+                    placeholder="https://… o /venta/v-boli-bic.jpg"
+                    autocomplete="off"
+                    spellcheck="false"
                   />
+                  <span class="mt-1 block text-[11px] font-medium normal-case tracking-normal text-muted">
+                    Ruta relativa (<code class="text-[10px]">/venta/…</code>) o URL <code class="text-[10px]">https://</code>. Vacío = placeholder.
+                  </span>
                 </label>
                 <div class="sm:col-span-2 flex flex-wrap items-center gap-3">
                   <label class="text-xs font-black uppercase tracking-wide text-brand">
@@ -477,23 +480,56 @@ const hintUser = adminUsername();
       }
     });
 
+    function isAllowedImageUrl(value: string): boolean {
+      const v = value.trim();
+      if (!v) return true;
+      if (v.startsWith('/') && !v.startsWith('//')) return true;
+      try {
+        const u = new URL(v);
+        return u.protocol === 'https:';
+      } catch {
+        return false;
+      }
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       setFormMessage(null, null);
       const id = (document.getElementById('f-id') as HTMLInputElement).value.trim();
+      const nombre = (document.getElementById('f-nombre') as HTMLInputElement).value.trim();
+      const categoria = (document.getElementById('f-categoria') as HTMLInputElement).value.trim();
       const stockRaw = (document.getElementById('f-stock') as HTMLInputElement).value.trim();
       const precioRaw = (document.getElementById('f-precio') as HTMLInputElement).value.trim();
       const modo = (document.getElementById('f-modo') as HTMLSelectElement).value as 'fijo' | 'consultar';
+      const image = (document.getElementById('f-image') as HTMLInputElement).value.trim();
+
+      if (nombre.length < 2) {
+        setFormMessage(null, 'El nombre es obligatorio (mín. 2 caracteres).');
+        return;
+      }
+      if (!categoria) {
+        setFormMessage(null, 'La categoría es obligatoria.');
+        return;
+      }
+      if (modo === 'fijo' && precioRaw === '') {
+        setFormMessage(null, 'Indica un precio o marca «Consultar».');
+        return;
+      }
+      if (!isAllowedImageUrl(image)) {
+        setFormMessage(null, 'La imagen debe ser una ruta relativa (/…) o una URL https://.');
+        return;
+      }
+
       const payload = {
-        nombre: (document.getElementById('f-nombre') as HTMLInputElement).value,
+        nombre,
         descripcion: (document.getElementById('f-descripcion') as HTMLTextAreaElement).value,
-        categoria: (document.getElementById('f-categoria') as HTMLInputElement).value,
+        categoria,
         unidad: (document.getElementById('f-unidad') as HTMLInputElement).value,
         modo,
         precio: modo === 'consultar' ? null : precioRaw === '' ? null : Number(precioRaw),
         stock: stockRaw === '' ? null : Number(stockRaw),
         activo: (document.getElementById('f-activo') as HTMLInputElement).checked,
-        image: (document.getElementById('f-image') as HTMLInputElement).value.trim(),
+        image,
       };
       try {
         if (id) {
@@ -504,7 +540,7 @@ const hintUser = adminUsername();
         } else {
           await api('/api/admin/products', { method: 'POST', body: JSON.stringify(payload) });
         }
-        setFormMessage('Guardado.', null);
+        setFormMessage('Guardado. Visible en /venta si está activo.', null);
         formWrap.classList.add('hidden');
         await load();
       } catch (ex) {
