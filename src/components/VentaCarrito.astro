@@ -79,13 +79,16 @@ const inputClass =
     }
   </div>
 
-  <aside class="lg:sticky lg:top-28 border border-line bg-white p-5">
+  <aside
+    class="lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100svh-6rem)] lg:overflow-y-auto border border-line bg-white p-5"
+    aria-label="Lista de compra"
+  >
     <div class="flex items-center justify-between gap-2 mb-4 border-b border-line pb-3">
       <h2 class="font-display text-lg font-black text-ink tracking-tight">Lista de compra</h2>
       <span id="cart-count" class="bg-brand text-accent px-2.5 py-0.5 text-xs font-black">0</span>
     </div>
 
-    <ul id="cart-lines" class="space-y-3 text-sm max-h-64 overflow-y-auto"></ul>
+    <ul id="cart-lines" class="space-y-3 text-sm max-h-48 overflow-y-auto"></ul>
     <p id="cart-empty" class="text-sm text-muted font-medium">Aún no has añadido nada.</p>
 
     <div class="mt-4 border-t border-line pt-4 space-y-1 text-sm">
