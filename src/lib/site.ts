@@ -1,9 +1,9 @@
 export const site = {
   name: 'Copistería Central',
   shortName: 'CC',
-  tagline: 'Copistería en Reina Mercedes',
+  tagline: 'El mostrador de Reina Mercedes',
   description:
-    'Copistería en Sevilla, Av. Reina Mercedes 41: fotocopias, impresión, encuadernación, plastificados y papelería junto al campus universitario.',
+    'Copistería Central, Local B de Reina Mercedes: fotocopias, color, espiral y papelería a un paso del campus, con horario de barrio.',
   /** Titular y CIF pendientes de confirmar con el local. */
   titular: 'Copistería Central',
   cif: 'Pendiente',

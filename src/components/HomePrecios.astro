@@ -18,9 +18,9 @@ const destacados = [
   <div class="max-w-6xl mx-auto">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
       <SectionHeader
-        eyebrow="Precios"
-        title="Lo básico, a la vista"
-        description="Orientativos de mostrador. El resto se confirma en el local."
+        eyebrow="Tarifa de puerta"
+        title="Lo básico, escrito a la vista"
+        description="Precios de mostrador, para que no preguntes a ciegas. El resto se confirma en el local."
       />
       <a href="/precios" class="btn-accent shrink-0 inline-flex items-center px-4 py-2 text-sm self-start">
         Ver tarifas
@@ -32,7 +32,7 @@ const destacados = [
         destacados.map((item) => (
           <a
             href="/precios"
-            class="rounded-xl border border-line bg-white px-4 py-4 hover:border-brand/25 transition"
+            class="price-ticket block border border-line px-4 py-4 hover:border-brand/30 transition"
           >
             <p class="text-xs text-muted mb-1">{item.categoria}</p>
             <h3 class="font-semibold text-ink text-[15px] leading-snug">

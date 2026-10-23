@@ -2,20 +2,23 @@
 import { site } from '../lib/site';
 ---
 
-<section class="bg-brand-dark/95 text-white/80">
-  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-x-8 sm:gap-y-2 text-sm">
+<section class="border-b border-line bg-paper">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-x-7 sm:gap-y-2 text-sm">
     <p>
-      <span class="text-white/45">Dónde · </span>
-      <span class="text-white font-medium">{site.landmark}</span>
+      <span class="font-display italic text-brand">Dónde</span>
+      <span class="mx-2 text-line">/</span>
+      <span class="text-ink">{site.landmark}</span>
     </p>
     <p>
-      <span class="text-white/45">Horario · </span>
-      <span class="text-white font-medium">L–J 9:00–20:30</span>
-      <span class="text-white/45"> · Sáb 9:30–13:30</span>
+      <span class="font-display italic text-brand">Puerta</span>
+      <span class="mx-2 text-line">/</span>
+      <span class="text-ink">L–J hasta las 20:30</span>
+      <span class="text-muted"> · sábados por la mañana</span>
     </p>
     <p>
-      <span class="text-white/45">Tel. · </span>
-      <a href={site.phoneHref} class="text-accent font-medium hover:underline">{site.phone}</a>
+      <span class="font-display italic text-brand">Mostrador</span>
+      <span class="mx-2 text-line">/</span>
+      <a href={site.phoneHref} class="font-semibold text-ink hover:text-brand">{site.phone}</a>
     </p>
   </div>
 </section>

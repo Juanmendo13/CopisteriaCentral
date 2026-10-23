@@ -1,6 +1,7 @@
 ---
 import { site } from '../lib/site';
 import PrototypeBanner from './PrototypeBanner.astro';
+import ShopMark from './ShopMark.astro';
 import { heroAlt, heroImage } from '../data/galeria';
 
 const links = [
@@ -19,12 +20,7 @@ const current = Astro.url.pathname;
   <PrototypeBanner />
   <div class="bg-brand">
     <div class="max-w-6xl mx-auto px-5 sm:px-8 h-14 md:h-[3.75rem] flex items-center justify-between gap-4">
-      <a href="/" class="flex items-center gap-2.5 shrink-0">
-        <span class="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-brand text-xs font-bold">
-          {site.shortName}
-        </span>
-        <span class="text-[15px] font-semibold text-white tracking-tight">Copistería Central</span>
-      </a>
+      <ShopMark />
 
       <nav class="hidden lg:flex items-center gap-1 text-sm font-medium">
         {
@@ -83,46 +79,50 @@ const current = Astro.url.pathname;
       </nav>
     </div>
   </div>
+  <div class="shop-rule" aria-hidden="true"></div>
 </header>
 
-<section class="relative flex flex-col lg:flex-row lg:min-h-[72vh]">
-  <div class="relative z-10 flex flex-col justify-center bg-brand text-white lg:w-[45%] px-5 sm:px-8 lg:px-12 py-14 lg:py-20">
-    <p class="text-sm text-accent/90 mb-4 font-medium">
-      Av. Reina Mercedes 41, Sevilla
-    </p>
-    <h1 class="font-display text-[2.2rem] sm:text-4xl xl:text-[2.85rem] font-bold leading-[1.12] tracking-tight">
-      La copistería de siempre, junto al campus
+<section class="relative flex flex-col lg:flex-row lg:min-h-[74vh]">
+  <div class="relative z-10 flex flex-col justify-center bg-brand text-white lg:w-[46%] px-5 sm:px-8 lg:px-12 py-14 lg:py-20">
+    <p class="stamp text-accent mb-5 w-fit">Local B · Reina Mercedes</p>
+    <h1 class="font-display text-[2.35rem] sm:text-[2.7rem] xl:text-[3.15rem] font-semibold leading-[1.08] tracking-tight">
+      La copistería de la avenida, <span class="marker text-white">la de siempre</span>
     </h1>
-    <p class="mt-5 text-base text-white/70 leading-relaxed max-w-md">
-      Fotocopias, impresión, encuadernación y papelería. Si vienes con prisas, aquí te atendemos sin complicaciones.
+    <p class="mt-5 text-base text-white/75 leading-relaxed max-w-md">
+      Cruzas del campus y ya estás en el mostrador. Fotocopias, color, espiral, plastificado y el boli que se te olvidó antes de clase.
     </p>
 
     <div class="mt-8 flex flex-wrap gap-3">
       <a href="/pedido" class="btn-primary inline-flex items-center px-5 py-3 text-sm">
-        Enviar PDF
+        Traer el PDF
       </a>
       <a href="/venta" class="btn-secondary inline-flex items-center px-5 py-3 text-sm text-white">
-        Ver papelería
+        Papelería del local
       </a>
     </div>
 
-    <p class="mt-8 text-sm text-white/60 leading-relaxed max-w-sm">
-      Abrimos pronto y cerramos tarde · precios de barrio · recogida en mostrador
+    <p class="mt-8 font-display italic text-[15px] text-accent/90 leading-relaxed max-w-sm">
+      Abrimos pronto, cerramos tarde y el precio se dice en el mostrador.
     </p>
 
-    <p class="mt-5 text-sm text-white/45">
-      Llamanos al <a href={site.phoneHref} class="font-semibold text-accent hover:underline">{site.phone}</a>
+    <p class="mt-4 text-sm text-white/55">
+      Si tienes prisa, llama:
+      <a href={site.phoneHref} class="font-semibold text-accent hover:underline">{site.phone}</a>
     </p>
   </div>
 
-  <div class="relative lg:w-[55%] min-h-[36vh] sm:min-h-[44vh] lg:min-h-auto">
+  <div class="relative lg:w-[54%] min-h-[40vh] sm:min-h-[48vh] lg:min-h-auto bg-paper p-3 sm:p-4 lg:p-5">
     <img
       src={heroImage}
       alt={heroAlt}
-      class="absolute inset-0 h-full w-full object-cover"
+      class="absolute inset-3 sm:inset-4 lg:inset-5 h-[calc(100%-1.5rem)] sm:h-[calc(100%-2rem)] lg:h-[calc(100%-2.5rem)] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] lg:w-[calc(100%-2.5rem)] object-cover"
       loading="eager"
       decoding="async"
     />
+    <p class="counter-note absolute bottom-6 left-6 right-6 sm:right-auto sm:max-w-xs px-4 py-3 text-sm text-ink leading-relaxed rotate-[-0.6deg]">
+      <span class="block font-display italic text-brand mb-1">Nota del mostrador</span>
+      Si vienes con el archivo en el móvil, lo abrimos aquí y te decimos si sale bien.
+    </p>
   </div>
 </section>
 
