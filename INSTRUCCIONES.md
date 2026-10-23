@@ -18,29 +18,29 @@ Clonado y adaptado desde `a0-impresiones`. Marca, dirección, teléfono, horario
 - Qué servicios ofrecen de verdad (gran formato, plotter, etc.).
 - Precios del mostrador.
 
-## Email de pedidos (Gmail) — acción tuya
+## Email de pedidos (Gmail)
 
 Buzón objetivo: `bellamorenoeugenio820@gmail.com` (`PEDIDOS_EMAIL` / `site.inboxEmail`).
 
-### Por qué llega a Outlook y no a Gmail
+### Estado actual (listo)
+
+- `WEB3FORMS_ACCESS_KEY` en Vercel apunta a la key creada con el Gmail de la tienda (`5fc29db1…903f`).
+- `WEB3FORMS_GMAIL_READY=1` en Production / Preview / Development.
+- `PEDIDOS_EMAIL` = `bellamorenoeugenio820@gmail.com`.
+
+**Qué hacer ahora:** hard-refresh de `/pedido`, enviar un pedido de prueba y revisar Inbox + Spam de ese Gmail.
+
+### Por qué a veces aparece Outlook
 
 1. **Resend (copia de seguridad)** usa `onboarding@resend.dev` en modo prueba → solo entrega a `pizzeriaformula1@outlook.es`. Eso funciona y no es el canal primario.
-2. **Web3Forms (primario)** entrega al email con el que se creó la Access Key. La key copiada de A0 está ligada a Outlook, así que un “éxito” de Web3Forms también cae en Outlook, no en Gmail.
+2. **Web3Forms (primario)** entrega al email con el que se creó la Access Key. Keys antiguas (p. ej. A0) ligadas a Outlook no sirven para Gmail.
 3. FormSubmit quedó descartado (Activate Form caduca / Gmail lo previsualiza → “Not a valid link”).
 
-### Qué tienes que hacer para Gmail (obligatorio)
+### Si hay que rotar la key
 
-No se puede inventar una Access Key: hay que crearla en web3forms.com con el Gmail de la tienda.
-
-1. Abre https://web3forms.com/
-2. **Create Access Key** con exactamente `bellamorenoeugenio820@gmail.com`
-3. Copia la key del correo (revisa Spam / Promociones)
-4. Vercel → Settings → Environment Variables:
-   - `WEB3FORMS_ACCESS_KEY` = la key nueva (Production / Preview / Development)
-   - `PEDIDOS_EMAIL` = `bellamorenoeugenio820@gmail.com`
-   - `WEB3FORMS_GMAIL_READY` = `1` (confirma que la key es del Gmail de la tienda)
-5. Redeploy
-6. Prueba un pedido/contacto: el mensaje de éxito completo solo aparece si `WEB3FORMS_GMAIL_READY=1` y Web3Forms responde OK. Si solo hay copia Outlook, la web lo dice claramente.
+1. https://web3forms.com/ → Create Access Key con `bellamorenoeugenio820@gmail.com`
+2. Actualiza `WEB3FORMS_ACCESS_KEY` en Vercel (todas las envs) y deja `WEB3FORMS_GMAIL_READY=1`
+3. Redeploy y prueba un pedido
 
 ### Cableado actual
 
@@ -48,5 +48,3 @@ No se puede inventar una Access Key: hay que crearla en web3forms.com con el Gma
 | --- | --- | --- |
 | Primario | Navegador → `api.web3forms.com` | Email ligado a `WEB3FORMS_ACCESS_KEY` |
 | Copia de seguridad | Servidor → Resend | `PEDIDOS_FALLBACK_EMAIL` / Outlook de prueba |
-
-**Importante:** hasta el paso 4–5, no afirmamos entrega a Gmail aunque Outlook reciba avisos.

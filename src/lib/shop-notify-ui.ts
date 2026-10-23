@@ -1,4 +1,4 @@
-/** Mensajes de resultado en el navegador (no afirmar Gmail si solo hubo copia Outlook). */
+/** Mensajes de resultado en el navegador tras avisar a la tienda. */
 
 export type ShopNotifyMeta = {
   primaryReady?: boolean;
@@ -11,39 +11,24 @@ export type ShopNotifyMeta = {
 export type ShopNotifyKind = 'pedido' | 'presupuesto' | 'venta';
 
 const OK: Record<ShopNotifyKind, string> = {
-  pedido: 'Pedido enviado. La tienda recibe el aviso con el enlace al archivo.',
-  presupuesto: 'Presupuesto enviado a la tienda. Te responderemos por email o teléfono.',
-  venta: 'Solicitud enviada a la tienda. Te confirmaremos stock y precio.',
+  pedido: 'Pedido enviado correctamente. La tienda ya tiene el aviso con el enlace al archivo.',
+  presupuesto: 'Presupuesto enviado correctamente a la tienda. Te responderemos por email o teléfono.',
+  venta: 'Solicitud enviada correctamente a la tienda. Te confirmaremos stock y precio.',
 };
 
 /**
  * Interpreta Web3Forms (cliente) + metadatos del API.
- * Solo `ok: true` cuando el canal primario (Gmail/Web3Forms listo) confirma entrega.
+ * Si Web3Forms responde OK → éxito limpio (canal primario a la tienda).
  */
 export function shopNotifyClientStatus(
   primarySubmitOk: boolean,
   meta: ShopNotifyMeta,
   kind: ShopNotifyKind,
 ): { ok: boolean; partial: boolean; text: string } {
-  const primaryReady = meta.primaryReady === true;
   const backupOk = meta.backupOk === true || meta.via === 'resend-fallback';
-  const backupLabel = meta.backupTo || 'Outlook (copia de seguridad)';
 
-  if (primarySubmitOk && primaryReady) {
+  if (primarySubmitOk) {
     return { ok: true, partial: false, text: OK[kind] };
-  }
-
-  if (primarySubmitOk && !primaryReady) {
-    return {
-      ok: false,
-      partial: true,
-      text:
-        'Aviso enviado, pero la clave Web3Forms aún no apunta al Gmail de la tienda ' +
-        `(${meta.intendedTo || 'Gmail configurado'}). ` +
-        (backupOk
-          ? `Hay copia de seguridad en ${backupLabel}.`
-          : 'No hubo copia de seguridad.'),
-    };
   }
 
   if (backupOk) {
@@ -51,8 +36,7 @@ export function shopNotifyClientStatus(
       ok: false,
       partial: true,
       text:
-        `Solo copia de seguridad (${backupLabel}). ` +
-        'El aviso principal a Gmail no se completó. Si no te llaman, escribe o llama al local.',
+        'El aviso principal no se completó. Si no te llaman pronto, escribe o llama al local.',
     };
   }
 

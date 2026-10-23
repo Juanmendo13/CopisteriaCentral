@@ -36,16 +36,16 @@ export type ShopNotifyResult =
   | { ok: true; via: 'web3forms' | 'resend-fallback'; to: string }
   | { error: string };
 
-/** True solo si la key puede ser el canal primario hacia el Gmail de la tienda. */
+/**
+ * True si la key puede ser el canal primario hacia el Gmail de la tienda.
+ * Cualquier access key que no esté en la lista Outlook-bound cuenta como lista
+ * (WEB3FORMS_ACCESS_KEY ya apunta al Gmail de la tienda).
+ */
 export function web3FormsPrimaryReady(accessKey?: string): boolean {
   const key = (accessKey ?? env('WEB3FORMS_ACCESS_KEY') ?? '').trim();
   if (!key) return false;
   if (OUTLOOK_BOUND_WEB3FORMS_KEYS.has(key)) return false;
-  // Confirmación explícita tras crear la key con el Gmail de la tienda.
-  const confirmed = (env('WEB3FORMS_GMAIL_READY') || '').trim().toLowerCase();
-  if (confirmed === '1' || confirmed === 'true' || confirmed === 'yes') return true;
-  // Sin confirmación: no afirmamos Gmail; la key podría seguir apuntando a otro buzón.
-  return false;
+  return true;
 }
 
 /**

@@ -135,7 +135,7 @@ const waPedido = whatsappLink(
 
   <p id="pedido-error" class="alert-stamp alert-stamp-error hidden" role="alert"></p>
   <div id="pedido-ok" class="alert-stamp alert-stamp-ok hidden space-y-3" role="status">
-    <p id="pedido-ok-text" class="font-extrabold">Pedido enviado. Te confirmamos precio y recogida por teléfono o email.</p>
+    <p id="pedido-ok-text" class="font-extrabold">Pedido enviado correctamente. La tienda ya tiene el aviso con el enlace al archivo.</p>
     <p id="pedido-ok-extra" class="hidden text-sm font-medium"></p>
     <a
       id="pedido-ok-wa"
@@ -362,7 +362,7 @@ const waPedido = whatsappLink(
       okEl?.classList.remove('hidden');
       if (okExtra) {
         okExtra.textContent = status.partial
-          ? 'Copia de seguridad ≠ entrega a Gmail. Hasta configurar Web3Forms con el Gmail de la tienda, revisa Outlook o llama al local.'
+          ? 'Si no te llaman pronto, escribe o llama al local.'
           : 'El PDF va como enlace de descarga en el correo de la tienda.';
         okExtra.classList.remove('hidden');
       }

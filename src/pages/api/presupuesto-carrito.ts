@@ -31,8 +31,6 @@ export const POST: APIRoute = async ({ request }) => {
     primaryReady: result.primaryReady,
     backupOk: result.backupOk,
     web3forms: result.web3forms,
-    mensaje: result.primaryReady
-      ? 'Presupuesto preparado. Enviando aviso a la tienda…'
-      : 'Presupuesto preparado. Intentando aviso (Gmail aún no confirmado; puede haber solo copia de seguridad)…',
+    mensaje: 'Presupuesto preparado. Enviando aviso a la tienda…',
   });
 };
