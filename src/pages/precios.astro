@@ -4,12 +4,22 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import PreciosCarrito from '../components/PreciosCarrito.astro';
 import Doodle from '../components/Doodle.astro';
+import { formatEuro, getPrecioItem } from '../data/precios';
 import { site } from '../lib/site';
+
+const muestra = [
+  'imp-a4-bn',
+  'foto-bn-a4-dorso',
+  'imp-a4-color',
+  'imp-a3-color',
+]
+  .map((id) => getPrecioItem(id))
+  .filter((item): item is NonNullable<typeof item> => Boolean(item));
 ---
 
 <Layout
-  title={`Precios y presupuesto | ${site.name}`}
-  description="Consulta precios orientativos de fotocopias, impresiones y encuadernación. Añade al carrito y solicita el presupuesto oficial por email."
+  title={`Cómo se calcula el precio | ${site.name}`}
+  description="Precios orientativos de impresión y fotocopias. Calcula el importe al enviar tu PDF en el pedido; se confirma en el local."
 >
   <Navbar />
 
@@ -18,27 +28,75 @@ import { site } from '../lib/site';
       <Doodle name="regla" rotate={-6} class="doodle-float-slow absolute top-10 right-10 h-8 w-32 opacity-45 hidden sm:block" />
       <div class="relative max-w-6xl mx-auto">
         <p class="text-sm font-black text-accent mb-3 uppercase tracking-[0.14em]">Carta del mostrador</p>
-        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98]">Precios y carrito</h1>
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98]">Cómo se calcula</h1>
         <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
-          Elige fotocopias, impresiones u otros servicios básicos, añade al carrito y solicita el presupuesto oficial.
-          Los importes son <strong class="font-bold text-accent">orientativos</strong>
-          {site.isPrototype && ' (demo)'}. Los trabajos a medida quedan
-          <strong class="font-bold text-accent"> pendientes de evaluación</strong>.
+          Al enviar un PDF ves el <strong class="font-bold text-accent">precio orientativo</strong> antes de mandar el pedido
+          (formato, color, caras, páginas y copias). El importe se confirma en el local.
         </p>
-        <p class="mt-3 text-sm text-white/60 font-semibold">
-          ¿Ya tienes el PDF?
-          <a href="/pedido" class="text-accent font-black hover:underline">Envía el archivo</a>
-          · Papelería en
-          <a href="/venta" class="text-accent font-black hover:underline">venta</a>.
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/pedido" class="btn-primary inline-flex items-center px-5 py-3 text-sm">
+            Calcular e enviar PDF
+          </a>
+          <a
+            href="#tarifas"
+            class="inline-flex items-center px-5 py-3 text-sm font-black uppercase tracking-wide text-accent border-[3px] border-accent/50 hover:bg-accent/10 transition"
+          >
+            Ver tarifas base
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="band-mustard border-t-0">
+      <div class="max-w-3xl mx-auto px-5 sm:px-8 py-4 text-sm font-semibold text-brand/90 leading-relaxed">
+        Ejemplo: 2 páginas A4 color a doble cara → la calculadora del pedido aplica la tarifa de impresión color por página
+        (orientativa). B/N a doble cara usa la tarifa de hoja a dos caras de la carta.
+      </div>
+    </div>
+
+    <section id="tarifas" class="paper-ruled px-5 sm:px-8 py-12 sm:py-14 border-b-[8px] border-brand scroll-mt-28">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="font-display text-2xl sm:text-3xl text-brand leading-tight">Tarifas que usa el pedido</h2>
+        <p class="mt-2 text-muted font-medium">
+          Las mismas filas de la carta{site.isPrototype ? ' (demo)' : ''}. Gran formato y trabajos a medida: consultar.
+        </p>
+        <ul class="mt-6 border-[3px] border-brand bg-white divide-y-[3px] divide-brand/10 shadow-[6px_6px_0_rgba(0,45,98,0.2)]">
+          {
+            muestra.map((item) => (
+              <li class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 px-4 py-3.5">
+                <span class="flex-1 font-extrabold text-ink">{item.nombre}</span>
+                <span class="font-display text-xl text-brand tabular-nums">
+                  {item.precio != null ? formatEuro(item.precio) : 'Consultar'}
+                  {item.precio != null && (
+                    <span class="ml-1 font-sans text-xs font-bold text-muted uppercase">/ {item.unidad}</span>
+                  )}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-6 text-sm font-medium text-muted">
+          ¿Ya tienes el archivo?
+          <a href="/pedido" class="text-brand font-black underline decoration-2 underline-offset-2">Abre el pedido</a>
+          y verás el total en vivo. Papelería en
+          <a href="/venta" class="text-brand font-black underline decoration-2 underline-offset-2">venta</a>.
         </p>
       </div>
     </section>
 
-    <div class="paper-ruled px-5 sm:px-8 py-12 sm:py-14 border-b-[8px] border-brand">
-      <div class="max-w-6xl mx-auto">
+    <details class="px-5 sm:px-8 py-10 sm:py-12 border-b-[8px] border-brand bg-paper">
+      <summary class="max-w-6xl mx-auto cursor-pointer list-none font-display text-xl sm:text-2xl text-brand [&::-webkit-details-marker]:hidden">
+        <span class="underline decoration-2 underline-offset-4 decoration-accent">Tarifa completa y carrito de presupuesto</span>
+        <span class="ml-2 text-sm font-sans font-bold text-muted uppercase tracking-wide">(opcional)</span>
+      </summary>
+      <div class="max-w-6xl mx-auto mt-8">
+        <p class="mb-6 text-sm text-muted font-medium max-w-2xl">
+          Si quieres pedir varios servicios sin archivo (encuadernación, plastificado…), usa el carrito. Para imprimir un PDF,
+          el camino principal es <a href="/pedido" class="text-brand font-black underline">/pedido</a>.
+        </p>
         <PreciosCarrito />
       </div>
-    </div>
+    </details>
   </main>
 
   <Footer />

@@ -36,6 +36,9 @@ export const POST: APIRoute = async ({ request }) => {
     primaryReady: result.primaryReady,
     backupOk: result.backupOk,
     web3forms: result.web3forms,
+    estimate: result.estimate,
+    clienteEmailOk: result.clienteEmailOk,
+    clienteEmailError: result.clienteEmailError,
     mensaje: 'Pedido preparado. Enviando aviso a la tienda…',
   });
 };

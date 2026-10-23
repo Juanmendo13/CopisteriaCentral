@@ -1,3 +1,10 @@
+import { Resend } from 'resend';
+import {
+  estimarPrecioPedido,
+  textoEstimacionPedido,
+  type PedidoPrecioEstimate,
+} from './pedido-precio';
+import { formatResendError } from './resend-errors';
 import { prepareShopNotify, type Web3FormsPayload } from './shop-notify';
 import { site } from './site';
 
@@ -8,12 +15,17 @@ export interface PedidoPayload {
   formato: string;
   color: string;
   caras: string;
+  paginas: number;
   copias: number;
   notas?: string;
   archivoUrl: string;
   archivoNombre: string;
   archivoSize: number;
   archivoTipo: string;
+}
+
+function env(name: string): string | undefined {
+  return process.env[name] || (import.meta.env as Record<string, string | undefined>)[name];
 }
 
 export function parsePedidoBody(body: unknown): PedidoPayload | { error: string } {
@@ -28,6 +40,7 @@ export function parsePedidoBody(body: unknown): PedidoPayload | { error: string 
   const formato = asString(data.formato);
   const color = asString(data.color);
   const caras = asString(data.caras);
+  const paginas = Number(data.paginas ?? 1);
   const copias = Number(data.copias);
   const notas = asString(data.notas);
   const archivoUrl = asString(data.archivoUrl);
@@ -40,6 +53,9 @@ export function parsePedidoBody(body: unknown): PedidoPayload | { error: string 
   if (telefono.replace(/\D/g, '').length < 9) return { error: 'Indica un teléfono válido.' };
   if (!formato) return { error: 'Indica el formato de papel.' };
   if (!color || !caras) return { error: 'Indica color y caras.' };
+  if (!Number.isInteger(paginas) || paginas < 1 || paginas > 5000) {
+    return { error: 'Indica el número de páginas (1–5000).' };
+  }
   if (!Number.isInteger(copias) || copias < 1 || copias > 500) {
     return { error: 'Indica un número de copias entre 1 y 500.' };
   }
@@ -53,6 +69,7 @@ export function parsePedidoBody(body: unknown): PedidoPayload | { error: string 
     formato,
     color,
     caras,
+    paginas,
     copias,
     ...(notas ? { notas: notas.slice(0, 1000) } : {}),
     archivoUrl,
@@ -66,8 +83,19 @@ function asString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+export function estimateFromPedido(pedido: PedidoPayload): PedidoPrecioEstimate {
+  return estimarPrecioPedido({
+    formato: pedido.formato,
+    color: pedido.color,
+    caras: pedido.caras,
+    paginas: pedido.paginas,
+    copias: pedido.copias,
+  });
+}
+
 export function pedidoTexto(pedido: PedidoPayload, extra?: string): string {
   const sizeMB = (pedido.archivoSize / 1024 / 1024).toFixed(1);
+  const estimate = estimateFromPedido(pedido);
   const lines = [
     '¡Hola! 👋',
     `Has recibido un pedido de impresión en ${site.name}.`,
@@ -79,9 +107,12 @@ export function pedidoTexto(pedido: PedidoPayload, extra?: string): string {
     `- Formato: ${pedido.formato}`,
     `- Color: ${pedido.color}`,
     `- Caras: ${pedido.caras}`,
+    `- Páginas: ${pedido.paginas}`,
     `- Copias: ${pedido.copias}`,
     `- Archivo: ${pedido.archivoNombre} (${sizeMB} MB)`,
     pedido.notas ? `- Notas: ${pedido.notas}` : '',
+    '',
+    textoEstimacionPedido(estimate),
     '',
     extra ?? '',
     '',
@@ -93,6 +124,65 @@ export function pedidoTexto(pedido: PedidoPayload, extra?: string): string {
     .map((line) => line ?? '')
     .filter((line) => line.trim().length > 0)
     .join('\n');
+}
+
+function textoCliente(pedido: PedidoPayload, estimate: PedidoPrecioEstimate): string {
+  return [
+    `Hola ${pedido.nombre},`,
+    '',
+    `Hemos recibido tu pedido de impresión en ${site.name}.`,
+    '',
+    'Resumen:',
+    `- Formato: ${pedido.formato}`,
+    `- Color: ${pedido.color}`,
+    `- Caras: ${pedido.caras}`,
+    `- Páginas: ${pedido.paginas}`,
+    `- Copias: ${pedido.copias}`,
+    `- Archivo: ${pedido.archivoNombre}`,
+    pedido.notas ? `- Notas: ${pedido.notas}` : '',
+    '',
+    textoEstimacionPedido(estimate),
+    '',
+    'Este importe es orientativo: te lo confirmamos en el local al preparar el trabajo.',
+    `Recogida: ${site.addressLine}`,
+    `Teléfono: ${site.phone}`,
+    '',
+    'Gracias,',
+    site.name,
+  ]
+    .filter((l) => l !== '')
+    .join('\n');
+}
+
+/**
+ * Best-effort confirmation to the customer.
+ * With RESEND_FROM onboarding@resend.dev (test mode), delivery only works to the
+ * verified Resend account — arbitrary customer Gmail will fail; we surface that.
+ */
+export async function enviarConfirmacionCliente(
+  pedido: PedidoPayload,
+  estimate: PedidoPrecioEstimate,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const apiKey = env('RESEND_API_KEY');
+  if (!apiKey) {
+    return { ok: false, error: 'Falta RESEND_API_KEY para el correo al cliente.' };
+  }
+
+  const from = env('RESEND_FROM') || 'Copistería Central <onboarding@resend.dev>';
+  const subject = `Confirmación de pedido · ${site.name}`;
+  const resend = new Resend(apiKey);
+  const { error } = await resend.emails.send({
+    from,
+    to: [pedido.email],
+    replyTo: site.inboxEmail,
+    subject,
+    text: textoCliente(pedido, estimate),
+  });
+
+  if (error) {
+    return { ok: false, error: formatResendError(error.message, error.message) };
+  }
+  return { ok: true };
 }
 
 export async function enviarPedidoResend(
@@ -108,9 +198,13 @@ export async function enviarPedidoResend(
       backupTo: string;
       primaryReady: boolean;
       backupOk: boolean;
+      estimate: PedidoPrecioEstimate;
+      clienteEmailOk: boolean;
+      clienteEmailError?: string;
     }
   | { error: string }
 > {
+  const estimate = estimateFromPedido(pedido);
   const subject = `Pedido impresión · ${pedido.formato} · ${pedido.nombre}`;
   const extra = [
     'El archivo está en este enlace (Vercel Blob):',
@@ -130,6 +224,8 @@ export async function enviarPedidoResend(
     return { error: prepared.error };
   }
 
+  const cliente = await enviarConfirmacionCliente(pedido, estimate);
+
   return {
     ok: true,
     modo: 'enlace',
@@ -140,5 +236,8 @@ export async function enviarPedidoResend(
     backupTo: prepared.backupTo,
     primaryReady: prepared.primaryReady,
     backupOk: prepared.backupOk,
+    estimate,
+    clienteEmailOk: cliente.ok,
+    ...(!cliente.ok ? { clienteEmailError: cliente.error } : {}),
   };
 }

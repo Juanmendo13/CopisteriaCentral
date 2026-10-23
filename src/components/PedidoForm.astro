@@ -68,7 +68,7 @@ const waPedido = whatsappLink(
     </label>
   </fieldset>
 
-  <div class="grid sm:grid-cols-3 gap-4">
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
     <fieldset>
       <legend class="text-sm font-black uppercase tracking-wide text-brand">Color</legend>
       <div class="mt-2 space-y-2">
@@ -96,9 +96,35 @@ const waPedido = whatsappLink(
       </div>
     </fieldset>
     <label class="block text-sm font-black uppercase tracking-wide text-brand">
+      Páginas
+      <input
+        class="field-stamp mt-1.5 normal-case tracking-normal font-semibold"
+        type="number"
+        name="paginas"
+        min="1"
+        max="5000"
+        value="1"
+        required
+      />
+      <span class="mt-1 block text-[11px] font-semibold normal-case tracking-normal text-muted">Del documento</span>
+    </label>
+    <label class="block text-sm font-black uppercase tracking-wide text-brand">
       Copias
       <input class="field-stamp mt-1.5 normal-case tracking-normal font-semibold" type="number" name="copias" min="1" max="500" value="1" required />
     </label>
+  </div>
+
+  <div
+    id="pedido-precio"
+    class="border-[3px] border-brand bg-accent/20 px-4 py-4 sm:px-5"
+    aria-live="polite"
+  >
+    <p class="text-[10px] font-black uppercase tracking-[0.14em] text-brand">Precio orientativo</p>
+    <p id="pedido-precio-total" class="mt-1 font-display text-3xl sm:text-4xl text-brand leading-none">—</p>
+    <p id="pedido-precio-detalle" class="mt-2 text-sm font-semibold text-ink/80 leading-snug"></p>
+    <p id="pedido-precio-nota" class="mt-2 text-xs font-medium text-muted leading-relaxed">
+      Se confirma en el local. No es un cobro online.
+    </p>
   </div>
 
   <div class="grid sm:grid-cols-2 gap-4">
@@ -113,6 +139,9 @@ const waPedido = whatsappLink(
     <label class="block text-sm font-black uppercase tracking-wide text-brand sm:col-span-2">
       Email
       <input class="field-stamp mt-1.5 normal-case tracking-normal font-semibold" type="email" name="email" autocomplete="email" required />
+      <span class="mt-1 block text-[11px] font-semibold normal-case tracking-normal text-muted">
+        Te enviaremos un resumen con la estimación (si el correo al cliente está disponible).
+      </span>
     </label>
   </div>
 
@@ -169,6 +198,7 @@ const waPedido = whatsappLink(
 <script>
   import { upload } from '@vercel/blob/client';
   import { ALLOWED_MIME, MAX_FILE_BYTES } from '../data/formatos';
+  import { estimarPrecioPedido, type PedidoPrecioEstimate } from '../lib/pedido-precio';
   import { sendShopWeb3Forms } from '../lib/client-web3forms';
   import { shopNotifyClientStatus } from '../lib/shop-notify-ui';
 
@@ -182,6 +212,9 @@ const waPedido = whatsappLink(
   const okExtra = document.getElementById('pedido-ok-extra');
   const medidaWrap = document.getElementById('pedido-medida-wrap');
   const submitBtn = document.getElementById('pedido-submit') as HTMLButtonElement | null;
+  const precioTotalEl = document.getElementById('pedido-precio-total');
+  const precioDetalleEl = document.getElementById('pedido-precio-detalle');
+  const precioNotaEl = document.getElementById('pedido-precio-nota');
 
   function showError(message: string) {
     if (!errorEl || !okEl) return;
@@ -205,10 +238,59 @@ const waPedido = whatsappLink(
     medidaWrap?.classList.toggle('hidden', !personalizado);
   }
 
+  function currentEstimate(): PedidoPrecioEstimate {
+    if (!form) {
+      return {
+        ok: false,
+        reason: 'invalid',
+        message: 'Formulario no disponible.',
+        note: 'Precio orientativo. Se confirma en el local.',
+      };
+    }
+    const data = new FormData(form);
+    const formato = String(data.get('formato') ?? '').trim();
+    const medida = String(data.get('medida') ?? '').trim();
+    const formatoLabel = formato === 'Personalizado' && medida ? `Personalizado (${medida})` : formato;
+    return estimarPrecioPedido({
+      formato: formatoLabel || formato,
+      color: String(data.get('color') ?? '').trim(),
+      caras: String(data.get('caras') ?? '').trim(),
+      paginas: Number(data.get('paginas')),
+      copias: Number(data.get('copias')),
+    });
+  }
+
+  function renderPrecio() {
+    const estimate = currentEstimate();
+    if (!precioTotalEl || !precioDetalleEl || !precioNotaEl) return;
+
+    if (estimate.ok) {
+      precioTotalEl.textContent = estimate.formattedTotal;
+      precioDetalleEl.textContent = estimate.breakdown;
+      precioNotaEl.textContent = estimate.note;
+      return;
+    }
+
+    precioTotalEl.textContent = estimate.reason === 'consultar' ? 'A consultar' : '—';
+    precioDetalleEl.textContent = estimate.message;
+    precioNotaEl.textContent = estimate.note;
+  }
+
   form?.querySelectorAll('input[name="formato"]').forEach((input) => {
-    input.addEventListener('change', toggleMedida);
+    input.addEventListener('change', () => {
+      toggleMedida();
+      renderPrecio();
+    });
+  });
+  form?.querySelectorAll('input[name="color"], input[name="caras"]').forEach((input) => {
+    input.addEventListener('change', renderPrecio);
+  });
+  form?.querySelectorAll('input[name="paginas"], input[name="copias"], input[name="medida"]').forEach((input) => {
+    input.addEventListener('input', renderPrecio);
+    input.addEventListener('change', renderPrecio);
   });
   toggleMedida();
+  renderPrecio();
 
   fileInput?.addEventListener('change', () => {
     setFileName(fileInput.files?.[0]);
@@ -261,6 +343,7 @@ const waPedido = whatsappLink(
     const medida = String(data.get('medida') ?? '').trim();
     const color = String(data.get('color') ?? '').trim();
     const caras = String(data.get('caras') ?? '').trim();
+    const paginas = Number(data.get('paginas'));
     const copias = Number(data.get('copias'));
     const notas = String(data.get('notas') ?? '').trim();
     const file = fileInput?.files?.[0];
@@ -275,6 +358,9 @@ const waPedido = whatsappLink(
     if (telefono.replace(/\D/g, '').length < 9) return showError('Indica un teléfono válido.');
     if (!formato) return showError('Elige un formato de papel.');
     if (formato === 'Personalizado' && medida.length < 2) return showError('Indica la medida personalizada.');
+    if (!Number.isInteger(paginas) || paginas < 1 || paginas > 5000) {
+      return showError('Indica el número de páginas (1–5000).');
+    }
     if (!Number.isInteger(copias) || copias < 1 || copias > 500) return showError('Indica un número de copias entre 1 y 500.');
     if (!data.get('privacidad')) return showError('Debes aceptar la política de privacidad.');
     if (!hasBlob) {
@@ -283,6 +369,13 @@ const waPedido = whatsappLink(
     }
 
     const formatoLabel = formato === 'Personalizado' ? `Personalizado (${medida})` : formato;
+    const estimateBefore = estimarPrecioPedido({
+      formato: formatoLabel,
+      color,
+      caras,
+      paginas,
+      copias,
+    });
 
     if (submitBtn) {
       submitBtn.disabled = true;
@@ -311,6 +404,7 @@ const waPedido = whatsappLink(
           formato: formatoLabel,
           color,
           caras,
+          paginas,
           copias,
           notas,
           archivoUrl: blob.url,
@@ -330,6 +424,9 @@ const waPedido = whatsappLink(
         backupOk?: boolean;
         backupTo?: string;
         intendedTo?: string;
+        clienteEmailOk?: boolean;
+        clienteEmailError?: string;
+        estimate?: PedidoPrecioEstimate;
         web3forms?: {
           accessKey: string;
           subject: string;
@@ -356,14 +453,22 @@ const waPedido = whatsappLink(
       form.reset();
       setFileName(undefined);
       toggleMedida();
+      renderPrecio();
       if (okText) {
         okText.textContent = status.text;
       }
       okEl?.classList.remove('hidden');
       if (okExtra) {
+        const estimate = result.estimate ?? estimateBefore;
+        const priceLine = estimate.ok
+          ? `Estimación orientativa: ${estimate.formattedTotal}.`
+          : estimate.message;
+        const emailLine = result.clienteEmailOk
+          ? 'También te hemos enviado un correo de confirmación con el desglose.'
+          : 'El aviso a la tienda incluye el precio; el correo al cliente puede no llegar si Resend sigue en modo prueba (sin dominio verificado).';
         okExtra.textContent = status.partial
-          ? 'Si no te llaman pronto, escribe o llama al local.'
-          : 'El PDF va como enlace de descarga en el correo de la tienda.';
+          ? `${priceLine} Si no te llaman pronto, escribe o llama al local. ${emailLine}`
+          : `${priceLine} ${emailLine}`;
         okExtra.classList.remove('hidden');
       }
       okEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

@@ -35,11 +35,11 @@ const doodles = ['folio', 'boli', 'lapiz', 'cuaderno', 'cinta', 'tijeras'] as co
         </p>
       </div>
       <a
-        href="/precios"
+        href="/pedido"
         class="inline-flex items-center gap-2 self-start lg:self-auto bg-brand text-accent border-[3px] border-brand-dark px-5 py-3 text-xs font-black uppercase tracking-wide shadow-[5px_5px_0_rgba(0,26,61,0.35)] hover:-translate-y-0.5 transition"
       >
         <Doodle name="chincheta" class="h-4 w-3" />
-        Ver tarifas completas
+        Calcular al enviar PDF
       </a>
     </div>
   </div>
@@ -58,7 +58,7 @@ const doodles = ['folio', 'boli', 'lapiz', 'cuaderno', 'cinta', 'tijeras'] as co
           destacados.map((item, i) => (
             <li>
               <a
-                href="/precios"
+                href="/pedido"
                 class:list={[
                   'group flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 border-b-[3px] border-brand/15 last:border-b-0 transition hover:bg-accent/25',
                   i % 2 === 1 && 'bg-white/60',
