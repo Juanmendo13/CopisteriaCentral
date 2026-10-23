@@ -29,9 +29,10 @@ export const POST: APIRoute = async ({ request }) => {
   return Response.json({
     ok: true,
     modo: result.modo,
-    mensaje:
-      result.modo === 'adjunto'
-        ? 'Pedido enviado. El PDF va adjunto en el correo.'
-        : 'Pedido enviado. El PDF va en el correo como enlace (supera 20 MB).',
+    via: result.via,
+    needsActivation: result.needsActivation ?? false,
+    mensaje: result.needsActivation
+      ? 'Pedido recibido (respaldo). Activa FormSubmit en el Gmail de la tienda (correo “Activate Form”) para que los siguientes lleguen solo ahí.'
+      : 'Pedido enviado. La tienda recibe el aviso con el enlace al archivo.',
   });
 };

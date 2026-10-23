@@ -1,7 +1,6 @@
-import { Resend } from 'resend';
 import { formatEuro, getPrecioItem } from '../data/precios';
 import { getVentaItem } from '../data/venta';
-import { formatResendError } from './resend-errors';
+import { notifyShop } from './shop-notify';
 import { site } from './site';
 
 type CartCatalogItem = {
@@ -34,10 +33,6 @@ export interface PresupuestoCarritoPayload {
   telefono: string;
   notas?: string;
   lineas: LineaPresupuesto[];
-}
-
-function env(name: string): string | undefined {
-  return process.env[name] || (import.meta.env as Record<string, string | undefined>)[name];
 }
 
 function asString(value: unknown): string {
@@ -110,7 +105,7 @@ function textoTienda(payload: PresupuestoCarritoPayload): string {
   const { filas, subtotal, hayConsultar } = resumenLineas(payload);
   return [
     '¡Hola! 👋',
-    'Has recibido una solicitud de presupuesto desde el carrito de la web.',
+    `Has recibido una solicitud de presupuesto desde el carrito de ${site.name}.`,
     '',
     'Datos del cliente:',
     `- Nombre: ${payload.nombre}`,
@@ -133,87 +128,30 @@ function textoTienda(payload: PresupuestoCarritoPayload): string {
     .join('\n');
 }
 
-function textoCliente(payload: PresupuestoCarritoPayload, demoRedirect?: string): string {
-  const { filas, subtotal, hayConsultar } = resumenLineas(payload);
-  return [
-    demoRedirect
-      ? `[DEMO Resend] Este correo iría a ${payload.email}. Ahora se reenvía a ${demoRedirect} porque el dominio de envío aún no está verificado.`
-      : '',
-    `Hola ${payload.nombre},`,
-    '',
-    `Hemos recibido tu solicitud de presupuesto en ${site.name}.`,
-    '',
-    'Resumen de lo solicitado:',
-    ...filas,
-    '',
-    `Subtotal orientativo (ítems con precio): ${euro(subtotal)}`,
-    hayConsultar
-      ? 'Algunos servicios quedan pendientes de evaluación; te confirmaremos el importe final.'
-      : 'Te confirmaremos el presupuesto oficial y la fecha de recogida.',
-    '',
-    'Esto no es un cobro: es una solicitud. El pago se hace en el local tras confirmar.',
-    '',
-    `Local: ${site.addressLine}, ${site.postalCity} (${site.landmark})`,
-    `Teléfono: ${site.phone}`,
-    '',
-    'Gracias por confiar en nosotros.',
-    site.name,
-  ]
-    .filter((l) => l !== '')
-    .join('\n');
-}
-
 export async function enviarPresupuestoCarrito(
   payload: PresupuestoCarritoPayload,
-): Promise<{ ok: true; clienteDemo: boolean } | { error: string }> {
-  const apiKey = env('RESEND_API_KEY');
-  const toShop = env('PEDIDOS_EMAIL') || site.inboxEmail;
-  const from = env('RESEND_FROM') || `Copistería Central <onboarding@resend.dev>`;
-  /** Con dominio verificado en Resend, poner RESEND_DOMAIN_VERIFIED=true para mandar al email del cliente. */
-  const domainVerified = env('RESEND_DOMAIN_VERIFIED') === 'true';
-
-  if (!apiKey) {
-    return { error: 'Falta RESEND_API_KEY. Configúrala en .env.local o en Vercel.' };
-  }
-
-  const resend = new Resend(apiKey);
+): Promise<
+  { ok: true; clienteDemo: boolean; needsActivation?: boolean; via?: string } | { error: string }
+> {
   const subjectShop = `Presupuesto carrito · ${payload.nombre}`;
 
-  const shop = await resend.emails.send({
-    from,
-    to: [toShop],
-    replyTo: payload.email,
+  const shop = await notifyShop({
     subject: subjectShop,
-    text: textoTienda(payload),
+    message: textoTienda(payload),
+    replyTo: payload.email,
+    name: payload.nombre,
   });
-  if (shop.error) {
-    return {
-      error: formatResendError(shop.error.message, 'No se pudo avisar a la tienda.'),
-    };
+
+  if ('error' in shop) {
+    return { error: shop.error };
   }
 
-  const canEmailClient =
-    domainVerified || payload.email.toLowerCase() === toShop.toLowerCase();
-  const clientTo = canEmailClient ? payload.email : toShop;
-  const clienteDemo = !canEmailClient;
-
-  const client = await resend.emails.send({
-    from,
-    to: [clientTo],
-    replyTo: toShop,
-    subject: clienteDemo
-      ? `[Copia cliente → ${payload.email}] Tu solicitud de presupuesto · ${site.name}`
-      : `Tu solicitud de presupuesto · ${site.name}`,
-    text: textoCliente(payload, clienteDemo ? toShop : undefined),
-  });
-  if (client.error) {
-    return {
-      error: formatResendError(
-        client.error.message,
-        'El aviso a la tienda salió, pero no se pudo enviar el correo de confirmación.',
-      ),
-    };
-  }
-
-  return { ok: true, clienteDemo };
+  // Sin dominio de envío verificado no mandamos confirmación al cliente;
+  // la tienda responde por teléfono/email.
+  return {
+    ok: true,
+    clienteDemo: false,
+    via: shop.via,
+    ...(shop.needsActivation ? { needsActivation: true } : {}),
+  };
 }

@@ -24,8 +24,10 @@ export const POST: APIRoute = async ({ request }) => {
   return Response.json({
     ok: true,
     clienteDemo: result.clienteDemo,
-    mensaje: result.clienteDemo
-      ? 'Presupuesto enviado a la tienda. En modo demo (Resend sin dominio verificado) la copia “para el cliente” también llega al buzón de prueba, no al email del formulario.'
-      : 'Presupuesto enviado. Revisa tu correo: te hemos mandado el resumen.',
+    via: result.via,
+    needsActivation: result.needsActivation ?? false,
+    mensaje: result.needsActivation
+      ? 'Presupuesto recibido (respaldo). Activa FormSubmit en el Gmail de la tienda (correo “Activate Form”) para entrega directa a ese buzón.'
+      : 'Presupuesto enviado a la tienda. Te confirmaremos por teléfono o email el importe y la recogida.',
   });
 };

@@ -1,6 +1,5 @@
 ---
 import { servicios } from '../data/servicios';
-import { site } from '../lib/site';
 
 interface Props {
   compact?: boolean;
@@ -9,24 +8,12 @@ interface Props {
 
 const { compact = false, defaultServicio = '' } = Astro.props;
 
-const web3Key =
-  process.env.WEB3FORMS_ACCESS_KEY ||
-  (import.meta.env.WEB3FORMS_ACCESS_KEY as string | undefined) ||
-  '';
-
-const pedidosEmail =
-  process.env.PEDIDOS_EMAIL ||
-  (import.meta.env.PEDIDOS_EMAIL as string | undefined) ||
-  site.inboxEmail;
-
 const inputClass = 'field-stamp';
 ---
 
 <form
   id="quote-form"
   class="space-y-4"
-  data-web3-key={web3Key}
-  data-to-email={pedidosEmail}
   novalidate
 >
   <div class:list={['grid gap-4', compact ? 'sm:grid-cols-1' : 'sm:grid-cols-2']}>
@@ -132,26 +119,6 @@ const inputClass = 'field-stamp';
     if (mensaje.length < 8) return showError('Describe el trabajo con un poco más de detalle.');
     if (!privacidad) return showError('Debes aceptar la política de privacidad.');
 
-    const accessKey = form.dataset.web3Key;
-    if (!accessKey) {
-      showError('Falta WEB3FORMS_ACCESS_KEY. Configúrala en .env.local o en Vercel.');
-      return;
-    }
-
-    const lines = [
-      `Nuevo presupuesto · Copistería Central`,
-      `Cliente: ${nombre}`,
-      `Email: ${email}`,
-      `Teléfono: ${telefono}`,
-      servicio ? `Servicio: ${servicio}` : '',
-      formato ? `Formato: ${formato}` : '',
-      cantidad ? `Cantidad: ${cantidad}` : '',
-      '',
-      mensaje,
-    ]
-      .filter((line) => line !== undefined)
-      .join('\n');
-
     if (submitBtn instanceof HTMLButtonElement) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Enviando…';
@@ -160,30 +127,35 @@ const inputClass = 'field-stamp';
     okEl?.classList.add('hidden');
 
     try {
-      const web3 = await fetch('https://api.web3forms.com/submit', {
+      const submit = await fetch('/api/presupuesto-contacto', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          access_key: accessKey,
-          subject: `Presupuesto · ${nombre}${servicio ? ` · ${servicio}` : ''}`,
-          from_name: nombre,
-          name: nombre,
+          nombre,
           email,
-          phone: telefono,
-          message: lines,
+          telefono,
+          servicio,
+          formato,
+          cantidad,
+          mensaje,
         }),
       });
-      const result = (await web3.json().catch(() => ({}))) as {
-        success?: boolean;
+      const result = (await submit.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
         message?: string;
+        mensaje?: string;
       };
 
-      if (!web3.ok || !result.success) {
-        showError(result.message || 'No se pudo enviar. Prueba por teléfono o email.');
+      if (!submit.ok || !result.ok) {
+        showError(result.error || result.message || 'No se pudo enviar. Prueba por teléfono o email.');
         return;
       }
 
       form.reset();
+      if (result.mensaje && okEl) {
+        okEl.textContent = result.mensaje;
+      }
       okEl?.classList.remove('hidden');
     } catch {
       showError('No se pudo enviar. Revisa la conexión o llama al local.');

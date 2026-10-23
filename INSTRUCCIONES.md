@@ -13,16 +13,17 @@ Clonado y adaptado desde `a0-impresiones`. Marca, dirección, teléfono, horario
 ## Por confirmar en el local
 
 - Titular y CIF (aviso legal / privacidad).
-- Email de pedidos.
 - WhatsApp (el fijo 954 puede no tener).
 - Fotos reales (sustituir `/public/galeria/`).
 - Qué servicios ofrecen de verdad (gran formato, plotter, etc.).
 - Precios del mostrador.
 
-## Demo / Resend
+## Email de pedidos (Gmail)
 
-Formularios van al buzón `PEDIDOS_EMAIL` (hoy `pizzeriaformula1@outlook.es`).
+Buzón: `bellamorenoeugenio820@gmail.com` (`PEDIDOS_EMAIL` / `site.inboxEmail`).
 
-Con `RESEND_FROM=…<onboarding@resend.dev>` Resend solo entrega a ese email de prueba.
-Para `bellamorenoeugenio820@gmail.com`: verifica dominio en https://resend.com/domains,
-cambia `RESEND_FROM` a ese dominio y pon `PEDIDOS_EMAIL` al Gmail.
+Los avisos (pedido con PDF, carrito, presupuesto contacto) van por **FormSubmit** a ese Gmail.
+No hace falta dominio verificado en Resend.
+
+**Un solo paso la primera vez:** FormSubmit manda un correo “Activate Form” / “Action Required” a ese Gmail.
+Hay que abrir el enlace una vez (revisar Spam / Promociones). Después, los envíos responden `success: true` y llegan al inbox.

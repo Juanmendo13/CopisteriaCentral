@@ -23,12 +23,10 @@ export const site = {
   isPrototype: true,
   /**
    * Buzón de pedidos (fallback si falta PEDIDOS_EMAIL).
-   * Con FROM onboarding@resend.dev, Resend solo entrega al email de prueba del proyecto
-   * (pizzeriaformula1@outlook.es). Para usar bellamorenoeugenio820@gmail.com: verifica un
-   * dominio en https://resend.com/domains, configura RESEND_FROM en ese dominio, y entonces
-   * PEDIDOS_EMAIL=bellamorenoeugenio820@gmail.com.
+   * Los avisos van por FormSubmit a este Gmail (sin dominio Resend).
+   * La primera vez FormSubmit pide activar un enlace enviado a este correo.
    */
-  inboxEmail: 'pizzeriaformula1@outlook.es',
+  inboxEmail: 'bellamorenoeugenio820@gmail.com',
   privacyEmail: '',
   currentWeb:
     'https://www.google.com/maps/place/Copister%C3%ADa+Central/@37.3587595,-5.9861024,17z',
