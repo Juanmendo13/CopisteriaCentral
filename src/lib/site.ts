@@ -21,7 +21,7 @@ export const site = {
   /** Sin correo público por ahora. */
   email: '',
   isPrototype: true,
-  inboxEmail: 'pizzeriaformula1@outlook.es',
+  inboxEmail: 'bellamorenoeugenio820@gmail.com',
   privacyEmail: '',
   currentWeb:
     'https://www.google.com/maps/place/Copister%C3%ADa+Central/@37.3587595,-5.9861024,17z',
