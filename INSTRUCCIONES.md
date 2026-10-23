@@ -24,9 +24,9 @@ Buzón objetivo: `bellamorenoeugenio820@gmail.com` (`PEDIDOS_EMAIL` / `site.inbo
 
 ### Estado actual (listo)
 
-- `WEB3FORMS_ACCESS_KEY` en Vercel apunta a la key creada con el Gmail de la tienda (`5fc29db1…903f`).
-- `WEB3FORMS_GMAIL_READY=1` en Production / Preview / Development.
+- `WEB3FORMS_ACCESS_KEY` en Vercel apunta a la key creada con el Gmail de la tienda.
 - `PEDIDOS_EMAIL` = `bellamorenoeugenio820@gmail.com`.
+- Tras un envío OK, la web muestra un mensaje de éxito limpio (sin aviso de Outlook).
 
 **Qué hacer ahora:** hard-refresh de `/pedido`, enviar un pedido de prueba y revisar Inbox + Spam de ese Gmail.
 
@@ -39,7 +39,7 @@ Buzón objetivo: `bellamorenoeugenio820@gmail.com` (`PEDIDOS_EMAIL` / `site.inbo
 ### Si hay que rotar la key
 
 1. https://web3forms.com/ → Create Access Key con `bellamorenoeugenio820@gmail.com`
-2. Actualiza `WEB3FORMS_ACCESS_KEY` en Vercel (todas las envs) y deja `WEB3FORMS_GMAIL_READY=1`
+2. Actualiza `WEB3FORMS_ACCESS_KEY` en Vercel (todas las envs)
 3. Redeploy y prueba un pedido
 
 ### Cableado actual
