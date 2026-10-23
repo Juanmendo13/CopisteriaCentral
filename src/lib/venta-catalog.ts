@@ -123,7 +123,8 @@ function parseCatalogJson(text: string): VentaCatalogFile | null {
 export async function readCatalogFromBlob(): Promise<VentaCatalogFile | null> {
   if (!hasBlobToken()) return null;
   try {
-    const result = await get(CATALOG_BLOB_PATH, { access: 'private', useCache: false });
+    // Store del proyecto es público (mismo que PDFs de pedido).
+    const result = await get(CATALOG_BLOB_PATH, { access: 'public', useCache: false });
     if (!result || result.statusCode !== 200 || !result.stream) return null;
     const text = await new Response(result.stream).text();
     return parseCatalogJson(text);
@@ -142,7 +143,7 @@ export async function writeCatalogToBlob(catalog: VentaCatalogFile): Promise<voi
     products: catalog.products,
   };
   await put(CATALOG_BLOB_PATH, JSON.stringify(body, null, 2), {
-    access: 'private',
+    access: 'public',
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType: 'application/json',
