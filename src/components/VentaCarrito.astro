@@ -130,6 +130,8 @@ const inputClass = 'field-stamp';
 </div>
 
 <script>
+  import { sendShopWeb3Forms } from '../lib/client-web3forms';
+
   type CartLine = { id: string; cantidad: number };
   type CatalogItem = {
     id: string;
@@ -304,12 +306,12 @@ const inputClass = 'field-stamp';
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || 'No se pudo enviar.');
+      if (!res.ok || !data.ok || !data.web3forms) throw new Error(data.error || 'No se pudo enviar.');
+      const gmail = await sendShopWeb3Forms(data.web3forms);
       statusEl.className = 'text-sm text-emerald-700';
-      statusEl.textContent =
-        data.via === 'web3forms'
-          ? 'Solicitud enviada a la tienda. Te confirmaremos stock y precio.'
-          : 'Solicitud enviada (respaldo). Te contactaremos desde el local.';
+      statusEl.textContent = gmail.ok
+        ? 'Solicitud enviada a la tienda. Te confirmaremos stock y precio.'
+        : 'Solicitud registrada con respaldo. Te contactaremos desde el local.';
       statusEl.classList.remove('hidden');
       cart = [];
       render();

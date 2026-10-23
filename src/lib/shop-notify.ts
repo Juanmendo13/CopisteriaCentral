@@ -9,50 +9,35 @@ export function shopInbox(): string {
   return env('PEDIDOS_EMAIL') || site.inboxEmail;
 }
 
-/** Buzón Resend (modo prueba) como respaldo si Web3Forms no está listo. */
+/** Buzón Resend (modo prueba) como respaldo. */
 export function fallbackInbox(): string {
   return env('PEDIDOS_FALLBACK_EMAIL') || 'pizzeriaformula1@outlook.es';
 }
+
+export type Web3FormsPayload = {
+  accessKey: string;
+  subject: string;
+  message: string;
+  replyTo: string;
+  name: string;
+  fromName: string;
+  to: string;
+};
 
 export type ShopNotifyResult =
   | { ok: true; via: 'web3forms' | 'resend-fallback'; to: string }
   | { error: string };
 
 /**
- * Primario: Web3Forms → Gmail ligado a WEB3FORMS_ACCESS_KEY
- * (sin verificar dominio; la key se crea en web3forms.com con ese email).
- * Respaldo: Resend → Outlook de prueba (onboarding@resend.dev no puede a Gmail).
+ * Payload para que el navegador envíe a Web3Forms (la access key es pública por diseño).
+ * El servidor no usa Web3Forms: Cloudflare suele bloquear IPs de Functions.
  */
-export async function notifyShop(opts: {
+export function web3FormsPayload(opts: {
   subject: string;
   message: string;
   replyTo: string;
   name?: string;
-}): Promise<ShopNotifyResult> {
-  const primary = await notifyShopWeb3Forms(opts);
-  if ('ok' in primary) return primary;
-
-  const fallback = await notifyShopFallback({
-    ...opts,
-    intendedTo: shopInbox(),
-    web3Error: 'error' in primary ? primary.error : undefined,
-  });
-  if ('ok' in fallback) return fallback;
-
-  return {
-    error:
-      ('error' in primary ? primary.error : 'Web3Forms falló.') +
-      ' / ' +
-      ('error' in fallback ? fallback.error : 'Resend falló.'),
-  };
-}
-
-export async function notifyShopWeb3Forms(opts: {
-  subject: string;
-  message: string;
-  replyTo: string;
-  name?: string;
-}): Promise<ShopNotifyResult> {
+}): Web3FormsPayload | { error: string } {
   const accessKey = (env('WEB3FORMS_ACCESS_KEY') || '').trim();
   if (!accessKey) {
     return {
@@ -62,46 +47,23 @@ export async function notifyShopWeb3Forms(opts: {
         ' y configúrala en Vercel.',
     };
   }
-
-  let res: Response;
-  try {
-    res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        access_key: accessKey,
-        subject: opts.subject,
-        from_name: site.name,
-        name: opts.name || 'Cliente web',
-        email: opts.replyTo,
-        replyto: opts.replyTo,
-        message: opts.message,
-      }),
-    });
-  } catch {
-    return { error: 'No se pudo contactar con Web3Forms.' };
-  }
-
-  const data = (await res.json().catch(() => ({}))) as {
-    success?: boolean | string;
-    message?: string;
-  };
-
-  if (res.ok && (data.success === true || String(data.success) === 'true')) {
-    return { ok: true, via: 'web3forms', to: shopInbox() };
-  }
-
   return {
-    error: (data.message || `Web3Forms HTTP ${res.status}`).trim(),
+    accessKey,
+    subject: opts.subject,
+    message: opts.message,
+    replyTo: opts.replyTo,
+    name: opts.name || 'Cliente web',
+    fromName: site.name,
+    to: shopInbox(),
   };
 }
 
+/** Respaldo server-side: Resend → Outlook (onboarding@resend.dev no puede a Gmail). */
 export async function notifyShopFallback(opts: {
   subject: string;
   message: string;
   replyTo: string;
   intendedTo?: string;
-  web3Error?: string;
 }): Promise<ShopNotifyResult> {
   const apiKey = env('RESEND_API_KEY');
   const from = env('RESEND_FROM') || 'Copistería Central <onboarding@resend.dev>';
@@ -121,16 +83,52 @@ export async function notifyShopFallback(opts: {
     text: [
       `Destino deseado (Web3Forms/Gmail): ${intended}`,
       'Copia de respaldo vía Resend (modo prueba → Outlook).',
-      opts.web3Error ? `Web3Forms: ${opts.web3Error}` : '',
+      'El navegador también intenta Web3Forms al Gmail.',
       '',
       opts.message,
-    ]
-      .filter(Boolean)
-      .join('\n'),
+    ].join('\n'),
   });
 
   if (error) {
     return { error: error.message };
   }
   return { ok: true, via: 'resend-fallback', to };
+}
+
+/**
+ * Prepara el aviso: payload Web3Forms para el cliente + respaldo Resend.
+ * Aunque falle el respaldo, devolvemos web3forms para que el navegador complete el envío a Gmail.
+ */
+export async function prepareShopNotify(opts: {
+  subject: string;
+  message: string;
+  replyTo: string;
+  name?: string;
+}): Promise<
+  | {
+      ok: true;
+      web3forms: Web3FormsPayload;
+      via: 'resend-fallback' | 'client-web3forms-only';
+      to: string;
+    }
+  | { error: string }
+> {
+  const web3forms = web3FormsPayload(opts);
+  if ('error' in web3forms) {
+    return { error: web3forms.error };
+  }
+
+  const fallback = await notifyShopFallback({
+    subject: opts.subject,
+    message: opts.message,
+    replyTo: opts.replyTo,
+    intendedTo: web3forms.to,
+  });
+
+  return {
+    ok: true,
+    web3forms,
+    via: 'error' in fallback ? 'client-web3forms-only' : fallback.via,
+    to: web3forms.to,
+  };
 }

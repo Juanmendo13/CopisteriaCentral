@@ -1,4 +1,4 @@
-import { notifyShop } from './shop-notify';
+import { prepareShopNotify, type Web3FormsPayload } from './shop-notify';
 import { site } from './site';
 
 export interface PedidoPayload {
@@ -101,6 +101,7 @@ export async function enviarPedidoResend(
   | {
       ok: true;
       modo: 'enlace';
+      web3forms: Web3FormsPayload;
       via: string;
       to: string;
     }
@@ -114,16 +115,22 @@ export async function enviarPedidoResend(
   ].join('\n');
   const message = pedidoTexto(pedido, extra);
 
-  const result = await notifyShop({
+  const prepared = await prepareShopNotify({
     subject,
     message,
     replyTo: pedido.email,
     name: pedido.nombre,
   });
 
-  if ('error' in result) {
-    return { error: result.error };
+  if ('error' in prepared) {
+    return { error: prepared.error };
   }
 
-  return { ok: true, modo: 'enlace', via: result.via, to: result.to };
+  return {
+    ok: true,
+    modo: 'enlace',
+    web3forms: prepared.web3forms,
+    via: prepared.via,
+    to: prepared.to,
+  };
 }

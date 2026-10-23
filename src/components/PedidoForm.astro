@@ -169,6 +169,8 @@ const waPedido = whatsappLink(
 <script>
   import { upload } from '@vercel/blob/client';
   import { ALLOWED_MIME, MAX_FILE_BYTES } from '../data/formatos';
+  import { sendShopWeb3Forms } from '../lib/client-web3forms';
+
   const form = document.getElementById('pedido-form') as HTMLFormElement | null;
   const fileInput = document.getElementById('pedido-archivo') as HTMLInputElement | null;
   const fileLabel = document.getElementById('pedido-archivo-nombre');
@@ -323,21 +325,30 @@ const waPedido = whatsappLink(
         mensaje?: string;
         modo?: 'adjunto' | 'enlace';
         via?: string;
+        web3forms?: {
+          accessKey: string;
+          subject: string;
+          message: string;
+          replyTo: string;
+          name?: string;
+          fromName?: string;
+        };
       };
 
-      if (!response.ok || !result.ok) {
+      if (!response.ok || !result.ok || !result.web3forms) {
         showError(result.error || 'No se pudo enviar el pedido.');
         return;
       }
+
+      const gmail = await sendShopWeb3Forms(result.web3forms);
 
       form.reset();
       setFileName(undefined);
       toggleMedida();
       if (okText) {
-        okText.textContent =
-          result.via === 'web3forms'
-            ? 'Pedido enviado. La tienda recibe el aviso con el enlace al archivo.'
-            : 'Pedido enviado (respaldo). Si no te llaman, escribe o llama al local.';
+        okText.textContent = gmail.ok
+          ? 'Pedido enviado. La tienda recibe el aviso con el enlace al archivo.'
+          : 'Pedido registrado con respaldo. Si no te llaman, escribe o llama al local.';
       }
       okEl?.classList.remove('hidden');
       if (okExtra) {

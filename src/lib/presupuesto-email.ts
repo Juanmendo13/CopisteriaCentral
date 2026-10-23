@@ -1,6 +1,6 @@
 import { formatEuro, getPrecioItem } from '../data/precios';
 import { getVentaItem } from '../data/venta';
-import { notifyShop } from './shop-notify';
+import { prepareShopNotify, type Web3FormsPayload } from './shop-notify';
 import { site } from './site';
 
 type CartCatalogItem = {
@@ -134,6 +134,7 @@ export async function enviarPresupuestoCarrito(
   | {
       ok: true;
       clienteDemo: boolean;
+      web3forms: Web3FormsPayload;
       via: string;
       to: string;
     }
@@ -142,21 +143,22 @@ export async function enviarPresupuestoCarrito(
   const subjectShop = `Presupuesto carrito · ${payload.nombre}`;
   const message = textoTienda(payload);
 
-  const result = await notifyShop({
+  const prepared = await prepareShopNotify({
     subject: subjectShop,
     message,
     replyTo: payload.email,
     name: payload.nombre,
   });
 
-  if ('error' in result) {
-    return { error: result.error };
+  if ('error' in prepared) {
+    return { error: prepared.error };
   }
 
   return {
     ok: true,
     clienteDemo: false,
-    via: result.via,
-    to: result.to,
+    web3forms: prepared.web3forms,
+    via: prepared.via,
+    to: prepared.to,
   };
 }

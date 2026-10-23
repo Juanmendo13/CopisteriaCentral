@@ -31,6 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
     modo: result.modo,
     via: result.via,
     to: result.to,
-    mensaje: 'Pedido enviado a la tienda.',
+    web3forms: result.web3forms,
+    mensaje: 'Pedido preparado. Enviando aviso a la tienda…',
   });
 };

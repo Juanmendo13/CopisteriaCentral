@@ -1,11 +1,11 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { notifyShop, shopInbox } from '../../lib/shop-notify';
+import { prepareShopNotify, shopInbox } from '../../lib/shop-notify';
 
 /**
- * Smoke test for production email path (Web3Forms → Gmail, Resend backup).
- * POST { secret? } — if NOTIFY_HEALTH_SECRET is set, require matching secret.
+ * Smoke test: returns Web3Forms client payload + Resend backup status.
+ * Browser proof should POST the returned web3forms payload to api.web3forms.com.
  */
 export const POST: APIRoute = async ({ request }) => {
   const required = (process.env.NOTIFY_HEALTH_SECRET || '').trim();
@@ -22,27 +22,28 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const stamp = new Date().toISOString();
-  const result = await notifyShop({
+  const prepared = await prepareShopNotify({
     subject: `PROOF notify-health · ${stamp}`,
     message: [
       'Prueba automática de entrega de pedidos/presupuestos.',
-      `Buzón esperado (PEDIDOS_EMAIL / site.inboxEmail): ${shopInbox()}`,
+      `Buzón esperado: ${shopInbox()}`,
       `Marca de tiempo: ${stamp}`,
-      'Si ves este correo en Gmail, Web3Forms está bien configurado para ese buzón.',
+      'Si ves este correo en Gmail, la access key de Web3Forms apunta a ese buzón.',
     ].join('\n'),
     replyTo: 'noreply@copisteria-central.vercel.app',
     name: 'Notify Health',
   });
 
-  if ('error' in result) {
-    return Response.json({ ok: false, error: result.error, intendedTo: shopInbox() }, { status: 502 });
+  if ('error' in prepared) {
+    return Response.json({ ok: false, error: prepared.error, intendedTo: shopInbox() }, { status: 502 });
   }
 
   return Response.json({
     ok: true,
-    via: result.via,
-    to: result.to,
+    via: prepared.via,
+    to: prepared.to,
     intendedTo: shopInbox(),
+    web3forms: prepared.web3forms,
     stamp,
   });
 };

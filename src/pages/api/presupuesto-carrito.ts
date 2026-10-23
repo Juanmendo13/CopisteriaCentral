@@ -26,6 +26,7 @@ export const POST: APIRoute = async ({ request }) => {
     clienteDemo: result.clienteDemo,
     via: result.via,
     to: result.to,
-    mensaje: 'Presupuesto enviado a la tienda.',
+    web3forms: result.web3forms,
+    mensaje: 'Presupuesto preparado. Enviando aviso a la tienda…',
   });
 };

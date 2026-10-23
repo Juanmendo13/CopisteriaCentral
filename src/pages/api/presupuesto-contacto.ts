@@ -1,7 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { notifyShop } from '../../lib/shop-notify';
+import { prepareShopNotify } from '../../lib/shop-notify';
 import { site } from '../../lib/site';
 
 function asString(value: unknown): string {
@@ -53,21 +53,22 @@ export const POST: APIRoute = async ({ request }) => {
     .join('\n');
 
   const subject = `Presupuesto · ${nombre}${servicio ? ` · ${servicio}` : ''}`;
-  const result = await notifyShop({
+  const prepared = await prepareShopNotify({
     subject,
     message: lines,
     replyTo: email,
     name: nombre,
   });
 
-  if ('error' in result) {
-    return Response.json({ error: result.error }, { status: 502 });
+  if ('error' in prepared) {
+    return Response.json({ error: prepared.error }, { status: 502 });
   }
 
   return Response.json({
     ok: true,
-    via: result.via,
-    to: result.to,
-    mensaje: 'Presupuesto enviado a la tienda.',
+    via: prepared.via,
+    to: prepared.to,
+    web3forms: prepared.web3forms,
+    mensaje: 'Presupuesto preparado. Enviando aviso a la tienda…',
   });
 };

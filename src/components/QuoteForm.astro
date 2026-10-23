@@ -87,6 +87,8 @@ const inputClass = 'field-stamp';
 </form>
 
 <script>
+  import { sendShopWeb3Forms } from '../lib/client-web3forms';
+
   const form = document.getElementById('quote-form') as HTMLFormElement | null;
   const errorEl = document.getElementById('quote-error');
   const okEl = document.getElementById('quote-ok');
@@ -146,19 +148,27 @@ const inputClass = 'field-stamp';
         message?: string;
         mensaje?: string;
         via?: string;
+        web3forms?: {
+          accessKey: string;
+          subject: string;
+          message: string;
+          replyTo: string;
+          name?: string;
+          fromName?: string;
+        };
       };
 
-      if (!submit.ok || !result.ok) {
+      if (!submit.ok || !result.ok || !result.web3forms) {
         showError(result.error || result.message || 'No se pudo enviar. Prueba por teléfono o email.');
         return;
       }
 
+      const gmail = await sendShopWeb3Forms(result.web3forms);
       form.reset();
       if (okEl) {
-        okEl.textContent =
-          result.via === 'web3forms'
-            ? 'Presupuesto enviado a la tienda. Te responderemos por email o teléfono.'
-            : 'Presupuesto enviado (respaldo). Si no te llaman, escribe o llama al local.';
+        okEl.textContent = gmail.ok
+          ? 'Presupuesto enviado a la tienda. Te responderemos por email o teléfono.'
+          : 'Presupuesto registrado con respaldo. Si no te llaman, escribe o llama al local.';
       }
       okEl?.classList.remove('hidden');
     } catch {
