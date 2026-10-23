@@ -7,32 +7,66 @@ import ServiceIconsRow from '../components/ServiceIconsRow.astro';
 import UtilityStrip from '../components/UtilityStrip.astro';
 import HomeExtras from '../components/HomeExtras.astro';
 import HomePrecios from '../components/HomePrecios.astro';
-import SectionHeader from '../components/SectionHeader.astro';
 import QuoteForm from '../components/QuoteForm.astro';
+import Doodle from '../components/Doodle.astro';
+import DoodleDecor from '../components/DoodleDecor.astro';
 import { servicios } from '../data/servicios';
 import { site } from '../lib/site';
+
+const bands = servicios.filter((s) => s.fullWidth);
+const stamps = servicios.filter((s) => !s.fullWidth);
 ---
 
 <Layout title={`${site.name} | Copistería en Sevilla`}>
   <HomeHero />
+
   <UtilityStrip />
   <ServiceIconsRow />
 
+  <div class="band-mustard">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 py-7">
+      <p class="text-center text-xs text-brand mb-4 font-black uppercase tracking-[0.16em]">
+        Cositas del mostrador
+      </p>
+      <DoodleDecor variant="band" />
+    </div>
+  </div>
+
   <main>
-    <section id="servicios" class="scroll-mt-24 relative bg-white pt-14 sm:pt-16 pb-16 px-4 border-b border-line">
-      <div class="max-w-6xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-          <SectionHeader
-            eyebrow="Servicios"
-            title="Del PDF al mostrador"
-            description="Fotocopias, impresión, encuadernación, plastificados y venta de papelería. Sin intermediarios."
-          />
-          <a href="/servicios" class="btn-secondary-light shrink-0 inline-flex items-center px-5 py-2.5 text-xs font-black uppercase tracking-wide">
-            Ver listado completo
+    {/* Asymmetric stamp collage — not a uniform 3-col SaaS grid */}
+    <section id="servicios" class="scroll-mt-24 relative paper-dots py-16 sm:py-20 px-5 sm:px-8 overflow-hidden border-b-[8px] border-brand">
+      <Doodle name="lapiz" rotate={16} class="doodle-float absolute top-10 right-[4%] h-24 w-7 opacity-55 hidden md:block" />
+      <Doodle name="tijeras" rotate={-12} class="doodle-wiggle absolute top-24 left-[3%] h-16 w-16 opacity-45 hidden lg:block" />
+      <Doodle name="postit" rotate={8} class="doodle-float-slow absolute bottom-16 right-[8%] h-14 w-14 opacity-50 hidden sm:block" />
+      <Doodle name="clip" rotate={25} class="absolute top-[45%] left-[6%] h-12 w-7 opacity-35 hidden xl:block" />
+      <Doodle name="goma" rotate={-6} class="doodle-float absolute bottom-8 left-[12%] h-9 w-16 opacity-40 hidden md:block" />
+
+      <div class="relative max-w-6xl mx-auto reveal-on-scroll">
+        <div class="mb-12 max-w-2xl">
+          <p class="inline-flex items-center gap-2 text-sm font-black text-coral mb-3 uppercase tracking-[0.14em]">
+            <Doodle name="chincheta" class="h-5 w-4" />
+            Lo que hacemos
+          </p>
+          <h2 class="font-display text-4xl sm:text-6xl text-brand leading-[0.98]">
+            Del PDF<br />al mostrador
+          </h2>
+          <p class="mt-5 text-muted leading-relaxed text-base sm:text-lg font-medium">
+            Fotocopias, impresión, encuadernación, plastificados y papelería. Tú mandas el archivo; nosotros lo dejamos listo.
+          </p>
+          <a href="/servicios" class="mt-6 inline-flex items-center gap-2 text-sm font-black uppercase tracking-wide text-brand hover:underline decoration-[3px] underline-offset-4">
+            <Doodle name="tijeras" class="h-5 w-5" rotate={-8} />
+            Ver todos los servicios →
           </a>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
-          {servicios.map((servicio) => <ServiceCard servicio={servicio} />)}
+
+        <div class="space-y-5 mb-8">
+          {bands.map((servicio, i) => (
+            <ServiceCard servicio={servicio} index={i} layout="band" />
+          ))}
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
+          {stamps.map((servicio, i) => <ServiceCard servicio={servicio} index={i} layout="stamp" />)}
         </div>
       </div>
     </section>
@@ -41,33 +75,49 @@ import { site } from '../lib/site';
 
     <HomeExtras />
 
-    <section class="bg-brand text-white">
-      <div class="max-w-6xl mx-auto grid lg:grid-cols-2">
-        <div class="border-b lg:border-b-0 lg:border-r border-white/15 p-8 sm:p-10 lg:p-12">
-          <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-accent border-l-2 border-accent pl-3 mb-4">
-            El local
+    <section class="relative px-5 sm:px-8 py-16 sm:py-20 paper-ruled overflow-hidden border-b-[8px] border-brand">
+      <Doodle name="regla" rotate={-8} class="doodle-float-slow absolute top-8 right-6 h-8 w-32 opacity-45 hidden sm:block" />
+      <Doodle name="boli" rotate={14} class="doodle-float absolute bottom-12 left-6 h-20 w-7 opacity-40" />
+      <Doodle name="cuaderno" rotate={-6} class="absolute top-1/2 right-[4%] h-16 w-12 opacity-30 hidden lg:block" />
+      <div class="relative max-w-6xl mx-auto grid lg:grid-cols-[1.15fr_0.85fr] gap-0 lg:gap-0 items-stretch reveal-on-scroll">
+        <div class="border-[4px] border-brand bg-brand text-white p-7 sm:p-10 shadow-[8px_8px_0_rgba(232,194,0,0.7)] lg:mr-[-12px] lg:z-10">
+          <p class="text-sm font-black text-accent mb-2 inline-flex items-center gap-2 uppercase tracking-[0.14em]">
+            <Doodle name="chincheta" class="h-5 w-4" />
+            Pasáos por aquí
           </p>
-          <h2 class="font-display text-2xl sm:text-3xl font-black tracking-[-0.02em] mb-4">
-            Calidad de impresión.<br />Trato de mostrador.
+          <h2 class="font-display text-3xl sm:text-4xl text-white mb-4 leading-tight">
+            Impresión buena y gente cercana
           </h2>
-          <p class="text-white/65 leading-relaxed font-medium">
-            Atención personalizada, archivos PDF/JPG/PNG y recogida en {site.addressLine}. Cliente que vuelve porque el trabajo sale bien y a tiempo.
+          <p class="text-white/75 leading-relaxed font-medium">
+            Llevamos años en la avenida: vecinos, estudiantes y gente del barrio que vuelve porque el trabajo sale bien y el trato es de verdad.
           </p>
-          <ul class="mt-6 space-y-2.5 text-sm font-semibold text-white/85">
-            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> Atención en mostrador</li>
-            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> PDF, JPG y PNG</li>
-            <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true"></span> Recogida en Reina Mercedes</li>
+          <ul class="mt-6 space-y-3 text-sm text-white">
+            <li class="flex items-center gap-2.5 font-bold">
+              <Doodle name="postit" class="h-6 w-6 shrink-0" rotate={6} />
+              Te atendemos en el mostrador, sin prisas raras
+            </li>
+            <li class="flex items-center gap-2.5 font-bold">
+              <Doodle name="folio" class="h-6 w-5 shrink-0" rotate={-4} />
+              PDF, JPG y PNG — lo de siempre
+            </li>
+            <li class="flex items-center gap-2.5 font-bold">
+              <Doodle name="cuaderno" class="h-6 w-5 shrink-0" rotate={5} />
+              Recoges en {site.addressLine}
+            </li>
           </ul>
-          <a href="/informacion" class="mt-8 inline-flex btn-secondary px-5 py-2.5 text-xs font-black uppercase tracking-wide text-white">
-            Sobre el negocio
+          <a href="/informacion" class="mt-8 inline-flex text-sm font-black uppercase tracking-wide text-accent hover:underline decoration-2 underline-offset-4">
+            Sobre el negocio →
           </a>
         </div>
-        <div class="bg-brand-dark p-8 sm:p-10 lg:p-12">
-          <h3 class="font-display text-xl font-black tracking-tight mb-2">Pedir presupuesto</h3>
-          <p class="text-sm text-white/55 mb-6 font-medium">
-            Con archivo listo: <a href="/pedido" class="text-accent font-bold hover:underline">envía el PDF</a>. Papelería: <a href="/venta" class="text-accent font-bold hover:underline">lista de venta</a>.
+        <div class="relative border-[4px] border-brand bg-accent p-6 sm:p-8 mt-6 lg:mt-10 lg:ml-0 shadow-[8px_8px_0_rgba(0,45,98,0.35)]">
+          <Doodle name="boli" rotate={-15} class="absolute -top-5 -right-2 h-14 w-6 doodle-wiggle" />
+          <Doodle name="clip" rotate={22} class="absolute -top-2 left-6 h-8 w-5" />
+          <h3 class="font-display text-xl sm:text-2xl text-brand mb-1 pt-2">Cuéntanos qué necesitas</h3>
+          <p class="text-sm text-brand/75 mb-5 font-semibold">
+            ¿Tienes archivo? <a href="/pedido" class="text-brand font-black underline decoration-2 underline-offset-2">Mándanos el PDF</a>.
+            ¿Papelería? <a href="/venta" class="text-brand font-black underline decoration-2 underline-offset-2">Haz tu lista</a>.
           </p>
-          <div class="[&_label]:text-white/70 [&_input]:bg-white [&_select]:bg-white [&_textarea]:bg-white">
+          <div class="bg-white border-[3px] border-brand p-4 sm:p-5">
             <QuoteForm compact />
           </div>
         </div>
@@ -77,3 +127,23 @@ import { site } from '../lib/site';
 
   <Footer />
 </Layout>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal-on-scroll');
+  if (reveals.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+    );
+    reveals.forEach((el) => io.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add('is-visible'));
+  }
+</script>

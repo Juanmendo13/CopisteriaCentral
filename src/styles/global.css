@@ -2,31 +2,20 @@
 
 @theme {
   --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Alfa Slab One', 'Montserrat', ui-sans-serif, system-ui, sans-serif;
   --color-brand: #002d62;
   --color-brand-dark: #001a3d;
-  --color-brand-soft: #e8eef5;
+  --color-brand-soft: #c5d6ea;
   --color-accent: #ffd700;
-  --color-accent-dark: #e6c200;
-  --color-accent-soft: #fff8cc;
-  --color-ink: #0a1628;
-  --color-muted: #475569;
-  --color-paper: #f0f2f5;
-  --color-line: #c5ced9;
-  --radius-ui: 2px;
-}
-
-.btn-accent {
-  background-color: var(--color-accent);
-  color: var(--color-brand-dark);
-  font-weight: 800;
-  border-radius: var(--radius-ui);
-  border: 1px solid var(--color-accent-dark);
-  box-shadow: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-.btn-accent:hover {
-  background-color: var(--color-accent-dark);
+  --color-accent-dark: #e8c200;
+  --color-accent-soft: #ffe566;
+  --color-coral: #e85d3a;
+  --color-ink: #0a1420;
+  --color-muted: #3d4a5c;
+  --color-paper: #fff3c4;
+  --color-paper-deep: #f0d978;
+  --color-line: #002d62;
+  --radius-ui: 0.15rem;
 }
 
 html {
@@ -38,70 +27,450 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   overflow-x: hidden;
+  /* Ruled paper only — no fixed attachment / SVG feTurbulence (paint cost). */
+  background-image:
+    repeating-linear-gradient(
+      transparent,
+      transparent 31px,
+      rgb(0 45 98 / 0.07) 31px,
+      rgb(0 45 98 / 0.07) 32px
+    ),
+    linear-gradient(90deg, rgb(232 93 58 / 0.1) 0, rgb(232 93 58 / 0.1) 3px, transparent 3px);
+  background-size:
+    100% 32px,
+    100% 100%;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #e8eef5;
+  background: var(--color-accent-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #64748b;
-  border-radius: 0;
+  background: var(--color-brand);
+  border: 2px solid var(--color-accent);
 }
 
 .font-display {
   font-family: var(--font-display);
+  letter-spacing: -0.015em;
 }
 
+/* Stamp / block CTAs — never soft pills */
 .btn-primary {
   background-color: var(--color-accent);
   color: var(--color-brand-dark);
   font-weight: 800;
   border-radius: var(--radius-ui);
-  border: 1px solid var(--color-accent-dark);
-  box-shadow: none;
-  transition: background-color 0.15s ease;
+  border: 3px solid var(--color-brand-dark);
+  box-shadow: 5px 5px 0 var(--color-brand);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-primary:hover {
   background-color: var(--color-accent-dark);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--color-brand);
+}
+
+.btn-primary:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--color-brand);
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: var(--color-brand-dark);
+  font-weight: 800;
+  border-radius: var(--radius-ui);
+  border: 3px solid var(--color-brand-dark);
+  box-shadow: 4px 4px 0 rgb(0 26 61 / 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-accent:hover {
+  background-color: var(--color-accent-dark);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 rgb(0 26 61 / 0.5);
 }
 
 .btn-secondary {
-  border: 1px solid rgb(255 255 255 / 0.45);
+  border: 3px solid rgb(255 255 255 / 0.7);
   background-color: transparent;
   color: inherit;
   font-weight: 800;
   border-radius: var(--radius-ui);
-  box-shadow: none;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
 .btn-secondary:hover {
   border-color: var(--color-accent);
-  background-color: rgb(255 255 255 / 0.06);
+  background-color: rgb(255 215 0 / 0.15);
+  color: var(--color-accent);
 }
 
 .btn-secondary-light {
-  border: 1px solid var(--color-line);
+  border: 3px solid var(--color-brand);
   background-color: white;
-  color: var(--color-ink);
+  color: var(--color-brand);
   font-weight: 800;
   border-radius: var(--radius-ui);
-  box-shadow: none;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  box-shadow: 4px 4px 0 rgb(0 45 98 / 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-secondary-light:hover {
-  border-color: var(--color-brand);
   background-color: var(--color-brand-soft);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 rgb(0 45 98 / 0.25);
 }
 
-/* Espacio extra bajo el banner de prototipo (páginas con navbar fija) */
+.doodle svg {
+  display: block;
+  overflow: visible;
+}
+
+@keyframes doodle-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes doodle-float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(2.5deg);
+  }
+}
+
+@keyframes doodle-wiggle {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mustard-pulse {
+  0%,
+  100% {
+    box-shadow: 5px 5px 0 var(--color-brand);
+  }
+  50% {
+    box-shadow: 5px 5px 0 var(--color-brand), 0 0 0 5px rgb(255 215 0 / 0.4);
+  }
+}
+
+@keyframes stamp-ink {
+  0%,
+  100% {
+    transform: rotate(-1.5deg) scale(1);
+  }
+  50% {
+    transform: rotate(1deg) scale(1.02);
+  }
+}
+
+.doodle-float {
+  animation: doodle-float 4.5s ease-in-out infinite;
+}
+
+.doodle-float-slow {
+  animation: doodle-float-slow 6.5s ease-in-out infinite;
+}
+
+.doodle-wiggle {
+  animation: doodle-wiggle 5s ease-in-out infinite;
+}
+
+.hero-rise > * {
+  animation: hero-rise 0.75s ease-out both;
+}
+
+.hero-rise > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.hero-rise > *:nth-child(2) {
+  animation-delay: 0.14s;
+}
+.hero-rise > *:nth-child(3) {
+  animation-delay: 0.24s;
+}
+.hero-rise > *:nth-child(4) {
+  animation-delay: 0.34s;
+}
+
+.btn-pulse {
+  animation: mustard-pulse 2.8s ease-in-out infinite;
+}
+
+.stamp-ink {
+  animation: stamp-ink 5s ease-in-out infinite;
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doodle-float,
+  .doodle-float-slow,
+  .doodle-wiggle,
+  .hero-rise > *,
+  .btn-pulse,
+  .stamp-ink {
+    animation: none;
+  }
+
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Mobile: drop infinite doodle/CTA motion (battery + main-thread). Keep one-shot hero-rise. */
+@media (max-width: 767px) {
+  .doodle-float,
+  .doodle-float-slow,
+  .doodle-wiggle,
+  .btn-pulse,
+  .stamp-ink {
+    animation: none;
+  }
+}
+
+.doodle {
+  contain: layout paint;
+}
+
+.paper-dots {
+  background-color: #fff8d6;
+  background-image:
+    radial-gradient(circle, rgb(0 45 98 / 0.14) 1.4px, transparent 1.4px),
+    linear-gradient(180deg, rgb(255 215 0 / 0.35), transparent 35%);
+  background-size:
+    14px 14px,
+    100% 100%;
+}
+
+.paper-ruled {
+  background-color: #fffef5;
+  background-image:
+    repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      rgb(0 45 98 / 0.12) 27px,
+      rgb(0 45 98 / 0.12) 28px
+    ),
+    linear-gradient(90deg, rgb(232 93 58 / 0.18) 0, rgb(232 93 58 / 0.18) 3px, transparent 3px);
+  background-size:
+    100% 28px,
+    100% 100%;
+}
+
+/* Deep mustard desk pad — ruled + soft washes (no SVG noise filter) */
+.paper-extras {
+  background-color: #edd56a;
+  background-image:
+    radial-gradient(ellipse 70% 55% at 88% 12%, rgb(255 215 0 / 0.55), transparent 58%),
+    radial-gradient(ellipse 55% 50% at 8% 92%, rgb(0 45 98 / 0.12), transparent 55%),
+    radial-gradient(ellipse 40% 35% at 55% 48%, rgb(232 93 58 / 0.1), transparent 60%),
+    repeating-linear-gradient(
+      transparent,
+      transparent 29px,
+      rgb(0 45 98 / 0.09) 29px,
+      rgb(0 45 98 / 0.09) 30px
+    );
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 30px;
+  position: relative;
+  contain: paint;
+}
+
+.paper-extras::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 14px;
+  background:
+    linear-gradient(180deg, rgb(0 26 61 / 0.12), transparent),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 10px,
+      rgb(0 45 98 / 0.08) 10px 12px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.paper-extras::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 18px;
+  background:
+    linear-gradient(0deg, rgb(0 26 61 / 0.1), transparent),
+    radial-gradient(ellipse 80% 100% at 50% 100%, rgb(196 92 38 / 0.18), transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stamp-tile {
+  transition:
+    scale 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stamp-tile:hover {
+  scale: 1.02;
+  box-shadow: 11px 11px 0 rgb(0 26 61 / 0.4) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-tile {
+    transition: none;
+  }
+
+  .stamp-tile:hover {
+    scale: none;
+  }
+}
+
+.band-mustard {
+  background-color: var(--color-accent);
+  color: var(--color-brand-dark);
+  border-top: 4px solid var(--color-brand);
+  border-bottom: 4px solid var(--color-brand);
+}
+
+.band-navy {
+  background-color: var(--color-brand);
+  color: white;
+  border-top: 4px solid var(--color-accent);
+  border-bottom: 4px solid var(--color-accent);
+}
+
+.band-coral {
+  background-color: var(--color-coral);
+  color: white;
+  border-top: 4px solid var(--color-brand-dark);
+  border-bottom: 4px solid var(--color-brand-dark);
+}
+
+/* Thick stamp surfaces — not soft SaaS cards */
+.surface-card {
+  background-color: white;
+  border: 3px solid var(--color-brand);
+  box-shadow: 6px 6px 0 rgb(0 45 98 / 0.28);
+}
+
+.surface-card:hover {
+  box-shadow: 8px 8px 0 rgb(0 45 98 / 0.32);
+  transform: translate(-2px, -2px);
+}
+
+.ticket {
+  background: white;
+  border: 3px solid var(--color-brand);
+  box-shadow: 5px 5px 0 var(--color-brand);
+  position: relative;
+}
+
+.ticket::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: var(--color-accent);
+}
+
+.page-hero-block {
+  background: var(--color-brand);
+  color: white;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 10px solid var(--color-accent);
+}
+
+.page-hero-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.09;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    white 27px,
+    white 28px
+  );
+  pointer-events: none;
+}
+
+.stamp-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: var(--color-brand-dark);
+  font-weight: 900;
+  border: 3px solid var(--color-brand-dark);
+  box-shadow: 3px 3px 0 rgb(0 26 61 / 0.4);
+  border-radius: var(--radius-ui);
+}
+
+.nav-active {
+  background: var(--color-accent);
+  color: var(--color-brand-dark);
+  border: 2px solid var(--color-brand-dark);
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 0.25);
+}
+
 body:has(.site-header.has-banner) main.pt-28 {
   padding-top: 9.25rem;
 }
@@ -118,4 +487,190 @@ body:has(.site-header.has-banner) main > section.pt-28 {
   body:has(.site-header.has-banner) main > section.md\:pt-32 {
     padding-top: 10.25rem;
   }
+}
+
+/* Sticky venta cart companion under nav (mobile/tablet; tucked when Lista is on screen) */
+@media (max-width: 1023px) {
+  body:has(.site-header.has-venta-cart-bar) main.pt-28 {
+    padding-top: 9.75rem;
+  }
+
+  body:has(.site-header.has-banner.has-venta-cart-bar) main.pt-28 {
+    padding-top: 12rem;
+  }
+
+  body:has(.site-header.has-venta-cart-bar.venta-cart-bar-tucked) main.pt-28 {
+    padding-top: 7rem;
+  }
+
+  body:has(.site-header.has-banner.has-venta-cart-bar.venta-cart-bar-tucked) main.pt-28 {
+    padding-top: 9.25rem;
+  }
+
+  .venta-cart-bar.venta-cart-bar--tucked {
+    max-height: 0 !important;
+    opacity: 0;
+    pointer-events: none;
+    border-bottom-width: 0;
+  }
+
+  /* Stick Lista summary under fixed header while scrolling the form */
+  .lista-compra-head {
+    top: 5.5rem;
+  }
+
+  body:has(.site-header.has-banner) .lista-compra-head {
+    top: 7.75rem;
+  }
+
+  body:has(.site-header.has-venta-cart-bar:not(.venta-cart-bar-tucked)) .lista-compra-head {
+    top: 8.25rem;
+  }
+
+  body:has(.site-header.has-banner.has-venta-cart-bar:not(.venta-cart-bar-tucked)) .lista-compra-head {
+    top: 10.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lista-compra {
+    top: 7.5rem;
+  }
+
+  body:has(.site-header.has-banner) .lista-compra {
+    top: 9.5rem;
+  }
+}
+
+/* Accessible focus — mustard ring on navy, navy on paper */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.bg-brand :focus-visible,
+.band-navy :focus-visible,
+.page-hero-block :focus-visible {
+  outline-color: var(--color-accent);
+}
+
+.btn-primary:focus-visible,
+.btn-accent:focus-visible {
+  outline-color: var(--color-brand);
+}
+
+/* Stamp form controls */
+.field-stamp {
+  width: 100%;
+  border: 3px solid var(--color-brand);
+  background: white;
+  border-radius: var(--radius-ui);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.875rem;
+  color: var(--color-ink);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.field-stamp::placeholder {
+  color: var(--color-muted);
+  opacity: 0.75;
+}
+
+.field-stamp:focus {
+  outline: none;
+  box-shadow: 4px 4px 0 var(--color-accent);
+}
+
+.choice-stamp {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--color-brand);
+  background: white;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border-radius: var(--radius-ui);
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.peer:checked + .choice-stamp {
+  background: var(--color-brand);
+  color: var(--color-accent);
+  box-shadow: 3px 3px 0 var(--color-accent);
+}
+
+.peer:focus-visible + .choice-stamp {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.dropzone-stamp {
+  display: flex;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed var(--color-brand);
+  background: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: var(--radius-ui);
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dropzone-stamp:hover,
+.dropzone-stamp.is-dragover {
+  background: rgb(255 215 0 / 0.2);
+  border-style: solid;
+  box-shadow: 4px 4px 0 var(--color-brand);
+}
+
+.alert-stamp {
+  border: 3px solid var(--color-brand);
+  border-radius: var(--radius-ui);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.alert-stamp-error {
+  background: #ffe8e0;
+  color: #8b1a00;
+  border-color: var(--color-coral);
+}
+
+.alert-stamp-ok {
+  background: #e8f5e9;
+  color: #1b5e20;
+  border-color: #2e7d32;
+}
+
+.btn-navy {
+  background-color: var(--color-brand);
+  color: var(--color-accent);
+  font-weight: 800;
+  border-radius: var(--radius-ui);
+  border: 3px solid var(--color-brand-dark);
+  box-shadow: 5px 5px 0 var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-navy:hover:not(:disabled) {
+  background-color: var(--color-brand-dark);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--color-accent);
+}
+
+.btn-navy:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--color-accent);
+}
+
+.btn-navy:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }

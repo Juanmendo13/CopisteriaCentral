@@ -1,33 +1,32 @@
 ---
-import { site } from '../lib/site';
+import { site, whatsappLink } from '../lib/site';
+
+const wa = whatsappLink('Hola Copistería Central — consulta rápida.');
 ---
 
-<section class="bg-brand-dark text-white border-y border-white/10">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
-      <div class="flex items-center gap-4 py-5 sm:pr-8">
-        <span class="text-accent text-xs font-extrabold uppercase tracking-[0.2em] shrink-0 w-16">Dónde</span>
-        <div class="min-w-0">
-          <p class="text-sm font-bold leading-snug truncate">{site.landmark}</p>
-          <p class="text-xs text-white/55">{site.postalCity}</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-4 py-5 sm:px-8">
-        <span class="text-accent text-xs font-extrabold uppercase tracking-[0.2em] shrink-0 w-16">Horario</span>
-        <div class="min-w-0">
-          <p class="text-sm font-bold leading-snug">L–J 9:00 – 20:30</p>
-          <p class="text-xs text-white/55">Sáb 9:30 – 13:30 · V partido</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-4 py-5 sm:pl-8">
-        <span class="text-accent text-xs font-extrabold uppercase tracking-[0.2em] shrink-0 w-16">Tel.</span>
-        <div class="min-w-0">
-          <a href={site.phoneHref} class="text-sm font-bold hover:text-accent transition">{site.phone}</a>
-          <p class="text-xs text-white/55">
-            <a href="/contacto" class="hover:text-accent transition">Contacto y mapa →</a>
-          </p>
-        </div>
-      </div>
-    </div>
+<section class="band-mustard" aria-label="Datos útiles">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-3.5 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-x-8 sm:gap-y-1 text-sm font-extrabold uppercase tracking-wide">
+    <p>
+      <span class="opacity-60">Aquí · </span>
+      <span class="text-brand">{site.landmark}</span>
+    </p>
+    <p>
+      <span class="opacity-60">Horario · </span>
+      <span class="text-brand">L–J 9:00–20:30</span>
+      <span class="opacity-60"> · Sáb 9:30–13:30</span>
+    </p>
+    <p class="sm:ml-auto flex flex-wrap items-center gap-x-4 gap-y-1">
+      <a href={site.phoneHref} class="text-brand underline underline-offset-2 decoration-[3px] hover:opacity-80">
+        {site.phone}
+      </a>
+      <a
+        href={wa}
+        class="text-brand underline underline-offset-2 decoration-[3px] hover:opacity-80"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        WhatsApp
+      </a>
+    </p>
   </div>
 </section>

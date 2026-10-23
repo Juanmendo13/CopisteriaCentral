@@ -2,40 +2,73 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import SectionHeader from '../components/SectionHeader.astro';
+import Doodle from '../components/Doodle.astro';
+import DoodleDecor from '../components/DoodleDecor.astro';
 import { fotos } from '../data/galeria';
 import { site } from '../lib/site';
 ---
 
 <Layout
   title={`Imágenes | ${site.name}`}
-  description="Trabajos de copistería e impresión: planos, póster científicos, cartelería y papelería en Sevilla."
+  description="Imágenes de Copistería Central en Av. Reina Mercedes, Sevilla. Galería provisional hasta fotos reales del local."
 >
   <Navbar />
 
-  <main class="pt-28 pb-16 px-4 max-w-6xl mx-auto">
-    <div class="rounded-3xl bg-gradient-to-br from-stone-100 to-white border border-stone-200/80 p-8 sm:p-10 mb-10">
-      <SectionHeader
-        eyebrow="Galería"
-        title="Imágenes"
-        description="Fotos reales del local y de trabajos habituales: planos, póster, papelería y gran formato."
-      />
-    </div>
+  <main class="pt-28 pb-0">
+    <section class="page-hero-block px-5 sm:px-8 py-12 sm:py-16">
+      <div class="relative max-w-6xl mx-auto">
+        <p class="text-sm font-black text-accent mb-3 uppercase tracking-[0.14em]">Galería</p>
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98]">Imágenes</h1>
+        <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
+          Aún no hay fotos propias del local publicadas aquí. Preferimos no enseñar fotos ajenas:
+          cuando las tengamos de verdad, las colgamos.
+        </p>
+        <a
+          href={site.mapsUrl}
+          class="mt-5 inline-flex text-sm font-black uppercase tracking-wide text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ver el local en Google Maps →
+        </a>
+      </div>
+    </section>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-      {
-        fotos.map((item) => (
-          <figure class="group overflow-hidden rounded-xl border border-stone-200/90 bg-white shadow-sm aspect-square">
-            <img
-              src={item.image}
-              alt={item.alt}
-              class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
-        ))
-      }
+    <div class="paper-dots px-5 sm:px-8 py-12 sm:py-16 border-b-[8px] border-brand relative overflow-hidden">
+      <div class="max-w-6xl mx-auto">
+        {
+          fotos.length > 0 ? (
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl">
+              {fotos.map((item) => (
+                <figure class="overflow-hidden border-[4px] border-brand bg-white shadow-[8px_8px_0_rgba(0,45,98,0.28)] aspect-[4/3]">
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    class="h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+              ))}
+            </div>
+          ) : (
+            <div class="relative max-w-2xl mx-auto border-[4px] border-brand bg-white p-8 sm:p-12 shadow-[10px_10px_0_rgba(0,45,98,0.28)] text-center">
+              <DoodleDecor variant="band" class="mb-8 opacity-90" />
+              <p class="font-display text-2xl sm:text-3xl text-brand leading-tight">
+                Galería en blanco — a propósito
+              </p>
+              <p class="mt-4 text-muted font-medium leading-relaxed">
+                Quitamos fotos que no eran nuestras. Mientras tanto, doodles de papelería
+                y la ficha del local en Maps. Honestidad de barrio.
+              </p>
+              <div class="mt-8 flex flex-wrap justify-center gap-3">
+                <a href="/pedido" class="btn-primary inline-flex px-5 py-3 text-xs">Enviar PDF</a>
+                <a href="/contacto" class="btn-secondary-light inline-flex px-5 py-3 text-xs">Contacto</a>
+              </div>
+            </div>
+          )
+        }
+      </div>
     </div>
   </main>
 

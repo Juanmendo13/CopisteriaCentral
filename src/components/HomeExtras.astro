@@ -1,52 +1,87 @@
 ---
 import { site } from '../lib/site';
+import Doodle from './Doodle.astro';
 
 const features = [
   {
     title: 'Junto al campus',
-    text: 'En Reina Mercedes, cerca de ETSII. Pasas, fotocopias y recoges.',
+    text: 'En Reina Mercedes, cerca de ETSII. Entre clase y clase: pasas, fotocopias y sigues.',
+    doodle: 'cuaderno' as const,
+    tone: 'bg-brand text-white',
+    pose: 'sm:-rotate-[1.8deg] sm:z-[2] sm:mb-2 sm:max-w-[97%]',
   },
   {
     title: 'Horario largo',
     text: 'De las primeras en abrir y de las últimas en cerrar en la avenida.',
+    doodle: 'regla' as const,
+    tone: 'bg-accent text-brand-dark',
+    pose: 'sm:rotate-[2.2deg] sm:translate-y-6 sm:z-[1] sm:mt-1',
   },
   {
-    title: 'Todo lo básico',
-    text: 'Fotocopias, color, encuadernación, plastificados y papelería.',
+    title: 'Lo que hace falta',
+    text: 'Fotocopias, color, espirales, plastificados y la papelería de apuro.',
+    doodle: 'tijeras' as const,
+    tone: 'bg-coral text-white',
+    pose: 'sm:rotate-[1.4deg] sm:-translate-y-3 sm:z-[3] sm:-mr-1',
   },
   {
-    title: 'Trato directo',
-    text: 'Rápidos, baratos y con el material que pedís a última hora.',
+    title: 'Trato de barrio',
+    text: 'Rápidos, claros y con lo que pedís a última hora — sin dramas.',
+    doodle: 'boli' as const,
+    tone: 'bg-white text-brand border-brand',
+    pose: 'sm:-rotate-[2.4deg] sm:translate-y-3 sm:z-[2] sm:ml-1 sm:min-h-[11.5rem] sm:max-w-[98%] sm:justify-self-end sm:w-full',
   },
 ];
 ---
 
-<section class="px-4 py-16 sm:py-20 bg-white border-b border-line">
-  <div class="max-w-6xl mx-auto">
-    <div class="max-w-2xl mb-10">
-      <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-brand border-l-2 border-accent pl-3 mb-4">
-        Por qué Central
-      </p>
-      <h2 class="font-display text-3xl sm:text-4xl font-black tracking-[-0.025em] text-ink">
-        La opción de referencia en Reina Mercedes
-      </h2>
+<section class="relative px-5 sm:px-8 py-16 sm:py-20 paper-extras overflow-hidden border-y-[8px] border-brand">
+  {/* Desk clutter — fills empty air around the headline */}
+  <Doodle name="cinta" rotate={12} class="doodle-float absolute top-5 right-6 h-14 w-14 opacity-50 hidden md:block z-[2]" />
+  <Doodle name="clip" rotate={-28} class="doodle-float-slow absolute top-28 right-[18%] h-11 w-7 opacity-45 hidden lg:block z-[2]" />
+  <Doodle name="chincheta" rotate={14} class="absolute top-12 left-[4%] h-9 w-7 opacity-40 hidden xl:block z-[2]" />
+  <Doodle name="folio" rotate={-7} class="doodle-wiggle absolute bottom-10 left-[3%] h-16 w-12 opacity-35 hidden md:block z-[2]" />
+  <Doodle name="goma" rotate={8} class="absolute bottom-16 right-[6%] h-8 w-14 opacity-40 hidden sm:block z-[2]" />
+
+  <div class="relative z-[3] max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-8 lg:gap-6 items-end mb-10 sm:mb-14">
+      <div class="max-w-xl">
+        <p class="text-sm font-black text-coral mb-2 inline-flex items-center gap-2 uppercase tracking-[0.14em]">
+          <Doodle name="postit" class="h-5 w-5" rotate={8} />
+          Por qué la gente vuelve
+        </p>
+        <h2 class="font-display text-3xl sm:text-5xl text-brand leading-[1.02]">
+          Tu copistería de siempre en Reina Mercedes
+        </h2>
+      </div>
+
+      {/* Doodle cluster where the pale yellow used to feel empty */}
+      <div class="relative hidden lg:block h-36 xl:h-40" aria-hidden="true">
+        <div class="absolute inset-0 border-[3px] border-dashed border-brand/25 bg-accent/25 shadow-[inset_0_0_0_1px_rgb(0_45_98/0.06)]"></div>
+        <Doodle name="lapiz" rotate={-22} class="doodle-float absolute -top-4 left-[12%] h-28 w-8 opacity-90" />
+        <Doodle name="postit" rotate={9} class="doodle-wiggle absolute top-6 right-[18%] h-16 w-16 opacity-95" />
+        <Doodle name="regla" rotate={4} class="doodle-float-slow absolute bottom-3 left-[22%] h-7 w-40 opacity-85" />
+        <Doodle name="tijeras" rotate={-14} class="absolute top-2 right-[2%] h-14 w-14 opacity-80" />
+        <Doodle name="boli" rotate={16} class="doodle-float absolute -bottom-2 right-[28%] h-20 w-7 opacity-90" />
+        <span class="stamp-mark stamp-ink absolute -left-3 bottom-8 h-11 w-11 text-[10px] -rotate-[8deg]">OK</span>
+      </div>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 border border-line">
+
+    {/* Stamp collage — slight tilt, overlap, richer press shadow */}
+    <div class="grid sm:grid-cols-2 gap-5 sm:gap-x-7 sm:gap-y-2">
       {
-        features.map((item, i) => (
+        features.map((item) => (
           <div
             class:list={[
-              'p-5 sm:p-6 bg-white',
-              i < 3 && 'lg:border-r border-line',
-              i % 2 === 0 && 'sm:border-r lg:border-r-0',
-              i < 2 && 'border-b sm:border-b lg:border-b-0 border-line',
-              i >= 2 && i < 4 && 'border-b lg:border-b-0 border-line sm:border-b-0',
-              i === 2 && 'sm:border-r lg:border-r border-line',
+              'stamp-tile border-[4px] border-brand-dark p-6 sm:p-7 shadow-[7px_7px_0_rgba(0,26,61,0.32)]',
+              item.tone,
+              item.pose,
             ]}
           >
-            <p class="text-[11px] font-extrabold uppercase tracking-[0.2em] text-accent mb-3">0{i + 1}</p>
-            <h3 class="font-black text-ink tracking-tight">{item.title}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-muted font-medium">{item.text}</p>
+            <span class="stamp-mark h-12 w-12 mb-4">
+              <Doodle name={item.doodle} class="h-7 w-7" rotate={item.doodle === 'boli' ? 12 : -6} />
+            </span>
+            <h3 class="font-display text-xl sm:text-2xl leading-tight">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed font-semibold opacity-85">{item.text}</p>
           </div>
         ))
       }
@@ -54,23 +89,26 @@ const features = [
   </div>
 </section>
 
-<section class="bg-brand-dark text-white border-b-4 border-accent">
-  <div class="max-w-6xl mx-auto px-4 py-12 sm:py-14 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+<section class="band-mustard relative overflow-hidden">
+  <Doodle name="lapiz" rotate={18} class="doodle-float absolute right-6 top-4 h-20 w-6 opacity-50 hidden sm:block" />
+  <Doodle name="goma" rotate={-10} class="absolute left-6 bottom-4 h-8 w-12 opacity-40" />
+  <div class="relative max-w-6xl mx-auto px-5 sm:px-8 py-12 sm:py-14 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
     <div>
-      <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-accent mb-3">Venta de papelería</p>
-      <h2 class="font-display text-2xl sm:text-3xl font-black tracking-tight">Bolígrafos, libretas y más</h2>
-      <p class="mt-3 max-w-xl text-white/60 leading-relaxed font-medium">
-        Catálogo online, lista de compra y recogida en {site.addressLine}.
+      <p class="text-sm font-black text-brand/70 mb-2 inline-flex items-center gap-2 uppercase tracking-[0.14em]">
+        <Doodle name="boli" class="h-6 w-3" rotate={-8} />
+        Papelería
+      </p>
+      <h2 class="font-display text-2xl sm:text-4xl text-brand leading-tight">Bolis, libretas y lo que se te olvida</h2>
+      <p class="mt-3 max-w-lg text-brand/80 text-sm sm:text-base leading-relaxed font-semibold">
+        Mira el catálogo, haz tu lista y pásate a recogerlo en {site.addressLine}.
       </p>
     </div>
-    <div class="flex flex-wrap gap-3 shrink-0">
-      <a href="/venta" class="btn-accent inline-flex items-center justify-center px-6 py-3.5 text-xs font-black uppercase tracking-wide">
+    <div class="relative flex flex-wrap gap-3 shrink-0">
+      <a href="/venta" class="inline-flex items-center gap-2 px-6 py-3.5 text-xs font-black uppercase tracking-wide bg-brand text-accent border-[3px] border-brand-dark shadow-[5px_5px_0_rgba(0,26,61,0.4)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition">
+        <Doodle name="cuaderno" class="h-5 w-4" />
         Ir a venta
       </a>
-      <a
-        href={site.phoneHref}
-        class="btn-secondary inline-flex items-center justify-center px-6 py-3.5 text-xs font-black uppercase tracking-wide text-white"
-      >
+      <a href={site.phoneHref} class="inline-flex items-center px-6 py-3.5 text-xs font-black uppercase tracking-wide border-[3px] border-brand text-brand hover:bg-brand hover:text-accent transition">
         Llamar
       </a>
     </div>

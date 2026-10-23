@@ -3,36 +3,67 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import PedidoForm from '../components/PedidoForm.astro';
+import InboxSetupNote from '../components/InboxSetupNote.astro';
+import Doodle from '../components/Doodle.astro';
 import { isFormatoId } from '../data/formatos';
-import { site } from '../lib/site';
+import { site, whatsappLink } from '../lib/site';
 
 const raw = Astro.url.searchParams.get('formato') ?? '';
 const defaultFormato = isFormatoId(raw) ? raw : 'A4';
+const waPedido = whatsappLink(
+  'Hola Copistería Central — quiero imprimir un archivo y te lo mando por aquí.',
+);
 ---
 
 <Layout
   title={`Enviar archivo | ${site.name}`}
-  description="Sube un PDF, elige el folio (A4, A3…) y envía el pedido de impresión a Copistería Central."
+  description="Sube un PDF, elige el folio (A4, A3…) y envía el pedido de impresión a Copistería Central en Reina Mercedes."
 >
   <Navbar />
 
-  <main class="pt-28 pb-8 px-4 max-w-3xl mx-auto">
-    <p class="text-xs font-semibold uppercase tracking-wider text-brand mb-2">Impresión</p>
-    <h1 class="text-4xl font-semibold tracking-tight text-ink">Enviar archivo para imprimir</h1>
-    <p class="mt-4 text-slate-600 leading-relaxed">
-      Adjunta el PDF, elige el formato y las copias. Te confirmaremos la recogida en el local.
-    </p>
+  <main class="pt-28 pb-0">
+    <section class="page-hero-block px-5 sm:px-8 py-12 sm:py-16">
+      <Doodle name="folio" rotate={-8} class="doodle-float absolute top-10 right-10 h-14 w-11 opacity-45 hidden sm:block" />
+      <Doodle name="clip" rotate={18} class="doodle-wiggle absolute bottom-10 left-8 h-10 w-6 opacity-40 hidden md:block" />
+      <div class="relative max-w-6xl mx-auto">
+        <p class="text-sm font-black text-accent mb-3 uppercase tracking-[0.14em]">Impresión</p>
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98]">
+          Enviar archivo
+        </h1>
+        <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
+          Adjunta el PDF, elige formato y copias. Te confirmamos precio y recogida en el local —
+          sin formularios fríos de empresa grande.
+        </p>
+      </div>
+    </section>
 
-    <div class="mt-10 rounded-xl border border-slate-200 bg-white p-6 md:p-8">
-      <PedidoForm defaultFormato={defaultFormato} />
+    <div class="band-mustard border-t-0">
+      <div class="max-w-3xl mx-auto px-5 sm:px-8 py-3.5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-extrabold uppercase tracking-wide">
+        <p>
+          <span class="opacity-60">Recoges en · </span>
+          <span class="text-brand">{site.addressLine}</span>
+        </p>
+        <p class="sm:ml-auto">
+          <a href={waPedido} class="text-brand underline underline-offset-2 decoration-[3px]" target="_blank" rel="noopener noreferrer">
+            WhatsApp si pesa mucho →
+          </a>
+        </p>
+      </div>
     </div>
 
-    <p class="mt-6 text-sm text-slate-500">
-      ¿Archivo muy pesado o varios planos? Llámanos al
-      <a class="text-brand font-medium" href={site.phoneHref}>{site.phone}</a>
-      o escríbenos por
-      <a class="text-brand font-medium" href={site.whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp</a>.
-    </p>
+    <div class="paper-ruled px-5 sm:px-8 py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto border-[4px] border-brand bg-white p-6 sm:p-8 shadow-[8px_8px_0_rgba(0,45,98,0.28)]">
+        <PedidoForm defaultFormato={defaultFormato} />
+        <InboxSetupNote />
+      </div>
+
+      <p class="mt-8 max-w-3xl mx-auto text-sm text-muted font-medium">
+        ¿Archivo muy pesado o varios planos? Llámanos al
+        <a class="text-brand font-black underline decoration-2 underline-offset-2" href={site.phoneHref}>{site.phone}</a>
+        o escríbenos por
+        <a class="text-brand font-black underline decoration-2 underline-offset-2" href={waPedido} target="_blank" rel="noopener noreferrer">WhatsApp</a>.
+      </p>
+    </div>
   </main>
 
   <Footer />

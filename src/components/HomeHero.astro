@@ -1,7 +1,8 @@
 ---
 import { site } from '../lib/site';
 import PrototypeBanner from './PrototypeBanner.astro';
-import { heroAlt, heroImage } from '../data/galeria';
+import Doodle from './Doodle.astro';
+import DoodleDecor from './DoodleDecor.astro';
 
 const links = [
   { href: '/', label: 'Inicio' },
@@ -13,29 +14,20 @@ const links = [
 ];
 
 const current = Astro.url.pathname;
-const benefits = [
-  'Abre pronto, cierra tarde',
-  'Precios de barrio',
-  'Recogida en mostrador',
-];
 ---
 
 <header class:list={['site-header w-full', site.isPrototype && 'has-banner']}>
   <PrototypeBanner />
-  <!-- Barra de navegación edge-to-edge (no flotante) -->
-  <div class="bg-brand border-b-2 border-accent">
-    <div class="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between gap-4">
-      <a href="/" class="flex items-center gap-3 shrink-0">
-        <span class="flex h-9 w-9 items-center justify-center bg-accent text-brand text-xs font-black tracking-tight">
-          {site.shortName}
-        </span>
-        <span class="leading-none hidden xs:block sm:block">
-          <span class="block text-[13px] font-black uppercase tracking-[0.08em] text-white">Central</span>
-          <span class="block text-[10px] font-medium tracking-wide text-white/50 mt-0.5">Copistería</span>
+  <div class="bg-brand border-b-[6px] border-accent">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-14 md:h-[3.85rem] flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 shrink-0">
+        <span class="stamp-mark stamp-ink h-10 w-10 text-sm">{site.shortName}</span>
+        <span class="font-display text-[15px] sm:text-[17px] text-white leading-none tracking-tight">
+          Copistería Central
         </span>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-0 text-[13px] font-semibold uppercase tracking-[0.06em]">
+      <nav class="hidden lg:flex items-center gap-1 text-sm font-extrabold uppercase tracking-wide">
         {
           links.map((link) => {
             const active =
@@ -48,10 +40,8 @@ const benefits = [
               <a
                 href={link.href}
                 class:list={[
-                  'px-3 py-5 border-b-2 -mb-[2px] transition',
-                  active
-                    ? 'border-accent text-accent'
-                    : 'border-transparent text-white/70 hover:text-white hover:border-white/30',
+                  'px-2.5 py-1.5 transition',
+                  active ? 'nav-active' : 'text-white/80 hover:text-accent',
                 ]}
               >
                 {link.label}
@@ -62,12 +52,12 @@ const benefits = [
       </nav>
 
       <div class="flex items-center gap-2">
-        <a href="/pedido" class="btn-primary hidden sm:inline-flex items-center px-4 py-2 text-xs font-black uppercase tracking-wide">
+        <a href="/pedido" class="btn-primary hidden sm:inline-flex items-center px-4 py-2 text-xs">
           Enviar PDF
         </a>
         <button
           id="hero-menu-toggle"
-          class="flex lg:hidden flex-col justify-center items-center w-10 h-10 border border-white/25 text-white p-2 gap-1.5"
+          class="flex lg:hidden flex-col justify-center items-center w-10 h-10 border-2 border-white/40 text-white p-2 gap-1.5"
           aria-label="Abrir menú"
           aria-expanded="false"
           aria-controls="hero-mobile-menu"
@@ -79,16 +69,16 @@ const benefits = [
       </div>
     </div>
 
-    <div id="hero-mobile-menu" class="lg:hidden max-h-0 overflow-hidden bg-brand-dark border-t border-white/10 transition-all duration-300">
-      <nav class="flex flex-col px-4 py-3 gap-0 text-sm font-semibold uppercase tracking-wide">
+    <div id="hero-mobile-menu" class="lg:hidden max-h-0 overflow-hidden bg-brand-dark transition-all duration-300">
+      <nav class="flex flex-col px-5 py-3 gap-0.5 text-sm font-extrabold uppercase tracking-wide">
         {
           links.map((link) => (
-            <a href={link.href} class="hero-mobile-link px-3 py-3 border-b border-white/10 text-white/85 hover:text-accent transition">
+            <a href={link.href} class="hero-mobile-link px-3 py-2.5 text-white/85 hover:bg-accent/15 hover:text-accent transition">
               {link.label}
             </a>
           ))
         }
-        <a href="/pedido" class="hero-mobile-link btn-primary mt-3 mb-2 inline-flex justify-center px-3 py-2.5 text-xs font-black uppercase">
+        <a href="/pedido" class="hero-mobile-link btn-primary mt-2 mb-2 inline-flex justify-center px-3 py-2.5 text-xs">
           Enviar PDF
         </a>
       </nav>
@@ -96,54 +86,50 @@ const benefits = [
   </div>
 </header>
 
-<!-- Split asimétrico: texto ~42% / imagen ~58% -->
-<section class="relative flex flex-col lg:flex-row lg:min-h-[78vh]">
-  <div class="relative z-10 flex flex-col justify-center bg-brand text-white lg:w-[42%] px-5 sm:px-8 lg:px-10 xl:px-14 py-12 lg:py-16 border-b lg:border-b-0 lg:border-r border-white/10">
-    <p class="text-[11px] font-bold uppercase tracking-[0.32em] text-accent mb-5">
-      Av. Reina Mercedes 41 · Sevilla
-    </p>
-    <h1 class="font-display text-[2.35rem] sm:text-5xl xl:text-[3.4rem] font-black leading-[0.98] tracking-[-0.03em]">
-      Impresión y papelería<br class="hidden sm:block" /> junto al campus
-    </h1>
-    <p class="mt-6 text-[15px] md:text-base text-white/70 leading-relaxed max-w-md font-medium">
-      {site.name}: fotocopias, color, encuadernación, plastificados y material de escritorio. Abierta a horas de estudio — sin rodeos.
-    </p>
+{/* Full-bleed navy + mustard composition — no photo panel */}
+<section class="relative min-h-[78vh] lg:min-h-[calc(100vh-3.85rem)] flex items-center bg-brand text-white overflow-hidden border-b-[8px] border-accent">
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.1]"
+    style="background-image: repeating-linear-gradient(transparent, transparent 31px, white 31px, white 32px)"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="pointer-events-none absolute -right-16 sm:-right-24 top-0 bottom-0 w-[38%] max-w-xl bg-accent rotate-[-6deg] origin-top"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="pointer-events-none absolute -right-8 sm:-right-12 top-0 bottom-0 w-8 bg-brand-dark rotate-[-6deg] origin-top"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="pointer-events-none absolute left-0 right-0 bottom-0 h-2 bg-accent/80"
+    aria-hidden="true"
+  ></div>
+  <DoodleDecor variant="hero" />
 
-    <div class="mt-8 flex flex-wrap gap-3">
-      <a href="/pedido" class="btn-primary inline-flex items-center px-6 py-3.5 text-sm font-black uppercase tracking-wide">
-        Enviar PDF
-      </a>
-      <a href="/venta" class="btn-secondary inline-flex items-center px-6 py-3.5 text-sm font-black uppercase tracking-wide text-white">
-        Catálogo venta
-      </a>
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-24">
+    <div class="hero-rise max-w-xl xl:max-w-2xl">
+      <h1 class="font-display text-[2.75rem] sm:text-[3.5rem] xl:text-[4.25rem] leading-[0.95] text-white">
+        Copistería<br />Central
+      </h1>
+      <p class="mt-6 text-xl sm:text-2xl font-black text-accent leading-snug">
+        Donde te imprimimos tus sueños
+      </p>
+      <p class="mt-4 text-base sm:text-lg text-white/80 leading-relaxed max-w-md font-medium">
+        Fotocopias, encuadernación y papelería al lado del campus. Vienes con prisas, sales con todo listo.
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/pedido" class="btn-primary btn-pulse inline-flex items-center gap-2 px-6 py-3.5 text-xs sm:text-sm">
+          <Doodle name="folio" class="h-5 w-4" rotate={-8} />
+          Enviar PDF
+        </a>
+        <a href="/venta" class="btn-secondary inline-flex items-center gap-2 px-6 py-3.5 text-xs sm:text-sm text-white">
+          <Doodle name="boli" class="h-6 w-3" rotate={12} />
+          Ver papelería
+        </a>
+      </div>
     </div>
-
-    <!-- Beneficios en línea (no cápsulas) -->
-    <ul class="mt-8 space-y-2.5 border-t border-white/15 pt-6">
-      {
-        benefits.map((b) => (
-          <li class="flex items-center gap-3 text-sm font-semibold text-white/85">
-            <span class="h-1.5 w-1.5 shrink-0 bg-accent" aria-hidden="true"></span>
-            {b}
-          </li>
-        ))
-      }
-    </ul>
-
-    <p class="mt-6 text-sm text-white/45">
-      Tel. <a href={site.phoneHref} class="font-bold text-accent hover:underline">{site.phone}</a>
-    </p>
-  </div>
-
-  <div class="relative lg:w-[58%] min-h-[38vh] sm:min-h-[48vh] lg:min-h-auto">
-    <img
-      src={heroImage}
-      alt={heroAlt}
-      class="absolute inset-0 h-full w-full object-cover"
-      loading="eager"
-      decoding="async"
-    />
-    <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-brand to-transparent pointer-events-none lg:block hidden" aria-hidden="true"></div>
   </div>
 </section>
 

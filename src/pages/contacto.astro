@@ -3,7 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import QuoteForm from '../components/QuoteForm.astro';
-import { site } from '../lib/site';
+import InboxSetupNote from '../components/InboxSetupNote.astro';
+import Doodle from '../components/Doodle.astro';
+import { site, whatsappLink } from '../lib/site';
+
+const wa = whatsappLink('Hola Copistería Central — quería preguntaros algo.');
 ---
 
 <Layout
@@ -12,60 +16,67 @@ import { site } from '../lib/site';
 >
   <Navbar />
 
-  <main class="pt-28 pb-16">
-    <div class="bg-brand text-white border-b-2 border-accent px-4 py-10 sm:py-12">
-      <div class="max-w-6xl mx-auto">
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-accent border-l-2 border-accent pl-3 mb-4">Pedidos</p>
-        <h1 class="font-display text-4xl font-black tracking-[-0.025em]">Contacto</h1>
-        <p class="mt-4 max-w-2xl text-white/65 leading-relaxed font-medium">
-          Para imprimir un PDF, usa <a href="/pedido" class="text-accent font-bold hover:underline">enviar archivo</a>.
-          Para papelería, mira la <a href="/venta" class="text-accent font-bold hover:underline">venta</a>.
-          Si solo quieres precio o una consulta, usa el formulario de esta página.
+  <main class="pt-28 pb-0 relative overflow-hidden">
+    <section class="page-hero-block px-5 sm:px-8 py-12 sm:py-16">
+      <Doodle name="clip" rotate={22} class="doodle-float absolute top-10 right-10 h-12 w-7 opacity-45 hidden sm:block" />
+      <div class="relative max-w-6xl mx-auto">
+        <p class="text-sm font-black text-accent mb-3 inline-flex items-center gap-2 uppercase tracking-[0.14em]">
+          <Doodle name="chincheta" class="h-5 w-4" />
+          Pedidos y consultas
+        </p>
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98]">Contacto</h1>
+        <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
+          Para imprimir un PDF, usa <a href="/pedido" class="text-accent font-black hover:underline">enviar archivo</a>.
+          Para papelería, mira la <a href="/venta" class="text-accent font-black hover:underline">venta</a>.
+          Si solo quieres precio o una consulta, usa el formulario — te respondemos con cariño de barrio.
         </p>
       </div>
-    </div>
+    </section>
 
-    <div class="max-w-6xl mx-auto px-4 pt-10 grid lg:grid-cols-2 gap-0 border border-line bg-line">
-      <div class="bg-white p-6 md:p-8">
-        <h2 class="text-sm font-black uppercase tracking-[0.14em] text-ink mb-6">Pedir presupuesto</h2>
-        <QuoteForm />
-      </div>
-
-      <div class="bg-brand-soft/40 border-t lg:border-t-0 lg:border-l border-line">
-        <div class="p-6 md:p-8 border-b border-line bg-white">
-          <h2 class="text-sm font-black uppercase tracking-[0.14em] text-ink mb-4">Datos</h2>
-          <ul class="space-y-4 text-sm text-muted">
-            <li>
-              <span class="block text-[10px] uppercase tracking-[0.2em] text-brand font-extrabold mb-1">Teléfono</span>
-              <a class="text-ink font-bold" href={site.phoneHref}>{site.phone}</a>
-            </li>
-            <li>
-              <span class="block text-[10px] uppercase tracking-[0.2em] text-brand font-extrabold mb-1">WhatsApp</span>
-              <a class="text-ink font-bold" href={site.whatsappHref} target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
-            </li>
-            <li>
-              <span class="block text-[10px] uppercase tracking-[0.2em] text-brand font-extrabold mb-1">Dirección</span>
-              <span class="text-ink font-bold">{site.address}</span>
-              <span class="block text-muted">{site.landmark}</span>
-            </li>
-            <li>
-              <span class="block text-[10px] uppercase tracking-[0.2em] text-brand font-extrabold mb-1">Horario</span>
-              <ul class="mt-1 space-y-1 font-medium">
-                {site.hours.map((row) => (
-                  <li>{row.days}: {row.hours}</li>
-                ))}
-              </ul>
-            </li>
-          </ul>
+    <div class="paper-ruled px-5 sm:px-8 py-12 sm:py-16">
+      <div class="relative max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
+        <div class="border-[4px] border-brand bg-white p-6 sm:p-8 shadow-[8px_8px_0_rgba(0,45,98,0.28)]">
+          <h2 class="font-display text-xl sm:text-2xl text-brand mb-5">Pedir presupuesto</h2>
+          <QuoteForm />
+          <InboxSetupNote />
         </div>
-        <div class="overflow-hidden aspect-[4/3] bg-paper">
-          <iframe
-            title={`Mapa de ${site.name}`}
-            src={site.mapsEmbed}
-            class="h-full w-full border-0"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+
+        <div class="space-y-6">
+          <div class="border-[4px] border-brand-dark bg-brand text-white p-6 sm:p-7 shadow-[8px_8px_0_rgba(255,215,0,0.55)]">
+            <h2 class="font-display text-xl sm:text-2xl text-accent mb-5">Datos</h2>
+            <ul class="space-y-4 text-sm">
+              <li>
+                <span class="block text-xs text-accent font-black mb-0.5 uppercase tracking-wide">Teléfono</span>
+                <a class="text-white font-bold text-base" href={site.phoneHref}>{site.phone}</a>
+              </li>
+              <li>
+                <span class="block text-xs text-accent font-black mb-0.5 uppercase tracking-wide">WhatsApp</span>
+                <a class="text-white font-bold underline decoration-accent/60 underline-offset-4 hover:decoration-accent" href={wa} target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
+              </li>
+              <li>
+                <span class="block text-xs text-accent font-black mb-0.5 uppercase tracking-wide">Dirección</span>
+                <span class="text-white font-bold">{site.address}</span>
+                <span class="block text-white/60">{site.landmark}</span>
+              </li>
+              <li>
+                <span class="block text-xs text-accent font-black mb-0.5 uppercase tracking-wide">Horario</span>
+                <ul class="mt-1 space-y-1 text-white/85">
+                  {site.hours.map((row) => (
+                    <li><span class="text-white/55">{row.days}:</span> {row.hours}</li>
+                  ))}
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="overflow-hidden border-[4px] border-brand bg-paper aspect-[4/3] shadow-[8px_8px_0_rgba(0,45,98,0.25)]">
+            <iframe
+              title={`Mapa de ${site.name}`}
+              src={site.mapsEmbed}
+              class="h-full w-full border-0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
         </div>
       </div>
     </div>

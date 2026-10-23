@@ -3,9 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ServiceCard from '../components/ServiceCard.astro';
-import SectionHeader from '../components/SectionHeader.astro';
+import Doodle from '../components/Doodle.astro';
+import DoodleDecor from '../components/DoodleDecor.astro';
 import { servicios } from '../data/servicios';
 import { site } from '../lib/site';
+
+const bands = servicios.filter((s) => s.fullWidth);
+const stamps = servicios.filter((s) => !s.fullWidth);
 ---
 
 <Layout
@@ -14,21 +18,38 @@ import { site } from '../lib/site';
 >
   <Navbar />
 
-  <main class="pt-28 pb-16">
-    <div class="bg-brand text-white border-b-2 border-accent px-4 py-10 sm:py-12 mb-10">
-      <div class="max-w-6xl mx-auto">
-        <SectionHeader
-          dark
-          eyebrow="Copistería e imprenta"
-          title="Servicios"
-          description="Impresión de planos, fotos, carteles y póster. Papelería, laminados y acabados para entregas académicas y de oficina."
-        />
+  <main class="pt-28 pb-0">
+    <section class="page-hero-block px-5 sm:px-8 py-12 sm:py-16">
+      <Doodle name="tijeras" rotate={-10} class="doodle-wiggle absolute top-8 right-8 h-14 w-14 opacity-50 hidden sm:block" />
+      <div class="relative max-w-6xl mx-auto">
+        <p class="inline-flex items-center gap-2 text-sm font-black text-accent mb-3 uppercase tracking-[0.14em]">
+          <Doodle name="tijeras" class="h-5 w-5" rotate={-8} />
+          Copistería e imprenta
+        </p>
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98]">Servicios</h1>
+        <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
+          Impresión de planos, fotos, carteles y póster. Papelería, laminados y acabados para entregas académicas y de oficina — sin dramas de última hora.
+        </p>
+      </div>
+    </section>
+
+    <div class="band-mustard">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8 py-6">
+        <p class="text-center text-xs font-black text-brand mb-3 uppercase tracking-[0.16em]">Cositas del mostrador</p>
+        <DoodleDecor variant="band" />
       </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
-        {servicios.map((servicio) => <ServiceCard servicio={servicio} />)}
+    <div class="relative paper-dots py-14 sm:py-16 overflow-hidden">
+      <Doodle name="lapiz" rotate={14} class="doodle-float absolute top-8 right-4 h-16 w-5 opacity-45 hidden sm:block" />
+      <Doodle name="clip" rotate={-10} class="doodle-wiggle absolute bottom-8 left-4 h-12 w-7 opacity-35 hidden md:block" />
+      <div class="relative max-w-6xl mx-auto px-5 sm:px-8 space-y-5">
+        {bands.map((servicio, i) => (
+          <ServiceCard servicio={servicio} index={i} layout="band" />
+        ))}
+        <div class="grid sm:grid-cols-2 gap-5 sm:gap-6 pt-4">
+          {stamps.map((servicio, i) => <ServiceCard servicio={servicio} index={i} layout="stamp" />)}
+        </div>
       </div>
     </div>
   </main>

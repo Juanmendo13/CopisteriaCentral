@@ -1,0 +1,144 @@
+---
+interface Props {
+  name:
+    | 'boli'
+    | 'lapiz'
+    | 'clip'
+    | 'tijeras'
+    | 'cuaderno'
+    | 'grapadora'
+    | 'postit'
+    | 'regla'
+    | 'goma'
+    | 'folio'
+    | 'chincheta'
+    | 'cinta';
+  class?: string;
+  rotate?: number;
+}
+
+const { name, class: className = '', rotate = 0 } = Astro.props;
+---
+
+<span class:list={['inline-block pointer-events-none select-none', className]} aria-hidden="true">
+  <span class="doodle block h-full w-full" style={`transform: rotate(${rotate}deg)`}>
+    {
+      name === 'boli' && (
+        <svg viewBox="0 0 48 120" class="h-full w-full" fill="none">
+          <path d="M18 8c2-1 8-1 10 1l4 90c0 3-3 6-9 6s-9-3-9-6L18 8z" fill="#002d62" stroke="#001a3d" stroke-width="2" stroke-linejoin="round" />
+          <path d="M20 10h10l-1 18H21l-1-18z" fill="#e8c200" />
+          <path d="M22 28h8v12H22z" fill="#c45c26" opacity="0.85" />
+          <path d="M23 108l2 10 2-10" fill="#334155" stroke="#001a3d" stroke-width="1.5" stroke-linejoin="round" />
+          <path d="M16 55c8 3 14-2 20 2" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" opacity="0.5" />
+        </svg>
+      )
+    }
+    {
+      name === 'lapiz' && (
+        <svg viewBox="0 0 36 130" class="h-full w-full" fill="none">
+          <path d="M14 118L18 8l6 2-2 108-8 0z" fill="#e8c200" stroke="#001a3d" stroke-width="2" stroke-linejoin="round" />
+          <path d="M18 8l3-6 3 6" fill="#f5d0a9" stroke="#001a3d" stroke-width="1.5" stroke-linejoin="round" />
+          <path d="M21 2v4" stroke="#334155" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 100h12" stroke="#c45c26" stroke-width="6" />
+          <path d="M16 40c6 2 10-1 14 2" stroke="#002d62" stroke-width="1" opacity="0.35" stroke-linecap="round" />
+        </svg>
+      )
+    }
+    {
+      name === 'clip' && (
+        <svg viewBox="0 0 40 70" class="h-full w-full" fill="none">
+          <path
+            d="M12 18c0-8 6-14 14-14s14 6 14 14v28c0 6-4 10-10 10s-10-4-10-10V22c0-3 2-6 6-6s6 3 6 6v22"
+            stroke="#5b8fd4"
+            stroke-width="3.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      )
+    }
+    {
+      name === 'tijeras' && (
+        <svg viewBox="0 0 90 90" class="h-full w-full" fill="none">
+          <circle cx="22" cy="68" r="12" stroke="#002d62" stroke-width="2.5" fill="#e8c200" />
+          <circle cx="52" cy="68" r="12" stroke="#002d62" stroke-width="2.5" fill="#e8c200" />
+          <path d="M30 60L70 18" stroke="#5b8fd4" stroke-width="3" stroke-linecap="round" />
+          <path d="M44 60L18 22" stroke="#5b8fd4" stroke-width="3" stroke-linecap="round" />
+          <circle cx="37" cy="58" r="4" fill="#002d62" />
+        </svg>
+      )
+    }
+    {
+      name === 'cuaderno' && (
+        <svg viewBox="0 0 80 100" class="h-full w-full" fill="none">
+          <rect x="14" y="8" width="54" height="82" rx="4" fill="#fff" stroke="#002d62" stroke-width="2.5" />
+          <path d="M14 8c-4 8-4 70 0 82" stroke="#e8c200" stroke-width="6" stroke-linecap="round" />
+          <path d="M28 28h28M28 40h28M28 52h20" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+          <circle cx="20" cy="24" r="2.5" fill="#002d62" />
+          <circle cx="20" cy="48" r="2.5" fill="#002d62" />
+          <circle cx="20" cy="72" r="2.5" fill="#002d62" />
+        </svg>
+      )
+    }
+    {
+      name === 'grapadora' && (
+        <svg viewBox="0 0 100 60" class="h-full w-full" fill="none">
+          <path d="M10 40h80v6H10z" fill="#5b8fd4" stroke="#001a3d" stroke-width="1.5" stroke-linejoin="round" />
+          <path d="M18 40V22c0-4 4-8 14-8h36c8 0 14 4 14 10v16" fill="#002d62" stroke="#001a3d" stroke-width="2" stroke-linejoin="round" />
+          <rect x="28" y="18" width="28" height="10" rx="2" fill="#e8c200" />
+        </svg>
+      )
+    }
+    {
+      name === 'postit' && (
+        <svg viewBox="0 0 70 70" class="h-full w-full" fill="none">
+          <path d="M8 6h48c2 0 4 2 4 4v42c0 3-2 6-6 4L8 54V6z" fill="#e8c200" stroke="#001a3d" stroke-width="2" stroke-linejoin="round" />
+          <path d="M18 22h28M18 32h22M18 42h16" stroke="#002d62" stroke-width="1.8" stroke-linecap="round" opacity="0.45" />
+        </svg>
+      )
+    }
+    {
+      name === 'regla' && (
+        <svg viewBox="0 0 140 36" class="h-full w-full" fill="none">
+          <rect x="4" y="8" width="132" height="20" rx="3" fill="#fff6c8" stroke="#002d62" stroke-width="2" />
+          <path d="M16 8v8M28 8v5M40 8v8M52 8v5M64 8v8M76 8v5M88 8v8M100 8v5M112 8v8M124 8v5" stroke="#002d62" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      )
+    }
+    {
+      name === 'goma' && (
+        <svg viewBox="0 0 70 40" class="h-full w-full" fill="none">
+          <path d="M8 28L22 8h28l14 20-14 12H22L8 28z" fill="#f97316" stroke="#001a3d" stroke-width="2" stroke-linejoin="round" />
+          <path d="M22 8l14 20h28" stroke="#001a3d" stroke-width="1.5" opacity="0.35" />
+        </svg>
+      )
+    }
+    {
+      name === 'folio' && (
+        <svg viewBox="0 0 70 90" class="h-full w-full" fill="none">
+          <path d="M14 6h36l12 12v60c0 3-2 6-6 6H14c-3 0-6-3-6-6V12c0-3 3-6 6-6z" fill="#fff" stroke="#002d62" stroke-width="2.5" stroke-linejoin="round" />
+          <path d="M50 6v12h12" stroke="#002d62" stroke-width="2" stroke-linejoin="round" fill="#fff6c8" />
+          <path d="M18 36h34M18 46h34M18 56h24" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      )
+    }
+    {
+      name === 'chincheta' && (
+        <svg viewBox="0 0 40 55" class="h-full w-full" fill="none">
+          <circle cx="20" cy="16" r="12" fill="#e8c200" stroke="#001a3d" stroke-width="2" />
+          <circle cx="20" cy="16" r="5" fill="#002d62" />
+          <path d="M20 28v24" stroke="#5b8fd4" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
+      )
+    }
+    {
+      name === 'cinta' && (
+        <svg viewBox="0 0 70 70" class="h-full w-full" fill="none">
+          <circle cx="35" cy="35" r="26" fill="#e2e8f0" stroke="#002d62" stroke-width="2.5" />
+          <circle cx="35" cy="35" r="12" fill="#fff6c8" stroke="#002d62" stroke-width="2" />
+          <path d="M48 48c8 6 14 10 18 8" stroke="#e8c200" stroke-width="4" stroke-linecap="round" />
+        </svg>
+      )
+    }
+  </span>
+</span>

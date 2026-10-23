@@ -29,9 +29,13 @@ export const POST: APIRoute = async ({ request }) => {
   return Response.json({
     ok: true,
     modo: result.modo,
-    mensaje:
-      result.modo === 'adjunto'
-        ? 'Pedido enviado. El PDF va adjunto en el correo.'
-        : 'Pedido enviado. El PDF va en el correo como enlace (supera 20 MB).',
+    via: result.via,
+    to: result.to,
+    intendedTo: result.intendedTo,
+    backupTo: result.backupTo,
+    primaryReady: result.primaryReady,
+    backupOk: result.backupOk,
+    web3forms: result.web3forms,
+    mensaje: 'Pedido preparado. Enviando aviso a la tienda…',
   });
 };

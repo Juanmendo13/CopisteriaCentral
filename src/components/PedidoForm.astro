@@ -1,6 +1,6 @@
 ---
 import { FORMATOS, COLORES, CARAS } from '../data/formatos';
-import { site } from '../lib/site';
+import { site, whatsappLink } from '../lib/site';
 
 interface Props {
   defaultFormato?: string;
@@ -9,24 +9,24 @@ interface Props {
 const { defaultFormato = 'A4' } = Astro.props;
 
 const hasBlob = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
-
-const inputClass =
-  'w-full rounded-md border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20';
+const waPedido = whatsappLink(
+  `Hola, soy de Copistería Central. Quiero enviar un archivo para imprimir (o tengo dudas del pedido).`,
+);
 ---
 
 <form
   id="pedido-form"
   class="space-y-8"
   data-has-blob={hasBlob ? '1' : ''}
-  data-whatsapp={site.whatsappHref}
+  data-whatsapp={waPedido}
   novalidate
 >
   <fieldset>
-    <legend class="text-sm font-semibold text-ink">Archivo para imprimir</legend>
-    <p class="mt-1 text-sm text-slate-500">
+    <legend class="text-sm font-black uppercase tracking-wide text-brand">Archivo para imprimir</legend>
+    <p class="mt-1 text-sm text-muted font-medium">
       PDF (recomendado), JPG o PNG. Hasta 50 MB. Si pesa menos de 20 MB, llega adjunto al correo.
     </p>
-    <label class="mt-3 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center hover:border-brand/40 hover:bg-brand-soft/40 transition">
+    <label id="pedido-dropzone" class="dropzone-stamp mt-3">
       <input
         id="pedido-archivo"
         class="sr-only"
@@ -35,14 +35,14 @@ const inputClass =
         accept="application/pdf,image/jpeg,image/png,.pdf,.jpg,.jpeg,.png"
         required
       />
-      <span class="text-sm font-semibold text-ink">Elige o suelta el archivo</span>
-      <span id="pedido-archivo-nombre" class="mt-1 text-sm text-slate-500">Ningún archivo seleccionado</span>
+      <span class="text-sm font-black uppercase tracking-wide text-brand">Elige o suelta el archivo</span>
+      <span id="pedido-archivo-nombre" class="mt-1.5 text-sm text-muted font-semibold">Ningún archivo seleccionado</span>
     </label>
   </fieldset>
 
   <fieldset>
-    <legend class="text-sm font-semibold text-ink">Formato (folio)</legend>
-    <p class="mt-1 text-sm text-slate-500">El tamaño del papel en el que quieres la impresión.</p>
+    <legend class="text-sm font-black uppercase tracking-wide text-brand">Formato (folio)</legend>
+    <p class="mt-1 text-sm text-muted font-medium">El tamaño del papel en el que quieres la impresión.</p>
     <div class="mt-4 grid grid-cols-3 sm:grid-cols-5 gap-2">
       {
         FORMATOS.map((formato) => (
@@ -54,28 +54,28 @@ const inputClass =
               value={formato.id}
               checked={formato.id === defaultFormato}
             />
-            <span class="flex h-full flex-col items-center justify-center rounded-lg border border-slate-200 bg-white px-2 py-3 text-center peer-checked:border-brand peer-checked:bg-brand-soft peer-checked:text-brand peer-focus-visible:ring-2 peer-focus-visible:ring-brand/30">
-              <span class="text-sm font-semibold">{formato.label}</span>
-              <span class="mt-0.5 text-[10px] leading-tight text-slate-500 peer-checked:text-brand/80">{formato.hint}</span>
+            <span class="choice-stamp">
+              <span class="text-sm font-extrabold">{formato.label}</span>
+              <span class="mt-0.5 text-[10px] leading-tight text-muted peer-checked:text-accent/80">{formato.hint}</span>
             </span>
           </label>
         ))
       }
     </div>
-    <label id="pedido-medida-wrap" class="mt-3 block text-sm font-medium text-slate-700 hidden">
+    <label id="pedido-medida-wrap" class="mt-3 block text-sm font-bold text-brand hidden">
       Medida personalizada
-      <input class:list={[inputClass, 'mt-1.5']} type="text" name="medida" placeholder="Ej. 70 × 100 cm" maxlength="80" />
+      <input class="field-stamp mt-1.5" type="text" name="medida" placeholder="Ej. 70 × 100 cm" maxlength="80" />
     </label>
   </fieldset>
 
   <div class="grid sm:grid-cols-3 gap-4">
     <fieldset>
-      <legend class="text-sm font-medium text-slate-700">Color</legend>
+      <legend class="text-sm font-black uppercase tracking-wide text-brand">Color</legend>
       <div class="mt-2 space-y-2">
         {
           COLORES.map((color, index) => (
-            <label class="flex items-center gap-2 text-sm text-slate-700">
-              <input type="radio" name="color" value={color.label} checked={index === 0} class="text-brand focus:ring-brand" />
+            <label class="flex items-center gap-2 text-sm font-semibold text-ink">
+              <input type="radio" name="color" value={color.label} checked={index === 0} class="accent-[#002d62]" />
               {color.label}
             </label>
           ))
@@ -83,88 +83,120 @@ const inputClass =
       </div>
     </fieldset>
     <fieldset>
-      <legend class="text-sm font-medium text-slate-700">Caras</legend>
+      <legend class="text-sm font-black uppercase tracking-wide text-brand">Caras</legend>
       <div class="mt-2 space-y-2">
         {
           CARAS.map((cara, index) => (
-            <label class="flex items-center gap-2 text-sm text-slate-700">
-              <input type="radio" name="caras" value={cara.label} checked={index === 0} class="text-brand focus:ring-brand" />
+            <label class="flex items-center gap-2 text-sm font-semibold text-ink">
+              <input type="radio" name="caras" value={cara.label} checked={index === 0} class="accent-[#002d62]" />
               {cara.label}
             </label>
           ))
         }
       </div>
     </fieldset>
-    <label class="block text-sm font-medium text-slate-700">
+    <label class="block text-sm font-black uppercase tracking-wide text-brand">
       Copias
-      <input class:list={[inputClass, 'mt-1.5']} type="number" name="copias" min="1" max="500" value="1" required />
+      <input class="field-stamp mt-1.5 normal-case tracking-normal font-semibold" type="number" name="copias" min="1" max="500" value="1" required />
     </label>
   </div>
 
   <div class="grid sm:grid-cols-2 gap-4">
-    <label class="block text-sm font-medium text-slate-700">
+    <label class="block text-sm font-black uppercase tracking-wide text-brand">
       Nombre
-      <input class:list={[inputClass, 'mt-1.5']} type="text" name="nombre" autocomplete="name" required minlength="2" maxlength="80" />
+      <input class="field-stamp mt-1.5 normal-case tracking-normal font-semibold" type="text" name="nombre" autocomplete="name" required minlength="2" maxlength="80" />
     </label>
-    <label class="block text-sm font-medium text-slate-700">
+    <label class="block text-sm font-black uppercase tracking-wide text-brand">
       Teléfono
-      <input class:list={[inputClass, 'mt-1.5']} type="tel" name="telefono" autocomplete="tel" required />
+      <input class="field-stamp mt-1.5 normal-case tracking-normal font-semibold" type="tel" name="telefono" autocomplete="tel" required />
     </label>
-    <label class="block text-sm font-medium text-slate-700 sm:col-span-2">
+    <label class="block text-sm font-black uppercase tracking-wide text-brand sm:col-span-2">
       Email
-      <input class:list={[inputClass, 'mt-1.5']} type="email" name="email" autocomplete="email" required />
+      <input class="field-stamp mt-1.5 normal-case tracking-normal font-semibold" type="email" name="email" autocomplete="email" required />
     </label>
   </div>
 
-  <label class="block text-sm font-medium text-slate-700">
+  <label class="block text-sm font-black uppercase tracking-wide text-brand">
     Notas (opcional)
     <textarea
-      class:list={[inputClass, 'mt-1.5 min-h-24']}
+      class="field-stamp mt-1.5 min-h-24 normal-case tracking-normal font-semibold"
       name="notas"
       maxlength="1000"
       placeholder="Papel, plastificado, fecha de recogida…"
     ></textarea>
   </label>
 
-  <label class="flex items-start gap-2.5 text-sm text-slate-600">
-    <input type="checkbox" name="privacidad" required class="mt-1 rounded border-slate-300 text-brand focus:ring-brand" />
+  <label class="flex items-start gap-2.5 text-sm font-semibold text-muted">
+    <input type="checkbox" name="privacidad" required class="mt-1 accent-[#002d62]" />
     <span>
-      He leído y acepto la <a href="/privacidad" class="text-brand hover:underline">política de privacidad</a>.
+      He leído y acepto la <a href="/privacidad" class="text-brand font-black underline decoration-2 underline-offset-2">política de privacidad</a>.
     </span>
   </label>
 
-  <p id="pedido-error" class="hidden text-sm text-red-700 bg-red-50 border border-red-100 rounded-md px-3 py-2"></p>
-  <div id="pedido-ok" class="hidden text-sm text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-3 space-y-2">
-    <p id="pedido-ok-text">Pedido enviado. Te confirmamos precio y recogida por teléfono o email.</p>
-    <p id="pedido-ok-extra" class="hidden text-emerald-700"></p>
+  <p id="pedido-error" class="alert-stamp alert-stamp-error hidden" role="alert"></p>
+  <div id="pedido-ok" class="alert-stamp alert-stamp-ok hidden space-y-3" role="status">
+    <p id="pedido-ok-text" class="font-extrabold">Pedido enviado correctamente. La tienda ya tiene el aviso con el enlace al archivo.</p>
+    <p id="pedido-ok-extra" class="hidden text-sm font-medium"></p>
+    <a
+      id="pedido-ok-wa"
+      href={waPedido}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 text-sm font-black uppercase tracking-wide text-brand underline decoration-2 underline-offset-4"
+    >
+      ¿Dudas? Escríbenos por WhatsApp →
+    </a>
   </div>
 
-  <button
-    type="submit"
-    class="inline-flex w-full sm:w-auto justify-center rounded-md bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark transition disabled:opacity-60"
-  >
-    Enviar pedido
-  </button>
+  <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+    <button type="submit" id="pedido-submit" class="btn-navy inline-flex w-full sm:w-auto justify-center px-6 py-3.5 text-sm">
+      Enviar pedido
+    </button>
+    <a
+      href={waPedido}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex justify-center text-sm font-black uppercase tracking-wide text-brand hover:underline decoration-2 underline-offset-4"
+    >
+      O por WhatsApp
+    </a>
+  </div>
+  <p class="text-xs text-muted font-medium">
+    Recogida en {site.addressLine}. Tel. <a class="text-brand font-bold underline" href={site.phoneHref}>{site.phone}</a>
+  </p>
 </form>
 
 <script>
   import { upload } from '@vercel/blob/client';
   import { ALLOWED_MIME, MAX_FILE_BYTES } from '../data/formatos';
+  import { sendShopWeb3Forms } from '../lib/client-web3forms';
+  import { shopNotifyClientStatus } from '../lib/shop-notify-ui';
 
   const form = document.getElementById('pedido-form') as HTMLFormElement | null;
   const fileInput = document.getElementById('pedido-archivo') as HTMLInputElement | null;
   const fileLabel = document.getElementById('pedido-archivo-nombre');
+  const dropzone = document.getElementById('pedido-dropzone');
   const errorEl = document.getElementById('pedido-error');
   const okEl = document.getElementById('pedido-ok');
   const okText = document.getElementById('pedido-ok-text');
   const okExtra = document.getElementById('pedido-ok-extra');
   const medidaWrap = document.getElementById('pedido-medida-wrap');
+  const submitBtn = document.getElementById('pedido-submit') as HTMLButtonElement | null;
 
   function showError(message: string) {
     if (!errorEl || !okEl) return;
     errorEl.textContent = message;
     errorEl.classList.remove('hidden');
     okEl.classList.add('hidden');
+    errorEl.focus?.();
+  }
+
+  function setFileName(file: File | undefined) {
+    if (fileLabel) {
+      fileLabel.textContent = file
+        ? `${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`
+        : 'Ningún archivo seleccionado';
+    }
   }
 
   function toggleMedida() {
@@ -179,8 +211,31 @@ const inputClass =
   toggleMedida();
 
   fileInput?.addEventListener('change', () => {
-    const file = fileInput.files?.[0];
-    if (fileLabel) fileLabel.textContent = file ? `${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)` : 'Ningún archivo seleccionado';
+    setFileName(fileInput.files?.[0]);
+  });
+
+  // Drag & drop
+  ['dragenter', 'dragover'].forEach((evt) => {
+    dropzone?.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropzone.classList.add('is-dragover');
+    });
+  });
+  ['dragleave', 'drop'].forEach((evt) => {
+    dropzone?.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('is-dragover');
+    });
+  });
+  dropzone?.addEventListener('drop', (e) => {
+    const dt = (e as DragEvent).dataTransfer;
+    const file = dt?.files?.[0];
+    if (file && fileInput) {
+      const transfer = new DataTransfer();
+      transfer.items.add(file);
+      fileInput.files = transfer.files;
+      setFileName(file);
+    }
   });
 
   function mimeOk(file: File) {
@@ -198,7 +253,6 @@ const inputClass =
     event.preventDefault();
     if (!form) return;
 
-    const submitBtn = form.querySelector('button[type="submit"]');
     const data = new FormData(form);
     const nombre = String(data.get('nombre') ?? '').trim();
     const email = String(data.get('email') ?? '').trim();
@@ -211,7 +265,7 @@ const inputClass =
     const notas = String(data.get('notas') ?? '').trim();
     const file = fileInput?.files?.[0];
     const hasBlob = form.dataset.hasBlob === '1';
-    const whatsapp = form.dataset.whatsapp || 'https://wa.me/34611610148';
+    const whatsapp = form.dataset.whatsapp || 'https://wa.me/34954625384';
 
     if (!file) return showError('Adjunta el PDF (o una imagen) para imprimir.');
     if (!mimeOk(file)) return showError('Solo se admiten PDF, JPG o PNG.');
@@ -224,15 +278,16 @@ const inputClass =
     if (!Number.isInteger(copias) || copias < 1 || copias > 500) return showError('Indica un número de copias entre 1 y 500.');
     if (!data.get('privacidad')) return showError('Debes aceptar la política de privacidad.');
     if (!hasBlob) {
-      showError(`Falta Vercel Blob para subir el archivo. Escríbenos por WhatsApp: ${whatsapp}`);
+      showError(`Falta subir el archivo ahora mismo. Escríbenos por WhatsApp y lo vemos.`);
       return;
     }
 
     const formatoLabel = formato === 'Personalizado' ? `Personalizado (${medida})` : formato;
 
-    if (submitBtn instanceof HTMLButtonElement) {
+    if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Subiendo archivo…';
+      submitBtn.setAttribute('aria-busy', 'true');
     }
     errorEl?.classList.add('hidden');
     okEl?.classList.add('hidden');
@@ -244,9 +299,7 @@ const inputClass =
         handleUploadUrl: '/api/upload',
       });
 
-      if (submitBtn instanceof HTMLButtonElement) {
-        submitBtn.textContent = 'Enviando pedido…';
-      }
+      if (submitBtn) submitBtn.textContent = 'Enviando pedido…';
 
       const response = await fetch('/api/pedido', {
         method: 'POST',
@@ -272,29 +325,60 @@ const inputClass =
         error?: string;
         mensaje?: string;
         modo?: 'adjunto' | 'enlace';
+        via?: string;
+        primaryReady?: boolean;
+        backupOk?: boolean;
+        backupTo?: string;
+        intendedTo?: string;
+        web3forms?: {
+          accessKey: string;
+          subject: string;
+          message: string;
+          replyTo: string;
+          name?: string;
+          fromName?: string;
+        };
       };
 
-      if (!response.ok || !result.ok) {
+      if (!response.ok || !result.ok || !result.web3forms) {
         showError(result.error || 'No se pudo enviar el pedido.');
         return;
       }
 
+      const gmail = await sendShopWeb3Forms(result.web3forms);
+      const status = shopNotifyClientStatus(gmail.ok, result, 'pedido');
+
+      if (!status.ok && !status.partial) {
+        showError(status.text);
+        return;
+      }
+
       form.reset();
-      if (fileLabel) fileLabel.textContent = 'Ningún archivo seleccionado';
+      setFileName(undefined);
       toggleMedida();
-      if (okText && result.mensaje) okText.textContent = result.mensaje;
+      if (okText) {
+        okText.textContent = status.text;
+      }
       okEl?.classList.remove('hidden');
-      if (okExtra && result.modo === 'enlace') {
-        okExtra.textContent = 'Archivos de más de 20 MB no pueden ir adjuntos en el email; recibirás un enlace de descarga.';
+      if (okExtra) {
+        okExtra.textContent = status.partial
+          ? 'Si no te llaman pronto, escribe o llama al local.'
+          : 'El PDF va como enlace de descarga en el correo de la tienda.';
         okExtra.classList.remove('hidden');
       }
+      okEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'No se pudo enviar. Revisa la conexión.';
-      showError(message.includes('token') || message.includes('Blob') ? `Error al subir el archivo. WhatsApp: ${whatsapp}` : message);
+      showError(
+        message.includes('token') || message.includes('Blob')
+          ? `Error al subir el archivo. Mejor por WhatsApp.`
+          : message,
+      );
     } finally {
-      if (submitBtn instanceof HTMLButtonElement) {
+      if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Enviar pedido';
+        submitBtn.removeAttribute('aria-busy');
       }
     }
   });

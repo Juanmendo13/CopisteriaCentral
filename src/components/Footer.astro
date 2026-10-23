@@ -1,18 +1,44 @@
 ---
-import { site } from '../lib/site';
+import { site, whatsappLink } from '../lib/site';
+import Doodle from './Doodle.astro';
+import DoodleDecor from './DoodleDecor.astro';
+
+const wa = whatsappLink('Hola Copistería Central — consulta desde la web.');
 ---
 
-<footer class="border-t border-white/10 bg-brand-dark text-white">
-  <div class="max-w-6xl mx-auto px-4 py-14">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/15">
+<footer class="relative bg-brand text-white mt-0 overflow-hidden border-t-[12px] border-accent">
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.08]"
+    style="background-image: repeating-linear-gradient(transparent, transparent 28px, white 28px, white 29px)"
+    aria-hidden="true"
+  ></div>
+  <DoodleDecor variant="footer" />
+  <div class="relative max-w-6xl mx-auto px-5 sm:px-8 py-14">
+    <div class="flex flex-wrap items-center gap-4 mb-10">
+      <span class="stamp-mark stamp-ink h-16 w-16 text-xl">{site.shortName}</span>
       <div>
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.22em] text-accent mb-4">Horario</p>
-        <ul class="space-y-2 text-sm">
+        <p class="font-display text-2xl sm:text-4xl text-white leading-none">Copistería Central</p>
+        <p class="mt-2 text-base sm:text-lg font-black text-accent">Donde te imprimimos tus sueños — de barrio, de verdad</p>
+      </div>
+      <div class="flex gap-2 ml-auto hidden sm:flex">
+        <Doodle name="boli" class="h-12 w-5" rotate={-12} />
+        <Doodle name="clip" class="h-10 w-6" rotate={15} />
+        <Doodle name="postit" class="h-10 w-10" rotate={6} />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b-2 border-accent/40">
+      <div>
+        <p class="text-sm font-bold text-accent mb-3 inline-flex items-center gap-2 uppercase tracking-wide">
+          <Doodle name="regla" class="h-4 w-14" />
+          Horario
+        </p>
+        <ul class="space-y-1.5 text-sm">
           {
             site.hours.map((row) => (
-              <li class="flex justify-between gap-4 border-b border-white/10 pb-2 last:border-0">
-                <span class="text-white/50">{row.days}</span>
-                <span class="text-white font-bold">{row.hours}</span>
+              <li class="flex justify-between gap-4">
+                <span class="text-white/55">{row.days}</span>
+                <span class="text-white font-semibold">{row.hours}</span>
               </li>
             ))
           }
@@ -20,9 +46,9 @@ import { site } from '../lib/site';
       </div>
 
       <div>
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.22em] text-accent mb-4">Local</p>
-        <p class="text-sm leading-relaxed">
-          <span class="block font-black text-white uppercase tracking-wide">{site.name}</span>
+        <p class="text-sm font-bold text-accent mb-3 uppercase tracking-wide">Local</p>
+        <p class="text-sm leading-relaxed text-white/85">
+          <span class="block font-bold text-white mb-1 text-base">{site.name}</span>
           {site.addressLine}
           <br />
           {site.postalCity}
@@ -40,43 +66,42 @@ import { site } from '../lib/site';
       </div>
 
       <div>
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.22em] text-accent mb-4">Contacto</p>
-        <p class="text-sm text-white/50 mb-4 font-medium">Presupuesto, archivo o papelería.</p>
+        <p class="text-sm font-bold text-accent mb-3 uppercase tracking-wide">Contacto</p>
+        <p class="text-sm text-white/60 mb-4">¿Presupuesto, un PDF o un boli? Aquí estamos.</p>
         <div class="flex flex-col gap-2">
-          <a href="/venta" class="btn-accent inline-flex items-center justify-center px-4 py-2.5 text-xs font-black uppercase tracking-wide">
+          <a href="/venta" class="btn-accent inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm">
+            <Doodle name="cuaderno" class="h-5 w-4" />
             Ver venta
           </a>
           <a
             href="/pedido"
-            class="btn-secondary inline-flex items-center justify-center px-4 py-2.5 text-xs font-black uppercase tracking-wide text-white"
+            class="btn-secondary inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm text-white"
           >
+            <Doodle name="folio" class="h-5 w-4" />
             Enviar PDF
           </a>
           <a
-            href={site.phoneHref}
-            class="inline-flex items-center justify-center border border-white/25 px-4 py-2.5 text-sm font-bold text-white hover:border-accent hover:text-accent transition"
-          >
-            {site.phone}
-          </a>
-          <a
-            href={site.whatsappHref}
+            href={wa}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center justify-center border border-white/25 px-4 py-2.5 text-sm font-bold text-white hover:border-accent hover:text-accent transition"
+            class="btn-secondary inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm text-white"
           >
             WhatsApp
+          </a>
+          <a href={site.phoneHref} class="text-sm font-semibold text-accent hover:underline text-center py-1">
+            {site.phone}
           </a>
         </div>
       </div>
     </div>
 
-    <div class="pt-8 flex flex-col sm:flex-row justify-between gap-3 text-xs text-white/40">
+    <div class="pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-white/45">
       <div>
         <p>© {new Date().getFullYear()} {site.name}. {site.titular}{site.cif !== 'Pendiente' ? ` · CIF ${site.cif}` : ''}</p>
         {
           site.isPrototype && (
             <p class="mt-1">
-              Versión de prueba · Ficha en{' '}
+              Versión de prueba ·{' '}
               <a href={site.currentWeb} class="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
                 Google Maps
               </a>
@@ -84,9 +109,9 @@ import { site } from '../lib/site';
           )
         }
       </div>
-      <div class="flex flex-wrap gap-4 font-semibold uppercase tracking-wide">
-        <a href="/aviso-legal" class="hover:text-white transition">Aviso legal</a>
-        <a href="/privacidad" class="hover:text-white transition">Privacidad</a>
+      <div class="flex flex-wrap gap-4 font-semibold">
+        <a href="/aviso-legal" class="hover:text-accent transition">Aviso legal</a>
+        <a href="/privacidad" class="hover:text-accent transition">Privacidad</a>
       </div>
     </div>
   </div>

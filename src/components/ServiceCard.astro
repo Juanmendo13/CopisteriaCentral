@@ -2,104 +2,171 @@
 import type { Servicio } from '../data/servicios';
 import { servicioEsPedido, servicioHref } from '../data/formatos';
 import { precioTarjetaServicio } from '../data/precios';
-import ServiceIcon from './ServiceIcon.astro';
+import Doodle from './Doodle.astro';
 
 interface Props {
   servicio: Servicio;
   featured?: boolean;
+  index?: number;
+  /** 'band' = full-width stamp strip; 'stamp' = offset ticket (default) */
+  layout?: 'band' | 'stamp';
 }
 
-const { servicio, featured: featuredProp } = Astro.props;
+const { servicio, featured: featuredProp, index = 0, layout: layoutProp } = Astro.props;
 const featured = featuredProp ?? servicio.featured ?? false;
 const fullWidth = servicio.fullWidth ?? false;
+const layout = layoutProp ?? (fullWidth ? 'band' : 'stamp');
 const esPedido = servicioEsPedido(servicio.slug);
 const precio = precioTarjetaServicio(servicio.slug);
 const esVenta = servicio.slug === 'papeleria';
+
+type DoodleName =
+  | 'boli'
+  | 'lapiz'
+  | 'clip'
+  | 'tijeras'
+  | 'cuaderno'
+  | 'grapadora'
+  | 'postit'
+  | 'regla'
+  | 'goma'
+  | 'folio'
+  | 'chincheta'
+  | 'cinta';
+
+const doodleBySlug: Record<string, DoodleName> = {
+  papeleria: 'cuaderno',
+  fotocopias: 'folio',
+  'impresiones-pequeno-formato': 'boli',
+  'impresiones-gran-formato': 'regla',
+  escaner: 'cinta',
+  encuadernaciones: 'cuaderno',
+  'plastificados-laminados': 'cinta',
+  'montaje-carton-pluma': 'chincheta',
+  'venta-carton-pluma': 'postit',
+  'grabacion-cd-dvd': 'clip',
+  'diseno-grafico': 'lapiz',
+};
+
+const doodle = doodleBySlug[servicio.slug] ?? 'folio';
+const bandTone = esVenta ? 'bg-accent text-brand-dark' : 'bg-brand text-white';
+const offset = index % 2 === 1 ? 'lg:translate-x-4' : index % 3 === 2 ? 'lg:-translate-x-2' : '';
+const tilt = index % 2 === 0 ? 'sm:-rotate-[0.6deg]' : 'sm:rotate-[0.5deg]';
 ---
 
-<a
-  href={servicioHref(servicio.slug)}
-  class:list={[
-    'group flex h-full flex-col bg-white transition-colors duration-200 hover:bg-brand-soft/60',
-    fullWidth ? 'sm:col-span-2 lg:col-span-3 p-6 sm:p-8' : 'p-5 sm:p-6',
-    featured && 'bg-brand-soft/40',
-  ]}
->
-  <div class:list={[fullWidth && 'sm:flex sm:items-start sm:justify-between sm:gap-8']}>
-    <div class:list={['flex-1', fullWidth && 'min-w-0']}>
-      <div class="flex items-start gap-3">
-        <ServiceIcon slug={servicio.slug} featured={featured} />
-        <div class="min-w-0 flex-1">
-          <h3
-            class:list={[
-              'font-black text-ink tracking-tight transition group-hover:text-brand',
-              fullWidth ? 'text-xl sm:text-2xl' : 'text-base',
-            ]}
-          >
-            {servicio.title}
-          </h3>
-          {
-            featured && (
-              <span class="mt-1.5 inline-block text-[10px] font-extrabold uppercase tracking-[0.18em] text-brand border-b border-accent pb-0.5">
-                {esVenta ? 'Tienda' : 'Especialidad'}
-              </span>
-            )
-          }
+{
+  layout === 'band' ? (
+    <a
+      href={servicioHref(servicio.slug)}
+      class:list={[
+        'group relative flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 overflow-hidden border-[4px] border-brand-dark px-6 py-7 sm:px-8 sm:py-8 shadow-[8px_8px_0_rgba(0,26,61,0.35)] transition hover:-translate-y-1 hover:shadow-[10px_10px_0_rgba(0,26,61,0.4)]',
+        bandTone,
+        fullWidth && 'sm:col-span-2',
+      ]}
+    >
+      <span class="stamp-mark h-16 w-16 shrink-0 border-brand-dark">
+        <Doodle name={doodle} class="h-10 w-10" rotate={-8} />
+      </span>
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2 mb-1">
+          {featured && (
+            <span class="inline-flex items-center gap-1 bg-brand text-accent border-2 border-brand-dark px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
+              <Doodle name="chincheta" class="h-3.5 w-3" />
+              {esVenta ? 'Tienda' : 'Especialidad'}
+            </span>
+          )}
         </div>
-      </div>
-      <p
-        class:list={[
-          'mt-3 leading-relaxed text-muted font-medium',
-          fullWidth ? 'text-base max-w-3xl' : 'flex-1 text-sm',
-        ]}
-      >
-        {servicio.short}
-      </p>
-      {
-        fullWidth && servicio.items.length > 0 && (
-          <ul class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            {servicio.items.map((item) => (
-              <li class="flex items-center gap-2 text-sm text-ink font-medium">
-                <span class="h-1 w-1 shrink-0 bg-accent" aria-hidden="true"></span>
+        <h3 class:list={['font-display text-2xl sm:text-3xl leading-tight', esVenta ? 'text-brand' : 'text-white']}>
+          {servicio.title}
+        </h3>
+        <p class:list={['mt-2 max-w-2xl leading-relaxed font-medium', esVenta ? 'text-brand/75' : 'text-white/75']}>
+          {servicio.short}
+        </p>
+        {servicio.items.length > 0 && (
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {servicio.items.slice(0, 6).map((item) => (
+              <li
+                class:list={[
+                  'border-2 px-2.5 py-1 text-xs font-bold',
+                  esVenta ? 'border-brand/30 bg-white/50 text-brand' : 'border-accent/40 bg-accent/10 text-accent',
+                ]}
+              >
                 {item}
               </li>
             ))}
           </ul>
-        )
-      }
-      {
-        !fullWidth && servicio.formats && (
-          <p class="mt-3 text-[11px] font-bold tracking-[0.12em] text-muted uppercase">
-            {servicio.formats.join(' · ')}
-          </p>
-        )
-      }
-      {
-        precio && (
-          <p class="mt-3 text-sm font-black text-ink">
-            {precio.tipo === 'desde' ? (
-              <>
-                <span class="text-brand">{precio.etiqueta}</span>
-                <span class="ml-1 text-xs font-medium text-muted">orientativo</span>
-              </>
-            ) : (
-              <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand">
-                {precio.etiqueta}
-              </span>
-            )}
-          </p>
-        )
-      }
-    </div>
-    <span
+        )}
+      </div>
+      <span
+        class:list={[
+          'inline-flex w-fit shrink-0 items-center gap-1.5 border-[3px] px-4 py-3 text-xs font-black uppercase tracking-wide',
+          esVenta
+            ? 'bg-brand text-accent border-brand-dark'
+            : 'bg-accent text-brand-dark border-brand-dark group-hover:bg-accent-dark',
+        ]}
+      >
+        {esPedido ? 'Enviar PDF' : esVenta ? 'Ver catálogo' : 'Ver ficha'}
+        <span aria-hidden="true">→</span>
+      </span>
+    </a>
+  ) : (
+    <a
+      href={servicioHref(servicio.slug)}
       class:list={[
-        'mt-4 inline-flex w-fit px-0 py-1 text-xs font-black uppercase tracking-wide transition-colors duration-200',
-        fullWidth
-          ? 'sm:mt-0 btn-accent shrink-0 self-start px-4 py-2'
-          : 'text-brand border-b border-transparent group-hover:border-accent',
+        'ticket group relative flex h-full flex-col p-5 sm:p-6 transition hover:-translate-y-1',
+        offset,
+        tilt,
+        featured && 'bg-brand-soft/90',
+        index % 4 === 2 && 'bg-accent-soft/80',
       ]}
     >
-      {esPedido ? 'Enviar PDF' : esVenta ? 'Ver catálogo' : 'Ver ficha'}
-    </span>
-  </div>
-</a>
+      <Doodle
+        name={index % 2 === 0 ? 'clip' : 'chincheta'}
+        rotate={index % 2 === 0 ? 18 : -14}
+        class="absolute -top-2 right-3 h-8 w-8 opacity-80"
+      />
+
+      <div class="flex items-start gap-3 pr-6">
+        <span class="stamp-mark h-12 w-12 shrink-0">
+          <Doodle name={doodle} class="h-8 w-8" rotate={index % 2 === 0 ? -10 : 8} />
+        </span>
+        <div class="min-w-0 flex-1 pt-0.5">
+          <h3 class="font-extrabold text-base sm:text-lg text-ink leading-snug group-hover:text-brand transition">
+            {servicio.title}
+          </h3>
+          {featured && (
+            <span class="mt-1.5 inline-flex items-center gap-1 bg-accent border-2 border-brand-dark px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-brand-dark">
+              Especialidad
+            </span>
+          )}
+        </div>
+      </div>
+
+      <p class="mt-3 text-sm text-muted leading-relaxed flex-1">{servicio.short}</p>
+
+      {servicio.formats && (
+        <p class="mt-3 text-[11px] font-bold uppercase tracking-wider text-brand/70">
+          {servicio.formats.join(' · ')}
+        </p>
+      )}
+
+      {precio && (
+        <p class="mt-3 text-sm font-black text-brand">
+          {precio.tipo === 'desde' ? (
+            <>
+              {precio.etiqueta}
+              <span class="ml-1 text-xs font-semibold text-muted">orientativo</span>
+            </>
+          ) : (
+            precio.etiqueta
+          )}
+        </p>
+      )}
+
+      <span class="mt-4 inline-flex w-fit items-center gap-1.5 bg-brand text-accent border-[3px] border-brand-dark px-3 py-2 text-xs font-black uppercase tracking-wide group-hover:bg-brand-dark transition">
+        {esPedido ? 'Enviar PDF' : esVenta ? 'Ver catálogo' : 'Ver ficha'}
+        <span aria-hidden="true">→</span>
+      </span>
+    </a>
+  )
+}

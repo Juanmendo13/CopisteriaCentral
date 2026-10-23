@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import PreciosCarrito from '../components/PreciosCarrito.astro';
+import Doodle from '../components/Doodle.astro';
 import { site } from '../lib/site';
 ---
 
@@ -12,26 +13,31 @@ import { site } from '../lib/site';
 >
   <Navbar />
 
-  <main class="pt-28 pb-16 px-4 max-w-6xl mx-auto">
-    <p class="text-xs font-semibold uppercase tracking-wider text-brand mb-2">
-      Precios
-    </p>
-    <h1 class="font-display text-4xl font-bold tracking-tight text-ink">Precios y carrito</h1>
-    <p class="mt-4 max-w-2xl text-stone-600 leading-relaxed">
-      Elige fotocopias, impresiones u otros servicios básicos, añade al carrito y solicita el presupuesto oficial.
-      Los importes son <strong class="font-semibold text-ink">orientativos</strong>
-      {site.isPrototype && ' (demo)'}. Los trabajos a medida (diseño, gran formato especial…) quedan
-      <strong class="font-semibold text-ink">pendientes de evaluación</strong>.
-      Para papelería física, ve a <a href="/venta" class="font-semibold text-brand hover:underline">venta</a>.
-    </p>
-    <p class="mt-3 text-sm text-stone-500">
-      ¿Ya tienes el PDF listo?
-      <a href="/pedido" class="font-semibold text-brand hover:underline">Envía el archivo</a>
-      directamente.
-    </p>
+  <main class="pt-28 pb-0">
+    <section class="page-hero-block px-5 sm:px-8 py-12 sm:py-16">
+      <Doodle name="regla" rotate={-6} class="doodle-float-slow absolute top-10 right-10 h-8 w-32 opacity-45 hidden sm:block" />
+      <div class="relative max-w-6xl mx-auto">
+        <p class="text-sm font-black text-accent mb-3 uppercase tracking-[0.14em]">Carta del mostrador</p>
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98]">Precios y carrito</h1>
+        <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
+          Elige fotocopias, impresiones u otros servicios básicos, añade al carrito y solicita el presupuesto oficial.
+          Los importes son <strong class="font-bold text-accent">orientativos</strong>
+          {site.isPrototype && ' (demo)'}. Los trabajos a medida quedan
+          <strong class="font-bold text-accent"> pendientes de evaluación</strong>.
+        </p>
+        <p class="mt-3 text-sm text-white/60 font-semibold">
+          ¿Ya tienes el PDF?
+          <a href="/pedido" class="text-accent font-black hover:underline">Envía el archivo</a>
+          · Papelería en
+          <a href="/venta" class="text-accent font-black hover:underline">venta</a>.
+        </p>
+      </div>
+    </section>
 
-    <div class="mt-10">
-      <PreciosCarrito />
+    <div class="paper-ruled px-5 sm:px-8 py-12 sm:py-14 border-b-[8px] border-brand">
+      <div class="max-w-6xl mx-auto">
+        <PreciosCarrito />
+      </div>
     </div>
   </main>
 

@@ -14,7 +14,7 @@ const catalogoJson = JSON.stringify(
 );
 
 const inputClass =
-  'w-full border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20';
+  'w-full rounded-md border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20';
 ---
 
 <div class="grid lg:grid-cols-[1fr_22rem] gap-8 items-start" id="precios-app" data-catalogo={catalogoJson}>
@@ -22,18 +22,16 @@ const inputClass =
     {
       grupos.map((grupo) => (
         <section>
-          <h2 class="font-display text-xl font-black text-ink mb-4 border-b-2 border-accent pb-2 tracking-tight">{grupo.categoria}</h2>
-          <div class="grid sm:grid-cols-2 gap-px bg-line border border-line">
+          <h2 class="font-display text-lg font-bold text-ink mb-4">{grupo.categoria}</h2>
+          <div class="grid sm:grid-cols-2 gap-3">
             {grupo.items.map((item) => (
-              <article class="bg-white p-4 flex flex-col gap-3 hover:bg-brand-soft/40 transition-colors">
+              <article class="rounded-xl border border-line bg-white p-4 flex flex-col gap-3 hover:border-brand/30 transition">
                 <div class="flex-1">
-                  <h3 class="font-bold text-ink">{item.nombre}</h3>
-                  <p class="mt-1 text-sm text-muted leading-relaxed font-medium">{item.descripcion}</p>
-                  <p class="mt-2 text-sm font-black text-ink">
+                  <h3 class="font-semibold text-ink">{item.nombre}</h3>
+                  <p class="mt-1 text-sm text-muted leading-relaxed">{item.descripcion}</p>
+                  <p class="mt-2 text-sm font-bold text-ink">
                     {item.modo === 'consultar' || item.precio == null ? (
-                      <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand">
-                        Pendiente de evaluación
-                      </span>
+                      <span class="text-sm font-semibold text-brand">Consultar</span>
                     ) : (
                       <>
                         {formatEuro(item.precio)}
@@ -52,12 +50,12 @@ const inputClass =
                     min="1"
                     max="5000"
                     value="1"
-                    class="w-20 border border-line px-2 py-2 text-sm"
+                    class="w-20 rounded-md border border-line px-2 py-2 text-sm"
                     data-qty-for={item.id}
                   />
                   <button
                     type="button"
-                    class="btn-accent flex-1 px-3 py-2 text-xs font-black uppercase tracking-wide"
+                    class="btn-accent flex-1 px-3 py-2 text-sm"
                     data-add={item.id}
                   >
                     Añadir
@@ -71,10 +69,10 @@ const inputClass =
     }
   </div>
 
-  <aside class="lg:sticky lg:top-28 border border-line bg-white p-5">
-    <div class="flex items-center justify-between gap-2 mb-4 border-b border-line pb-3">
-      <h2 class="font-display text-lg font-black text-ink tracking-tight">Carrito</h2>
-      <span id="cart-count" class="bg-brand text-accent px-2.5 py-0.5 text-xs font-black">0</span>
+  <aside class="lg:sticky lg:top-28 rounded-xl border border-line bg-white p-5">
+    <div class="flex items-center justify-between gap-2 mb-4">
+      <h2 class="font-display text-lg font-bold text-ink">Carrito</h2>
+      <span id="cart-count" class="rounded-md bg-brand-dark text-accent px-2.5 py-0.5 text-xs font-bold">0</span>
     </div>
 
     <ul id="cart-lines" class="space-y-3 text-sm max-h-64 overflow-y-auto"></ul>
@@ -116,7 +114,7 @@ const inputClass =
           site.isPrototype && (
             <>
               {' '}
-              En esta demo, Resend solo entrega a {site.inboxEmail} hasta verificar un dominio.
+              Aviso a la tienda: {site.inboxEmail}
             </>
           )
         }
@@ -127,6 +125,9 @@ const inputClass =
 </div>
 
 <script>
+  import { sendShopWeb3Forms } from '../lib/client-web3forms';
+  import { shopNotifyClientStatus } from '../lib/shop-notify-ui';
+
   type CartLine = { id: string; cantidad: number };
   type CatalogItem = {
     id: string;
@@ -190,7 +191,7 @@ const inputClass =
         const item = byId[line.id];
         if (!item) continue;
         const li = document.createElement('li');
-        li.className = 'rounded-xl border border-blue-100 bg-white p-3';
+        li.className = 'rounded-xl border border-line bg-white p-3';
 
         let priceLabel = 'Pendiente de evaluación';
         if (item.modo === 'fijo' && item.precio != null) {
@@ -296,9 +297,12 @@ const inputClass =
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'No se pudo enviar.');
-      statusEl.className = 'text-sm text-emerald-700';
-      statusEl.textContent = data.mensaje || 'Presupuesto enviado. Revisa tu correo.';
+      if (!res.ok || !data.ok || !data.web3forms) throw new Error(data.error || 'No se pudo enviar.');
+      const gmail = await sendShopWeb3Forms(data.web3forms);
+      const status = shopNotifyClientStatus(gmail.ok, data, 'presupuesto');
+      if (!status.ok && !status.partial) throw new Error(status.text);
+      statusEl.className = status.ok ? 'text-sm text-emerald-700' : 'text-sm text-amber-800';
+      statusEl.textContent = status.text;
       statusEl.classList.remove('hidden');
       cart = [];
       render();

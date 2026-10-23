@@ -15,12 +15,17 @@ export const site = {
   phoneHref: 'tel:+34954625384',
   /** El fijo puede no tener WhatsApp; se usa el mismo número hasta confirmar móvil. */
   whatsappHref: 'https://wa.me/34954625384',
+  whatsappNumber: '34954625384',
   shopPhone: '+34 954 62 53 84',
   shopPhoneHref: 'tel:+34954625384',
   /** Sin correo público por ahora. */
   email: '',
   isPrototype: true,
-  inboxEmail: 'pizzeriaformula1@outlook.es',
+  /**
+   * Buzón de pedidos (fallback si falta PEDIDOS_EMAIL).
+   * Los avisos van por Web3Forms a este Gmail (access key creada con este email).
+   */
+  inboxEmail: 'bellamorenoeugenio820@gmail.com',
   privacyEmail: '',
   currentWeb:
     'https://www.google.com/maps/place/Copister%C3%ADa+Central/@37.3587595,-5.9861024,17z',
@@ -41,5 +46,11 @@ export const site = {
     linkedin: '',
   },
 } as const;
+
+/** Deep link de WhatsApp con texto prellenado (pedidos, consultas, errores). */
+export function whatsappLink(message: string): string {
+  const text = encodeURIComponent(message.trim());
+  return `https://wa.me/${site.whatsappNumber}?text=${text}`;
+}
 
 export type Site = typeof site;

@@ -1,0 +1,56 @@
+---
+import Doodle from './Doodle.astro';
+
+interface Props {
+  variant?: 'hero' | 'section' | 'footer' | 'band';
+  class?: string;
+}
+
+const { variant = 'section', class: className = '' } = Astro.props;
+---
+
+{
+  variant === 'hero' && (
+    <div class:list={['pointer-events-none absolute inset-0 overflow-hidden', className]} aria-hidden="true">
+      <Doodle name="boli" rotate={-18} class="doodle-float absolute top-[10%] right-[5%] h-20 w-8 opacity-95 sm:h-24 sm:w-9" />
+      <Doodle name="clip" rotate={25} class="doodle-float-slow absolute top-[36%] right-[16%] h-12 w-7 opacity-85 hidden sm:block" />
+      <Doodle name="postit" rotate={8} class="doodle-wiggle absolute bottom-[16%] right-[7%] h-14 w-14 opacity-95" />
+      <Doodle name="chincheta" rotate={-12} class="doodle-float absolute top-[20%] left-[6%] h-10 w-8 opacity-75 hidden lg:block" />
+      <Doodle name="folio" rotate={6} class="absolute bottom-[28%] left-[10%] h-14 w-11 opacity-40 hidden xl:block" />
+    </div>
+  )
+}
+
+{
+  variant === 'section' && (
+    <div class:list={['pointer-events-none absolute inset-0 overflow-hidden', className]} aria-hidden="true">
+      <Doodle name="lapiz" rotate={14} class="doodle-float absolute -top-2 right-4 h-14 w-4 opacity-45 sm:right-10 sm:h-16" />
+      <Doodle name="goma" rotate={-8} class="doodle-float-slow absolute bottom-4 left-3 h-7 w-12 opacity-40 sm:left-8" />
+      <Doodle name="folio" rotate={6} class="absolute top-1/2 -translate-y-1/2 -left-2 h-12 w-9 opacity-30 hidden md:block" />
+    </div>
+  )
+}
+
+{
+  variant === 'band' && (
+    <div class:list={['flex flex-wrap items-center justify-center gap-8 sm:gap-14 py-1', className]} aria-hidden="true">
+      <Doodle name="tijeras" rotate={-10} class="doodle-wiggle h-14 w-14 sm:h-16 sm:w-16" />
+      <Doodle name="cuaderno" rotate={6} class="doodle-float h-14 w-11 sm:h-16 sm:w-12" />
+      <Doodle name="regla" rotate={-3} class="doodle-float-slow h-8 w-32 sm:h-9 sm:w-40 hidden sm:block" />
+      <Doodle name="grapadora" rotate={4} class="doodle-float h-10 w-16 sm:h-11 sm:w-20" />
+      <Doodle name="cinta" rotate={-6} class="doodle-wiggle h-12 w-12 sm:h-14 sm:w-14" />
+      <Doodle name="boli" rotate={12} class="doodle-float-slow h-16 w-7 sm:h-20 sm:w-8" />
+    </div>
+  )
+}
+
+{
+  variant === 'footer' && (
+    <div class:list={['pointer-events-none absolute inset-0 overflow-hidden', className]} aria-hidden="true">
+      <Doodle name="clip" rotate={30} class="absolute top-8 right-[10%] h-10 w-6 opacity-35" />
+      <Doodle name="postit" rotate={-12} class="absolute bottom-12 left-[6%] h-11 w-11 opacity-30" />
+      <Doodle name="boli" rotate={20} class="absolute top-1/2 right-[3%] h-14 w-6 opacity-25 hidden sm:block" />
+      <Doodle name="lapiz" rotate={-8} class="absolute bottom-8 right-[20%] h-16 w-5 opacity-20 hidden md:block" />
+    </div>
+  )
+}

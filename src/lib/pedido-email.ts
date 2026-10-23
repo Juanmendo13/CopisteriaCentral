@@ -1,5 +1,4 @@
-import { Resend } from 'resend';
-import { RESEND_ATTACH_BYTES } from '../data/formatos';
+import { prepareShopNotify, type Web3FormsPayload } from './shop-notify';
 import { site } from './site';
 
 export interface PedidoPayload {
@@ -15,10 +14,6 @@ export interface PedidoPayload {
   archivoNombre: string;
   archivoSize: number;
   archivoTipo: string;
-}
-
-function env(name: string): string | undefined {
-  return process.env[name] || (import.meta.env as Record<string, string | undefined>)[name];
 }
 
 export function parsePedidoBody(body: unknown): PedidoPayload | { error: string } {
@@ -75,7 +70,7 @@ export function pedidoTexto(pedido: PedidoPayload, extra?: string): string {
   const sizeMB = (pedido.archivoSize / 1024 / 1024).toFixed(1);
   const lines = [
     '¡Hola! 👋',
-    'Has recibido un pedido de impresión en Copistería Central.',
+    `Has recibido un pedido de impresión en ${site.name}.`,
     '',
     'Resumen del pedido:',
     `- Cliente: ${pedido.nombre}`,
@@ -102,62 +97,48 @@ export function pedidoTexto(pedido: PedidoPayload, extra?: string): string {
 
 export async function enviarPedidoResend(
   pedido: PedidoPayload,
-): Promise<{ ok: true; modo: 'adjunto' | 'enlace' } | { error: string }> {
-  const apiKey = env('RESEND_API_KEY');
-  const to = env('PEDIDOS_EMAIL') || site.inboxEmail;
-  const from = env('RESEND_FROM') || `Copistería Central <onboarding@resend.dev>`;
-
-  if (!apiKey) {
-    return { error: 'Falta RESEND_API_KEY. Configúrala en .env.local o en Vercel.' };
-  }
-
-  const resend = new Resend(apiKey);
-  const subject = `Pedido impresión · ${pedido.formato} · ${pedido.nombre}`;
-
-  if (pedido.archivoSize <= RESEND_ATTACH_BYTES) {
-    let buffer: Buffer;
-    try {
-      const fileRes = await fetch(pedido.archivoUrl);
-      if (!fileRes.ok) return { error: 'No se pudo leer el archivo subido.' };
-      buffer = Buffer.from(await fileRes.arrayBuffer());
-    } catch {
-      return { error: 'No se pudo descargar el archivo para adjuntarlo.' };
+): Promise<
+  | {
+      ok: true;
+      modo: 'enlace';
+      web3forms: Web3FormsPayload;
+      via: string;
+      to: string;
+      intendedTo: string;
+      backupTo: string;
+      primaryReady: boolean;
+      backupOk: boolean;
     }
+  | { error: string }
+> {
+  const subject = `Pedido impresión · ${pedido.formato} · ${pedido.nombre}`;
+  const extra = [
+    'El archivo está en este enlace (Vercel Blob):',
+    `Nombre: ${pedido.archivoNombre}`,
+    `URL: ${pedido.archivoUrl}`,
+  ].join('\n');
+  const message = pedidoTexto(pedido, extra);
 
-    const { error } = await resend.emails.send({
-      from,
-      to: [to],
-      replyTo: pedido.email,
-      subject,
-      text: pedidoTexto(pedido, 'El PDF va adjunto a este correo.'),
-      attachments: [
-        {
-          filename: pedido.archivoNombre,
-          content: buffer,
-        },
-      ],
-    });
-
-    if (error) return { error: error.message || 'Resend no pudo enviar el pedido.' };
-    return { ok: true, modo: 'adjunto' };
-  }
-
-  const { error } = await resend.emails.send({
-    from,
-    to: [to],
-    replyTo: pedido.email,
+  const prepared = await prepareShopNotify({
     subject,
-    text: pedidoTexto(
-      pedido,
-      [
-        'Enlace al PDF (archivo grande, para evitar límites de adjuntos en email):',
-        `Nombre del archivo: ${pedido.archivoNombre}`,
-        `URL del PDF: ${pedido.archivoUrl}`,
-        'Podéis descargarlo y revisarlo desde el enlace para preparar el trabajo.',
-      ].join('\n'),
-    ),
+    message,
+    replyTo: pedido.email,
+    name: pedido.nombre,
   });
 
-  if (error) return { error: error.message || 'Resend no pudo enviar el pedido.' };
-  return { ok: true, modo: 'enlace' };
+  if ('error' in prepared) {
+    return { error: prepared.error };
+  }
+
+  return {
+    ok: true,
+    modo: 'enlace',
+    web3forms: prepared.web3forms,
+    via: prepared.via,
+    to: prepared.to,
+    intendedTo: prepared.intendedTo,
+    backupTo: prepared.backupTo,
+    primaryReady: prepared.primaryReady,
+    backupOk: prepared.backupOk,
+  };
 }

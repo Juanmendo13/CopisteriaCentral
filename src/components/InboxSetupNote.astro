@@ -1,0 +1,41 @@
+---
+import { site } from '../lib/site';
+import { web3FormsPrimaryReady } from '../lib/shop-notify';
+
+/**
+ * Nota operativa (prototipo): canal primario Web3Forms → Gmail de la tienda.
+ * Resend → Outlook es solo copia de seguridad.
+ */
+const gmailReady = web3FormsPrimaryReady();
+---
+
+{
+  site.isPrototype && (
+    <aside class="mt-6 rounded-none border-[3px] border-brand/25 bg-white/80 px-4 py-3 text-sm text-ink leading-relaxed">
+      <p class="font-extrabold text-brand uppercase tracking-wide text-xs mb-1">Aviso de pedidos (Gmail)</p>
+      {gmailReady ? (
+        <p class="font-medium text-muted">
+          Los avisos van a <span class="font-bold text-ink">{site.inboxEmail}</span> vía Web3Forms
+          (key ya configurada). Tras enviar un pedido, revisa Inbox y Spam de ese Gmail.
+        </p>
+      ) : (
+        <p class="font-medium text-muted">
+          Los avisos deben llegar a <span class="font-bold text-ink">{site.inboxEmail}</span>.
+          Canal primario: Web3Forms con Access Key creada en{' '}
+          <a
+            href="https://web3forms.com/"
+            class="font-bold text-brand underline decoration-2 underline-offset-2"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            web3forms.com
+          </a>{' '}
+          <strong>con ese Gmail</strong> y variable <code class="text-xs">WEB3FORMS_ACCESS_KEY</code> en Vercel.
+        </p>
+      )}
+      <p class="mt-2 text-xs font-semibold text-muted">
+        Detalle en <code class="text-[11px]">INSTRUCCIONES.md</code> del repo.
+      </p>
+    </aside>
+  )
+}

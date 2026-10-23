@@ -24,8 +24,13 @@ export const POST: APIRoute = async ({ request }) => {
   return Response.json({
     ok: true,
     clienteDemo: result.clienteDemo,
-    mensaje: result.clienteDemo
-      ? 'Presupuesto enviado a la tienda. En modo demo (Resend sin dominio verificado) la copia “para el cliente” también llega al buzón de prueba, no al email del formulario.'
-      : 'Presupuesto enviado. Revisa tu correo: te hemos mandado el resumen.',
+    via: result.via,
+    to: result.to,
+    intendedTo: result.intendedTo,
+    backupTo: result.backupTo,
+    primaryReady: result.primaryReady,
+    backupOk: result.backupOk,
+    web3forms: result.web3forms,
+    mensaje: 'Presupuesto preparado. Enviando aviso a la tienda…',
   });
 };

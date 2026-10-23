@@ -3,34 +3,74 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import VentaCarrito from '../components/VentaCarrito.astro';
+import Doodle from '../components/Doodle.astro';
 import { venta, ventaCategorias } from '../data/venta';
 import { site } from '../lib/site';
 ---
 
 <Layout
   title={`Venta de papelería | ${site.name}`}
-  description="Bolígrafos, libretas, carpetas, grapadoras y más. Añade a tu lista y reserva en Copistería Central, Reina Mercedes."
+  description="Bolis, libretas, carpetas y lo de apuro. Haz tu lista y reservamos en Copistería Central, Reina Mercedes."
 >
   <Navbar />
 
-  <main class="pt-28 pb-16">
-    <div class="bg-brand text-white border-b-2 border-accent px-4 py-10 sm:py-12 mb-10">
-      <div class="max-w-6xl mx-auto">
-        <p class="text-[11px] font-extrabold uppercase tracking-[0.28em] text-accent border-l-2 border-accent pl-3 mb-4">Tienda</p>
-        <h1 class="font-display text-4xl font-black tracking-[-0.025em]">Venta de papelería</h1>
-        <p class="mt-4 max-w-2xl text-white/65 leading-relaxed font-medium">
-          Material de escritorio, archivo, corte y embalaje. Precios orientativos ({venta.length} artículos).
-          Añade lo que necesites a la lista y te lo reservamos en el local — stock sujeto a disponibilidad.
+  <main class="pt-28 pb-0 relative overflow-hidden">
+    <section class="page-hero-block px-5 sm:px-8 py-12 sm:py-16">
+      <Doodle name="boli" rotate={14} class="doodle-float absolute top-10 right-8 h-16 w-6 opacity-50 hidden lg:block" />
+      <Doodle name="postit" rotate={-8} class="doodle-wiggle absolute bottom-12 left-8 h-12 w-12 opacity-40 hidden md:block" />
+      <div class="relative max-w-6xl mx-auto">
+        <p class="text-sm font-black text-accent mb-3 inline-flex items-center gap-2 uppercase tracking-[0.14em]">
+          <Doodle name="cuaderno" class="h-5 w-4" rotate={-6} />
+          Del mostrador
         </p>
-        <p class="mt-2 text-xs text-white/40">
-          Imágenes orientativas generadas. Sustituibles por fotos reales del local.
+        <h1 class="font-display text-4xl sm:text-6xl text-white leading-[0.98] max-w-3xl">
+          Papelería para el día a día
+        </h1>
+        <p class="mt-4 max-w-2xl text-white/75 leading-relaxed text-base sm:text-lg font-medium">
+          Bolis, libretas, carpetas y lo que siempre se te olvida ({venta.length} artículos, precios orientativos).
+          Haz tu lista y te lo reservamos para cuando pases.
         </p>
-        <nav class="mt-6 flex flex-wrap gap-0 border border-white/20" aria-label="Categorías">
+      </div>
+    </section>
+
+    <div class="band-mustard border-t-0">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 space-y-3">
+        <div class="relative max-w-xl">
+          <label for="venta-search" class="block text-xs font-black uppercase tracking-[0.14em] text-brand mb-1.5">
+            Buscar en el mostrador
+          </label>
+          <div class="relative">
+            <input
+              id="venta-search"
+              type="search"
+              name="venta-search"
+              autocomplete="off"
+              enterkeyhint="search"
+              placeholder="Bolígrafo, carpeta, USB…"
+              class="field-stamp !pr-11"
+              aria-controls="venta-catalogo"
+              aria-describedby="venta-search-hint"
+            />
+            <button
+              type="button"
+              id="venta-search-clear"
+              class="absolute right-2 top-1/2 -translate-y-1/2 hidden h-8 w-8 rounded-sm border-2 border-brand bg-white text-brand text-lg font-black leading-none hover:bg-brand hover:text-accent transition"
+              aria-label="Borrar búsqueda"
+            >
+              ×
+            </button>
+          </div>
+          <p id="venta-search-hint" class="sr-only">
+            Filtra los productos por nombre, descripción o categoría mientras escribes.
+          </p>
+        </div>
+        <nav class="flex flex-wrap gap-2" aria-label="Categorías" id="venta-cat-nav">
           {
             ventaCategorias.map((cat) => (
               <a
                 href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}`}
-                class="border-r border-white/20 last:border-r-0 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-white/80 hover:bg-white/10 hover:text-accent transition"
+                data-venta-cat={cat.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}
+                class="rounded-sm border-2 border-brand bg-white px-3 py-1.5 text-xs font-bold text-brand hover:bg-brand hover:text-accent transition"
               >
                 {cat}
               </a>
@@ -40,10 +80,20 @@ import { site } from '../lib/site';
       </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4">
-      <VentaCarrito />
+    <div class="relative paper-dots px-3 sm:px-8 py-8 sm:py-14">
+      <div class="relative max-w-6xl mx-auto">
+        <VentaCarrito />
+      </div>
     </div>
   </main>
 
   <Footer />
 </Layout>
+
+<style>
+  /* Custom stamp clear button; hide native WebKit cancel */
+  #venta-search::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+</style>
