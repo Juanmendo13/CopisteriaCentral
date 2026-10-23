@@ -1,5 +1,5 @@
 ---
-import { formatEuro, type VentaItem } from '../data/venta';
+import { formatEuro } from '../data/venta';
 import { site } from '../lib/site';
 import type { CatalogProduct } from '../lib/venta-catalog';
 
@@ -10,15 +10,25 @@ interface Props {
 const { grupos } = Astro.props;
 
 const catalogoJson = JSON.stringify(
-  grupos.flatMap((g) => g.items).map((item: VentaItem) => ({
+  grupos.flatMap((g) => g.items).map((item: CatalogProduct) => ({
     id: item.id,
     nombre: item.nombre,
     precio: item.precio,
     unidad: item.unidad,
     modo: item.modo,
     image: item.image,
+    stock: item.stock === undefined ? null : item.stock,
   })),
 );
+
+function maxOrderQty(item: CatalogProduct): number {
+  if (typeof item.stock === 'number') return Math.max(0, item.stock);
+  return 0;
+}
+
+function canOrder(item: CatalogProduct): boolean {
+  return typeof item.stock === 'number' && item.stock > 0;
+}
 
 const inputClass = 'field-stamp !py-2 !px-2.5 min-h-11 text-sm';
 
@@ -72,7 +82,12 @@ function stockLabel(item: CatalogProduct): string | null {
                       </p>
                       {
                         stockLabel(item) && (
-                          <p class="mt-1 text-[11px] sm:text-xs font-bold text-muted uppercase tracking-wide">
+                          <p
+                            class:list={[
+                              'mt-1 text-[11px] sm:text-xs font-bold uppercase tracking-wide',
+                              canOrder(item) ? 'text-muted' : 'text-coral',
+                            ]}
+                          >
                             {stockLabel(item)}
                           </p>
                         )
@@ -82,22 +97,39 @@ function stockLabel(item: CatalogProduct): string | null {
                       <label class="sr-only" for={`qty-${item.id}`}>
                         Cantidad {item.nombre}
                       </label>
-                      <input
-                        id={`qty-${item.id}`}
-                        type="number"
-                        min="1"
-                        max="5000"
-                        value="1"
-                        class="w-12 sm:w-20 min-h-11 rounded-sm border-2 border-brand px-1.5 sm:px-2 py-2 text-sm font-semibold"
-                        data-qty-for={item.id}
-                      />
-                      <button
-                        type="button"
-                        class="btn-accent flex-1 min-h-11 px-2 sm:px-3 py-2 text-xs sm:text-sm"
-                        data-add={item.id}
-                      >
-                        Añadir
-                      </button>
+                      {
+                        canOrder(item) ? (
+                          <>
+                            <input
+                              id={`qty-${item.id}`}
+                              type="number"
+                              min="1"
+                              max={maxOrderQty(item)}
+                              value="1"
+                              class="w-12 sm:w-20 min-h-11 rounded-sm border-2 border-brand px-1.5 sm:px-2 py-2 text-sm font-semibold"
+                              data-qty-for={item.id}
+                              data-stock-max={maxOrderQty(item)}
+                            />
+                            <button
+                              type="button"
+                              class="btn-accent flex-1 min-h-11 px-2 sm:px-3 py-2 text-xs sm:text-sm"
+                              data-add={item.id}
+                              data-stock-max={maxOrderQty(item)}
+                            >
+                              Añadir
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            type="button"
+                            class="flex-1 min-h-11 px-2 sm:px-3 py-2 text-xs sm:text-sm font-bold uppercase tracking-wide rounded-sm border-2 border-brand/40 bg-paper-deep text-muted cursor-not-allowed"
+                            disabled
+                            aria-disabled="true"
+                          >
+                            Sin stock
+                          </button>
+                        )
+                      }
                     </div>
                   </div>
                 </article>
@@ -186,12 +218,30 @@ function stockLabel(item: CatalogProduct): string | null {
     unidad: string;
     modo: 'fijo' | 'consultar';
     image?: string;
+    /** null = consultar / sin gestionar; number = unidades. */
+    stock: number | null;
   };
 
   const STORAGE_KEY = 'cc-venta-carrito-v1';
   const root = document.getElementById('venta-app');
   const catalogo: CatalogItem[] = JSON.parse(root?.dataset.catalogo || '[]');
   const byId = Object.fromEntries(catalogo.map((i) => [i.id, i]));
+
+  function stockMax(item: CatalogItem | undefined): number {
+    if (!item || typeof item.stock !== 'number') return 0;
+    return Math.max(0, Math.floor(item.stock));
+  }
+
+  function clampCart(lines: CartLine[]): CartLine[] {
+    const next: CartLine[] = [];
+    for (const line of lines) {
+      const max = stockMax(byId[line.id]);
+      if (max < 1) continue;
+      const cantidad = Math.min(max, Math.max(1, Math.floor(line.cantidad)));
+      next.push({ id: line.id, cantidad });
+    }
+    return next;
+  }
 
   const linesEl = document.getElementById('cart-lines');
   const emptyEl = document.getElementById('cart-empty');
@@ -207,7 +257,9 @@ function stockLabel(item: CatalogProduct): string | null {
       if (!raw) return [];
       const parsed = JSON.parse(raw) as CartLine[];
       if (!Array.isArray(parsed)) return [];
-      return parsed.filter((l) => byId[l.id] && Number.isInteger(l.cantidad) && l.cantidad > 0);
+      return clampCart(
+        parsed.filter((l) => byId[l.id] && Number.isInteger(l.cantidad) && l.cantidad > 0),
+      );
     } catch {
       return [];
     }
@@ -268,7 +320,7 @@ function stockLabel(item: CatalogProduct): string | null {
               </div>
               <div class="mt-2 flex gap-2">
                 <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold" data-dec="${item.id}">−</button>
-                <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold" data-inc="${item.id}">+</button>
+                <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold disabled:opacity-40" data-inc="${item.id}" ${line.cantidad >= stockMax(item) ? 'disabled' : ''}>+</button>
                 <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-red-700 ml-auto" data-rm="${item.id}">Quitar</button>
               </div>
             </div>
@@ -289,17 +341,22 @@ function stockLabel(item: CatalogProduct): string | null {
   }
 
   function add(id: string, qty: number) {
+    const max = stockMax(byId[id]);
+    if (max < 1) return;
     const existing = cart.find((l) => l.id === id);
-    if (existing) existing.cantidad = Math.min(5000, existing.cantidad + qty);
-    else cart.push({ id, cantidad: qty });
+    if (existing) existing.cantidad = Math.min(max, existing.cantidad + qty);
+    else cart.push({ id, cantidad: Math.min(max, qty) });
+    cart = clampCart(cart);
     render();
   }
 
   root?.querySelectorAll<HTMLButtonElement>('[data-add]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.add!;
+      const max = stockMax(byId[id]);
+      if (max < 1) return;
       const input = root.querySelector<HTMLInputElement>(`[data-qty-for="${id}"]`);
-      const qty = Math.max(1, Math.min(5000, Number(input?.value || 1) || 1));
+      const qty = Math.max(1, Math.min(max, Number(input?.value || 1) || 1));
       add(id, qty);
     });
   });
@@ -319,7 +376,8 @@ function stockLabel(item: CatalogProduct): string | null {
     if (inc) {
       const line = cart.find((l) => l.id === inc);
       if (!line) return;
-      line.cantidad = Math.min(5000, line.cantidad + 1);
+      const max = stockMax(byId[inc]);
+      line.cantidad = Math.min(max, line.cantidad + 1);
       render();
     }
     if (rm) {
@@ -338,8 +396,18 @@ function stockLabel(item: CatalogProduct): string | null {
       return;
     }
 
+    cart = clampCart(cart);
+    if (cart.length === 0) {
+      statusEl.className = 'text-sm text-red-700';
+      statusEl.textContent = 'No hay stock suficiente para los productos de la lista.';
+      statusEl.classList.remove('hidden');
+      render();
+      return;
+    }
+
     const fd = new FormData(form);
     const payload = {
+      origen: 'venta',
       nombre: String(fd.get('nombre') || ''),
       email: String(fd.get('email') || ''),
       telefono: String(fd.get('telefono') || ''),

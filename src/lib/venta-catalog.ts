@@ -56,10 +56,19 @@ export function slugifyId(nombre: string): string {
   return `v-${base || 'producto'}-${suffix}`;
 }
 
-export function staticToCatalogProducts(): CatalogProduct[] {
+/** Stock aleatorio sensato para semilla / productos nuevos (3–40 uds). */
+export function randomStock(min = 3, max = 40): number {
+  const lo = Math.min(min, max);
+  const hi = Math.max(min, max);
+  return lo + Math.floor(Math.random() * (hi - lo + 1));
+}
+
+export function staticToCatalogProducts(opts?: { withRandomStock?: boolean }): CatalogProduct[] {
+  const withRandomStock = opts?.withRandomStock !== false;
   return staticVenta.map((item) => ({
     ...item,
     image: item.image ?? getVentaImage(item.id),
+    stock: withRandomStock ? randomStock() : item.stock,
     activo: true,
   }));
 }
@@ -161,7 +170,7 @@ export async function loadAdminCatalog(): Promise<{
   if (fromBlob && fromBlob.products.length > 0) {
     return { catalog: fromBlob, source: 'blob', seeded: false };
   }
-  const products = staticToCatalogProducts();
+  const products = staticToCatalogProducts({ withRandomStock: true });
   return {
     catalog: { version: 1, updatedAt: nowIso(), products },
     source: fromBlob ? 'blob' : 'static',
@@ -169,15 +178,161 @@ export async function loadAdminCatalog(): Promise<{
   };
 }
 
-/** Escribe la semilla estática en Blob (idempotente: sobrescribe). */
+/** Escribe la semilla estática en Blob con stock aleatorio (idempotente: sobrescribe). */
 export async function seedCatalogFromStatic(): Promise<VentaCatalogFile> {
   const catalog: VentaCatalogFile = {
     version: 1,
     updatedAt: nowIso(),
-    products: staticToCatalogProducts(),
+    products: staticToCatalogProducts({ withRandomStock: true }),
   };
   await writeCatalogToBlob(catalog);
   return catalog;
+}
+
+/**
+ * Rellena stock aleatorio en productos que aún no tienen número (undefined).
+ * No toca stock ya numérico ni null («consultar» del admin).
+ */
+export function backfillMissingRandomStock(catalog: VentaCatalogFile): {
+  catalog: VentaCatalogFile;
+  changed: boolean;
+} {
+  let changed = false;
+  const products = catalog.products.map((p) => {
+    if (typeof p.stock === 'number' || p.stock === null) return p;
+    changed = true;
+    return { ...p, stock: randomStock(), updatedAt: nowIso() };
+  });
+  if (!changed) return { catalog, changed: false };
+  return {
+    catalog: { version: 1, updatedAt: nowIso(), products },
+    changed: true,
+  };
+}
+
+/**
+ * Si el Blob no tiene catálogo, lo siembra desde el estático con stock aleatorio.
+ * Si hay catálogo pero faltan stocks numéricos, rellena y persiste.
+ */
+export async function ensureCatalogSeeded(): Promise<VentaCatalogFile> {
+  const fromBlob = await readCatalogFromBlob();
+  if (!fromBlob || fromBlob.products.length === 0) {
+    return seedCatalogFromStatic();
+  }
+  const { catalog, changed } = backfillMissingRandomStock(fromBlob);
+  if (changed) {
+    await writeCatalogToBlob(catalog);
+  }
+  return catalog;
+}
+
+export type StockLine = { id: string; cantidad: number };
+
+export type DecrementStockResult =
+  | { ok: true; catalog: VentaCatalogFile; touched: string[] }
+  | { ok: false; error: string; status: 400 | 409 | 503 };
+
+/**
+ * Decrementa stock en Blob para líneas de venta.
+ * Reintento leve ante carreras (lectura → validación → escritura).
+ * Solo afecta productos con stock numérico; null («consultar») no se vende online.
+ */
+export async function decrementStockForOrder(
+  lines: StockLine[],
+  opts?: { retries?: number },
+): Promise<DecrementStockResult> {
+  if (!hasBlobToken()) {
+    return {
+      ok: false,
+      error: 'El catálogo en vivo no está disponible. Prueba más tarde o llama a la tienda.',
+      status: 503,
+    };
+  }
+
+  const retries = Math.max(1, opts?.retries ?? 3);
+  const needed = new Map<string, number>();
+  for (const line of lines) {
+    const qty = Math.floor(line.cantidad);
+    if (!line.id || !Number.isInteger(qty) || qty < 1) {
+      return { ok: false, error: 'Cantidad inválida en el pedido.', status: 400 };
+    }
+    needed.set(line.id, (needed.get(line.id) ?? 0) + qty);
+  }
+
+  if (needed.size === 0) {
+    const catalog = await ensureCatalogSeeded();
+    return { ok: true, catalog, touched: [] };
+  }
+
+  let lastError = 'No se pudo actualizar el stock. Inténtalo de nuevo.';
+
+  for (let attempt = 0; attempt < retries; attempt++) {
+    const catalog = await ensureCatalogSeeded();
+    const byId = new Map(catalog.products.map((p) => [p.id, p]));
+    const touched: string[] = [];
+    const nextProducts = catalog.products.map((p) => ({ ...p }));
+
+    for (const [id, qty] of needed) {
+      const idx = nextProducts.findIndex((p) => p.id === id);
+      const product = idx >= 0 ? nextProducts[idx] : undefined;
+      if (!product || !byId.has(id)) {
+        return {
+          ok: false,
+          error: `Producto no disponible en el catálogo: ${id}`,
+          status: 400,
+        };
+      }
+      if (product.activo === false) {
+        return {
+          ok: false,
+          error: `«${product.nombre}» no está disponible ahora mismo.`,
+          status: 400,
+        };
+      }
+
+      if (product.stock === null || product.stock === undefined) {
+        return {
+          ok: false,
+          error: `«${product.nombre}» está sin stock o hay que consultar disponibilidad en tienda.`,
+          status: 400,
+        };
+      }
+
+      if (product.stock < qty) {
+        const disponible = product.stock;
+        return {
+          ok: false,
+          error:
+            disponible <= 0
+              ? `«${product.nombre}» está sin stock.`
+              : `Stock insuficiente de «${product.nombre}»: solo quedan ${disponible} uds (pediste ${qty}).`,
+          status: 409,
+        };
+      }
+
+      nextProducts[idx] = {
+        ...product,
+        stock: product.stock - qty,
+        updatedAt: nowIso(),
+      };
+      touched.push(id);
+    }
+
+    const nextCatalog: VentaCatalogFile = {
+      version: 1,
+      updatedAt: nowIso(),
+      products: nextProducts,
+    };
+
+    try {
+      await writeCatalogToBlob(nextCatalog);
+      return { ok: true, catalog: nextCatalog, touched };
+    } catch (e) {
+      lastError = e instanceof Error ? e.message : lastError;
+    }
+  }
+
+  return { ok: false, error: lastError, status: 503 };
 }
 
 export function withResolvedImages(products: CatalogProduct[]): CatalogProduct[] {
@@ -187,14 +342,24 @@ export function withResolvedImages(products: CatalogProduct[]): CatalogProduct[]
   }));
 }
 
-/** Público: solo activos. Fallback al estático si Blob vacío o error. */
+/** Público: solo activos. Si Blob vacío y hay token, siembra con stock aleatorio. */
 export async function loadPublicCatalog(): Promise<{
   products: CatalogProduct[];
   categorias: string[];
   source: CatalogSource;
   total: number;
 }> {
-  const fromBlob = await readCatalogFromBlob();
+  let fromBlob: VentaCatalogFile | null = null;
+  if (hasBlobToken()) {
+    try {
+      fromBlob = await ensureCatalogSeeded();
+    } catch {
+      fromBlob = await readCatalogFromBlob();
+    }
+  } else {
+    fromBlob = await readCatalogFromBlob();
+  }
+
   if (fromBlob && fromBlob.products.length > 0) {
     const active = withResolvedImages(fromBlob.products.filter((p) => p.activo !== false));
     const categorias = uniqueCategorias(active);
@@ -206,7 +371,7 @@ export async function loadPublicCatalog(): Promise<{
     };
   }
 
-  const products = withResolvedImages(staticToCatalogProducts());
+  const products = withResolvedImages(staticToCatalogProducts({ withRandomStock: true }));
   return {
     products,
     categorias: [...staticCategorias],
