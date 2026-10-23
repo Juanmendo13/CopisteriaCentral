@@ -18,21 +18,21 @@ const inputClass = 'field-stamp';
 ---
 
 <div class="grid lg:grid-cols-[1fr_22rem] gap-8 items-start" id="venta-app" data-catalogo={catalogoJson}>
-  <div class="space-y-12" id="venta-catalogo">
+  <div class="space-y-8 sm:space-y-12" id="venta-catalogo">
     {
       grupos.map((grupo) => {
         const catId = grupo.categoria.toLowerCase().replace(/[^a-z0-9]+/gi, '-');
         return (
           <section id={catId} class="scroll-mt-32" data-venta-section={catId}>
-            <h2 class="font-display text-xl sm:text-2xl text-brand mb-5">{grupo.categoria}</h2>
-            <div class="grid sm:grid-cols-2 gap-4">
+            <h2 class="font-display text-lg sm:text-2xl text-brand mb-3 sm:mb-5">{grupo.categoria}</h2>
+            <div class="grid grid-cols-2 gap-2.5 sm:gap-4">
               {grupo.items.map((item) => (
                 <article
-                  class="rounded-sm border-[2.5px] border-brand bg-white overflow-hidden flex flex-col shadow-[3px_3px_0_rgba(0,45,98,0.15)] hover:shadow-[5px_5px_0_rgba(0,45,98,0.2)] hover:-translate-y-0.5 transition"
+                  class="rounded-sm border-2 sm:border-[2.5px] border-brand bg-white overflow-hidden flex flex-col shadow-[2px_2px_0_rgba(0,45,98,0.15)] sm:shadow-[3px_3px_0_rgba(0,45,98,0.15)] hover:shadow-[5px_5px_0_rgba(0,45,98,0.2)] hover:-translate-y-0.5 transition"
                   data-venta-product
                   data-haystack={`${item.nombre} ${item.descripcion} ${item.categoria}`}
                 >
-                  <div class="aspect-[4/3] bg-paper-deep overflow-hidden border-b-2 border-brand">
+                  <div class="aspect-[3/2] max-h-28 sm:max-h-none sm:aspect-[4/3] bg-paper-deep overflow-hidden border-b-2 border-brand">
                     <img
                       src={item.image}
                       alt={item.nombre}
@@ -41,22 +41,24 @@ const inputClass = 'field-stamp';
                       class="h-full w-full object-cover"
                     />
                   </div>
-                  <div class="p-4 flex flex-col gap-3 flex-1">
-                    <div class="flex-1">
-                      <h3 class="font-extrabold text-ink leading-snug">{item.nombre}</h3>
-                      <p class="mt-1 text-sm text-muted leading-relaxed">{item.descripcion}</p>
-                      <p class="mt-2 text-base font-black text-brand">
+                  <div class="p-2.5 sm:p-4 flex flex-col gap-2 sm:gap-3 flex-1">
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-extrabold text-ink leading-snug text-sm sm:text-base">{item.nombre}</h3>
+                      <p class="mt-0.5 sm:mt-1 text-xs sm:text-sm text-muted leading-snug line-clamp-2 sm:leading-relaxed sm:line-clamp-none">
+                        {item.descripcion}
+                      </p>
+                      <p class="mt-1.5 sm:mt-2 text-sm sm:text-base font-black text-brand">
                         {item.precio == null ? (
-                          <span class="text-sm font-bold text-coral">Consultar</span>
+                          <span class="text-xs sm:text-sm font-bold text-coral">Consultar</span>
                         ) : (
                           <>
                             {formatEuro(item.precio)}
-                            <span class="font-semibold text-muted text-sm"> / {item.unidad}</span>
+                            <span class="font-semibold text-muted text-xs sm:text-sm"> / {item.unidad}</span>
                           </>
                         )}
                       </p>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-stretch gap-1.5 sm:gap-2">
                       <label class="sr-only" for={`qty-${item.id}`}>
                         Cantidad {item.nombre}
                       </label>
@@ -66,10 +68,14 @@ const inputClass = 'field-stamp';
                         min="1"
                         max="5000"
                         value="1"
-                        class="w-20 rounded-sm border-2 border-brand px-2 py-2 text-sm font-semibold"
+                        class="w-12 sm:w-20 min-h-11 rounded-sm border-2 border-brand px-1.5 sm:px-2 py-2 text-sm font-semibold"
                         data-qty-for={item.id}
                       />
-                      <button type="button" class="btn-accent flex-1 px-3 py-2 text-sm" data-add={item.id}>
+                      <button
+                        type="button"
+                        class="btn-accent flex-1 min-h-11 px-2 sm:px-3 py-2 text-xs sm:text-sm"
+                        data-add={item.id}
+                      >
                         Añadir
                       </button>
                     </div>
