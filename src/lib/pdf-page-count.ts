@@ -1,3 +1,5 @@
+import type { PDFDocumentLoadingTask } from 'pdfjs-dist';
+
 export type PdfPageCountResult =
   | { ok: true; pages: number }
   | {
@@ -8,13 +10,18 @@ export type PdfPageCountResult =
 
 let pdfJsReady: Promise<typeof import('pdfjs-dist')> | null = null;
 
-/** Lazy-load pdf.js + worker only when a PDF is selected (keeps initial bundle small). */
+/**
+ * Lazy-load pdf.js + worker only when a PDF is selected (keeps initial bundle small).
+ *
+ * Worker URL uses Vite's `?url` so the .mjs asset is emitted next to other client
+ * chunks (same origin) — avoids CDN/CORS and version skew.
+ */
 async function loadPdfJs() {
   if (!pdfJsReady) {
     pdfJsReady = (async () => {
       const pdfjs = await import('pdfjs-dist');
-      const workerMod = await import('pdfjs-dist/build/pdf.worker.min.mjs?url');
-      pdfjs.GlobalWorkerOptions.workerSrc = workerMod.default;
+      const workerUrl = (await import('pdfjs-dist/build/pdf.worker.min.mjs?url')).default;
+      pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
       return pdfjs;
     })();
   }
@@ -28,6 +35,10 @@ function isPdfFile(file: File): boolean {
 
 /**
  * Count PDF pages in the browser via pdf.js. Does not upload or render pages.
+ *
+ * Note: pdfjs-dist v5+ removed `PDFDocumentProxy.destroy()`. Teardown is
+ * `loadingTask.destroy()` (which also cleans the proxy). Calling `pdf.destroy()`
+ * throws after a successful count and was showing the manual-fallback error in prod.
  */
 export async function countPdfPages(file: File): Promise<PdfPageCountResult> {
   if (!file) {
@@ -41,13 +52,14 @@ export async function countPdfPages(file: File): Promise<PdfPageCountResult> {
     };
   }
 
+  let loadingTask: PDFDocumentLoadingTask | null = null;
+
   try {
     const pdfjs = await loadPdfJs();
     const data = new Uint8Array(await file.arrayBuffer());
-    const loadingTask = pdfjs.getDocument({ data, useSystemFonts: true });
+    loadingTask = pdfjs.getDocument({ data, useSystemFonts: true });
     const pdf = await loadingTask.promise;
     const pages = pdf.numPages;
-    await pdf.destroy();
 
     if (!Number.isInteger(pages) || pages < 1) {
       return {
@@ -82,6 +94,12 @@ export async function countPdfPages(file: File): Promise<PdfPageCountResult> {
       reason: 'error',
       message: 'No se pudieron detectar las páginas. Indícalas a mano.',
     };
+  } finally {
+    try {
+      await loadingTask?.destroy();
+    } catch {
+      /* ignore teardown errors — page count already decided */
+    }
   }
 }
 
