@@ -94,28 +94,35 @@ const isVenta = current === '/venta' || current.startsWith('/venta/');
     isVenta && (
       <div
         id="venta-cart-bar"
-        class="lg:hidden border-b-[3px] border-brand bg-accent shadow-[0_3px_0_rgba(0,45,98,0.18)]"
+        class="venta-cart-bar lg:hidden border-b-[3px] border-brand bg-accent-soft shadow-[0_3px_0_rgba(0,45,98,0.18)] transition-[max-height,opacity,padding] duration-200 ease-out overflow-hidden max-h-24"
       >
-        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-8">
           <button
             type="button"
             id="venta-cart-jump"
             class="flex w-full items-center justify-between gap-3 py-2.5 text-left"
             aria-controls="lista-compra"
+            aria-label="Ir a la lista de compra"
           >
-            <span class="flex items-center gap-2 min-w-0">
-              <span class="rounded-sm border-2 border-brand bg-brand px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em] text-accent shrink-0">
-                Lista
-              </span>
-              <span id="venta-cart-bar-count" class="text-sm font-extrabold text-brand truncate">
-                0 artículos
+            <span class="flex items-center gap-2.5 min-w-0">
+              <span class="font-display text-base font-bold text-ink leading-none truncate">Lista de compra</span>
+              <span
+                id="venta-cart-bar-count"
+                class="rounded-md bg-brand-dark text-accent px-2 py-0.5 text-xs font-bold tabular-nums shrink-0"
+              >
+                0
               </span>
             </span>
-            <span
-              id="venta-cart-bar-subtotal"
-              class="shrink-0 rounded-sm border-2 border-brand bg-white px-2.5 py-0.5 text-sm font-black text-brand tabular-nums"
-            >
-              0,00 €
+            <span class="flex items-baseline gap-1.5 shrink-0">
+              <span class="text-[10px] font-black uppercase tracking-wide text-brand/70 hidden sm:inline">
+                Subtotal
+              </span>
+              <span
+                id="venta-cart-bar-subtotal"
+                class="rounded-sm border-2 border-brand bg-white px-2.5 py-0.5 text-sm font-black text-brand tabular-nums"
+              >
+                0,00 €
+              </span>
             </span>
           </button>
         </div>
@@ -160,23 +167,37 @@ const isVenta = current === '/venta' || current.startsWith('/venta/');
     link.addEventListener('click', () => setOpen(false));
   });
 
+  const siteHeader = document.querySelector('.site-header');
+  const cartBar = document.getElementById('venta-cart-bar');
   const cartBarCount = document.getElementById('venta-cart-bar-count');
   const cartBarSubtotal = document.getElementById('venta-cart-bar-subtotal');
   const cartJump = document.getElementById('venta-cart-jump');
-
-  function articulosLabel(qty: number) {
-    if (qty === 1) return '1 artículo';
-    return `${qty} artículos`;
-  }
+  const listaCompra = document.getElementById('lista-compra');
 
   window.addEventListener('cc-venta-cart', ((ev: CustomEvent<{ qty: number; formatted: string }>) => {
     const { qty, formatted } = ev.detail;
-    if (cartBarCount) cartBarCount.textContent = articulosLabel(qty);
+    if (cartBarCount) cartBarCount.textContent = String(qty);
     if (cartBarSubtotal) cartBarSubtotal.textContent = formatted;
   }) as EventListener);
 
   cartJump?.addEventListener('click', () => {
     setOpen(false);
-    document.getElementById('lista-compra')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    listaCompra?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+
+  /* Tuck companion bar when the real Lista panel is on screen (avoid covering the form). */
+  if (cartBar && listaCompra && siteHeader && window.matchMedia('(max-width: 1023px)').matches) {
+    const syncTuck = (tucked: boolean) => {
+      cartBar.classList.toggle('venta-cart-bar--tucked', tucked);
+      siteHeader.classList.toggle('venta-cart-bar-tucked', tucked);
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        syncTuck(entry.isIntersecting && entry.intersectionRatio >= 0.18);
+      },
+      { threshold: [0, 0.18, 0.35, 0.6], rootMargin: '-12% 0px -35% 0px' },
+    );
+    io.observe(listaCompra);
+  }
 </script>

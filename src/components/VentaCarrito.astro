@@ -101,23 +101,22 @@ const inputClass = 'field-stamp';
 
   <aside
     id="lista-compra"
-    class="lg:sticky lg:top-28 scroll-mt-36 rounded-sm border-[2.5px] border-brand bg-accent-soft p-5 shadow-[4px_4px_0_rgba(0,45,98,0.2)]"
+    class="lista-compra lg:sticky scroll-mt-36 rounded-sm border-[2.5px] border-brand bg-accent-soft p-5 shadow-[4px_4px_0_rgba(0,45,98,0.2)]"
   >
-    <div class="flex items-center justify-between gap-2 mb-4">
-      <h2 class="font-display text-lg font-bold text-ink">Lista de compra</h2>
-      <span id="cart-count" class="rounded-md bg-brand-dark text-accent px-2.5 py-0.5 text-xs font-bold">0</span>
+    <div class="lista-compra-head sticky z-20 -mx-5 -mt-5 mb-4 px-5 pt-4 pb-3 bg-accent-soft border-b border-brand/15 lg:static lg:z-auto lg:mx-0 lg:mt-0 lg:mb-4 lg:px-0 lg:pt-0 lg:pb-0 lg:border-0">
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="font-display text-lg font-bold text-ink">Lista de compra</h2>
+        <span id="cart-count" class="rounded-md bg-brand-dark text-accent px-2.5 py-0.5 text-xs font-bold tabular-nums">0</span>
+      </div>
+      <div class="mt-2 flex justify-between items-baseline gap-2 text-sm font-black text-ink">
+        <span>Subtotal orientativo</span>
+        <span id="cart-subtotal" class="tabular-nums">{formatEuro(0)}</span>
+      </div>
+      <p class="mt-0.5 text-xs text-muted font-medium">Precios orientativos. Se confirman en el local.</p>
     </div>
 
     <ul id="cart-lines" class="space-y-3 text-sm max-h-64 overflow-y-auto"></ul>
     <p id="cart-empty" class="text-sm text-muted font-medium">Aún no has añadido nada.</p>
-
-    <div class="mt-4 border-t border-line pt-4 space-y-1 text-sm">
-      <div class="flex justify-between font-black text-ink">
-        <span>Subtotal orientativo</span>
-        <span id="cart-subtotal">{formatEuro(0)}</span>
-      </div>
-      <p class="text-xs text-muted">Precios orientativos. Se confirman en el local.</p>
-    </div>
 
     <form id="cart-checkout" class="mt-5 space-y-3" novalidate>
       <label class="block text-sm font-black uppercase tracking-wide text-brand">
