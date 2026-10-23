@@ -1,0 +1,68 @@
+---
+import { projects } from '../data/projects';
+---
+
+<section id="trabajo" class="scroll-mt-8 border-b border-line bg-paper px-5 py-20 sm:px-8 sm:py-28">
+  <div class="mx-auto max-w-6xl">
+    <header class="mb-12 max-w-xl sm:mb-16">
+      <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-signal-deep">Trabajo</p>
+      <h2 class="font-display mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+        Proyectos recientes
+      </h2>
+      <p class="mt-4 text-base font-medium leading-relaxed text-muted sm:text-lg">
+        Webs y herramientas para locales reales: pedidos, cartas, catálogos y presencia online.
+      </p>
+    </header>
+
+    <ul class="space-y-0">
+      {
+        projects.map((project, i) => (
+          <li class="group border-t border-line last:border-b">
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="grid items-stretch gap-0 transition lg:grid-cols-12"
+            >
+              <div class="relative aspect-[16/10] overflow-hidden bg-paper-deep lg:col-span-5 lg:aspect-auto lg:min-h-[280px]">
+                <img
+                  src={project.image}
+                  alt=""
+                  class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+                  width="1200"
+                  height="800"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+              </div>
+              <div class="flex flex-col justify-center px-0 py-8 lg:col-span-7 lg:px-10 lg:py-12">
+                <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <span class="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
+                    {project.name}
+                  </span>
+                  <span class="text-sm font-semibold text-muted">{project.year}</span>
+                </div>
+                <p class="mt-1 text-sm font-bold uppercase tracking-[0.12em] text-field-bright">
+                  {project.client}
+                </p>
+                <p class="mt-4 max-w-lg text-base font-medium leading-relaxed text-muted">
+                  {project.summary}
+                </p>
+                <ul class="mt-5 flex flex-wrap gap-2">
+                  {project.stack.map((tech) => (
+                    <li class="border border-line bg-paper-deep px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-ink-soft">
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+                <span class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-ink transition group-hover:gap-3">
+                  Ver en GitHub
+                  <span aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

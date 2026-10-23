@@ -1,32 +1,18 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
-  --color-brand: #002d62;
-  --color-brand-dark: #001a3d;
-  --color-brand-soft: #e8eef5;
-  --color-accent: #ffd700;
-  --color-accent-dark: #e6c200;
-  --color-accent-soft: #fff8cc;
-  --color-ink: #0a1628;
-  --color-muted: #475569;
-  --color-paper: #f0f2f5;
-  --color-line: #c5ced9;
-  --radius-ui: 2px;
-}
-
-.btn-accent {
-  background-color: var(--color-accent);
-  color: var(--color-brand-dark);
-  font-weight: 800;
-  border-radius: var(--radius-ui);
-  border: 1px solid var(--color-accent-dark);
-  box-shadow: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-.btn-accent:hover {
-  background-color: var(--color-accent-dark);
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #12140f;
+  --color-ink-soft: #2a2e24;
+  --color-muted: #5c6354;
+  --color-paper: #eef1e8;
+  --color-paper-deep: #e2e6db;
+  --color-line: #c8cebc;
+  --color-signal: #d97706;
+  --color-signal-deep: #b45309;
+  --color-field: #1a3a2a;
+  --color-field-bright: #2d5a40;
 }
 
 html {
@@ -34,88 +20,136 @@ html {
 }
 
 body {
-  font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--color-paper);
   color: var(--color-ink);
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #e8eef5;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #64748b;
-  border-radius: 0;
+::selection {
+  background: color-mix(in oklab, var(--color-signal) 35%, transparent);
+  color: var(--color-ink);
 }
 
 .font-display {
   font-family: var(--font-display);
 }
 
+/* Atmosphere: cool grain over paper */
+.grain::before {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 .btn-primary {
-  background-color: var(--color-accent);
-  color: var(--color-brand-dark);
-  font-weight: 800;
-  border-radius: var(--radius-ui);
-  border: 1px solid var(--color-accent-dark);
-  box-shadow: none;
-  transition: background-color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-signal);
+  color: var(--color-ink);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.35rem;
+  border: 1px solid var(--color-signal-deep);
+  transition: transform 0.25s ease, background-color 0.2s ease;
 }
 
 .btn-primary:hover {
-  background-color: var(--color-accent-dark);
+  background: var(--color-signal-deep);
+  color: #fff;
+  transform: translateY(-1px);
 }
 
-.btn-secondary {
-  border: 1px solid rgb(255 255 255 / 0.45);
-  background-color: transparent;
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
   color: inherit;
-  font-weight: 800;
-  border-radius: var(--radius-ui);
-  box-shadow: none;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.35rem;
+  border: 1px solid currentColor;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-secondary:hover {
-  border-color: var(--color-accent);
-  background-color: rgb(255 255 255 / 0.06);
+.btn-ghost:hover {
+  background: color-mix(in oklab, currentColor 12%, transparent);
 }
 
-.btn-secondary-light {
-  border: 1px solid var(--color-line);
-  background-color: white;
-  color: var(--color-ink);
-  font-weight: 800;
-  border-radius: var(--radius-ui);
-  box-shadow: none;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+/* Motion */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.btn-secondary-light:hover {
-  border-color: var(--color-brand);
-  background-color: var(--color-brand-soft);
+@keyframes ken {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
-/* Espacio extra bajo el banner de prototipo (páginas con navbar fija) */
-body:has(.site-header.has-banner) main.pt-28 {
-  padding-top: 9.25rem;
+@keyframes draw-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
-body:has(.site-header.has-banner) main.pt-32 {
-  padding-top: 10.25rem;
+.animate-rise {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-body:has(.site-header.has-banner) main > section.pt-28 {
-  padding-top: 9.25rem;
+.animate-rise-delay-1 {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
 }
 
-@media (min-width: 768px) {
-  body:has(.site-header.has-banner) main > section.md\:pt-32 {
-    padding-top: 10.25rem;
+.animate-rise-delay-2 {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both;
+}
+
+.animate-rise-delay-3 {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.36s both;
+}
+
+.animate-ken {
+  animation: ken 8s ease-out both;
+}
+
+.animate-draw {
+  transform-origin: left;
+  animation: draw-line 1s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-rise-delay-1,
+  .animate-rise-delay-2,
+  .animate-rise-delay-3,
+  .animate-ken,
+  .animate-draw {
+    animation: none;
   }
 }

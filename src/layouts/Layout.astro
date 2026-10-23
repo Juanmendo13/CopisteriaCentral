@@ -1,9 +1,10 @@
 ---
-import '@fontsource/montserrat/400.css';
-import '@fontsource/montserrat/500.css';
-import '@fontsource/montserrat/600.css';
-import '@fontsource/montserrat/700.css';
-import '@fontsource/montserrat/800.css';
+import '@fontsource/syne/600.css';
+import '@fontsource/syne/700.css';
+import '@fontsource/syne/800.css';
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/500.css';
+import '@fontsource/dm-sans/700.css';
 import '../styles/global.css';
 import { site } from '../lib/site';
 
@@ -15,7 +16,7 @@ interface Props {
 const { title, description = site.description } = Astro.props;
 
 const siteUrl = site.url;
-const ogImage = `${siteUrl}/og-image.png`;
+const ogImage = `${siteUrl}/portfolio/hero.jpg`;
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 ---
 
@@ -25,7 +26,6 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    {site.isPrototype && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalUrl} />
@@ -37,15 +37,13 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
   </head>
-  <body class="bg-paper text-ink min-h-screen antialiased">
+  <body class="grain bg-paper text-ink min-h-screen antialiased">
     <slot />
   </body>
 </html>

@@ -3,12 +3,12 @@ import tailwindcss from '@tailwindcss/vite';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  site: 'https://copisteria-central.vercel.app',
-  output: 'server',
+  site: 'https://juanmendoza.dev',
+  output: 'static',
   adapter: vercel(),
   compressHTML: true,
   image: {
-    quality: 70,
+    quality: 75,
   },
   vite: {
     plugins: [tailwindcss()],
