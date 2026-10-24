@@ -6,9 +6,9 @@ export const site = {
   brand: 'juanmendo',
   tagline: 'Full-stack para negocios locales',
   description:
-    'juanmendo — full-stack: frontend, backend, APIs, auth, email/blob y deploy en Vercel. Ingeniería Informática · Sevilla · Erasmus Politecnico di Milano.',
+    'juanmendo — full-stack: frontend, backend, APIs, auth, email/blob y deploy en Vercel. Ingeniería Informática · Sevilla · Milano.',
   role: 'Ingeniería Informática · Full-stack',
-  location: 'Sevilla · Milano (Erasmus)',
+  location: 'Sevilla · Milano',
   email: 'jmendozadame@gmail.com',
   github: 'https://github.com/Juanmendo13',
   url: 'https://juanmendo.dev',

@@ -376,11 +376,12 @@ export const projects: Project[] = [
       it: 'Catalogo, preventivi WhatsApp/checkout e auth email per ferramenta di zona (Los Rosales / Tocina).',
     },
     stack: ['React 19', 'Vite', 'Express', 'Firebase', 'Nodemailer', 'Tailwind 4'],
+    live: 'https://ferreteria-yelamo.vercel.app/',
     repo: 'https://github.com/Juanmendo13/FerreteriaYelamo',
     year: '2025',
-    // No public live deploy found — omit stock/decorative image.
+    image: '/portfolio/shots/ferreteria-yelamo.jpg',
     note: {
-      es: 'Inventario solo desde `src/` y `server.ts`. El README menciona calculadoras/DIY/flash deals que no están en el código actual. Sin captura: no hay deploy público.',
+      es: 'Inventario solo desde `src/` y `server.ts`. El README menciona calculadoras/DIY/flash deals que no están en el código actual.',
       en: 'Inventory from `src/` and `server.ts` only. README mentions calculators/DIY/flash deals not present in current code.',
       it: 'Inventario solo da `src/` e `server.ts`. Il README cita calcolatrici/DIY/flash deals assenti nel codice attuale.',
     },
@@ -457,7 +458,7 @@ export const projects: Project[] = [
     download:
       'https://github.com/Juanmendo13/Stockfeet/releases/download/v0.0.0/Stockfeet-0.0.0-try-windows.zip',
     year: '2025',
-    // Desktop app — repo only ships icon assets, no authentic UI screenshot.
+    image: '/portfolio/shots/stockfeet-chess.jpg',
     frontend: [
       {
         es: 'Hub Tkinter: Play, Puzzles, Shop, Improve/Profile',

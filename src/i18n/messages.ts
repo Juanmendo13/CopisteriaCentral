@@ -13,7 +13,7 @@ export const localeLabels: Record<Locale, string> = {
 export const ui = {
   es: {
     'meta.description':
-      'juanmendo — full-stack: UI/UX, SSR, formularios, APIs, auth, email/blob, paneles/PDA y deploy en Vercel. Negocios locales, IA y ciberseguridad. Sevilla · Erasmus Politecnico di Milano.',
+      'juanmendo — full-stack: UI/UX, SSR, formularios, APIs, auth, email/blob, paneles/PDA y deploy en Vercel. Negocios locales, IA y ciberseguridad. Sevilla · Milano.',
     'nav.work': 'Proyectos',
     'nav.about': 'Sobre mí',
     'nav.contact': 'Contacto',
@@ -58,7 +58,7 @@ export const ui = {
   },
   en: {
     'meta.description':
-      'juanmendo — full-stack: UI/UX, SSR, forms, APIs, auth, email/blob, admin/PDA and Vercel deploy. Local businesses, AI and cybersecurity. Seville · Erasmus Politecnico di Milano.',
+      'juanmendo — full-stack: UI/UX, SSR, forms, APIs, auth, email/blob, admin/PDA and Vercel deploy. Local businesses, AI and cybersecurity. Seville · Milan.',
     'nav.work': 'Projects',
     'nav.about': 'About',
     'nav.contact': 'Contact',
@@ -103,7 +103,7 @@ export const ui = {
   },
   it: {
     'meta.description':
-      'juanmendo — full-stack: UI/UX, SSR, form, API, auth, email/blob, admin/PDA e deploy su Vercel. Negozi locali, IA e cybersecurity. Siviglia · Erasmus Politecnico di Milano.',
+      'juanmendo — full-stack: UI/UX, SSR, form, API, auth, email/blob, admin/PDA e deploy su Vercel. Negozi locali, IA e cybersecurity. Siviglia · Milano.',
     'nav.work': 'Progetti',
     'nav.about': 'Su di me',
     'nav.contact': 'Contatto',
