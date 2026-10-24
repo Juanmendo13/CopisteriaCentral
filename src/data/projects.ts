@@ -11,7 +11,8 @@ export type Project = {
   live?: string;
   repo?: string;
   year: string;
-  image: string;
+  /** Real UI screenshot path, or omit when no public web UI / no authentic capture. */
+  image?: string;
   frontend: Localized[];
   backend: Localized[];
   note?: Localized;
@@ -36,7 +37,7 @@ export const projects: Project[] = [
     live: 'https://copisteria-central.vercel.app',
     repo: 'https://github.com/Juanmendo13/CopisteriaCentral',
     year: '2026',
-    image: '/portfolio/work-1.jpg',
+    image: '/portfolio/shots/copisteria-central.jpg',
     frontend: [
       {
         es: 'Home con marca, servicios destacados y presupuestos rápidos',
@@ -138,7 +139,7 @@ export const projects: Project[] = [
     stack: ['Astro', 'Tailwind', 'Vercel', 'Vercel Blob', 'Web3Forms'],
     live: 'https://a0-impresiones.vercel.app',
     year: '2026',
-    image: '/portfolio/work-2.jpg',
+    image: '/portfolio/shots/a0-impresiones.jpg',
     note: {
       es: 'Inventario desde el deploy público (sin repo GitHub público). Banner de demo: formularios aún no llegan al buzón real.',
       en: 'Inventory from the public deploy (no public GitHub repo). Demo banner: forms do not yet hit the real inbox.',
@@ -216,7 +217,7 @@ export const projects: Project[] = [
     live: 'https://pizzeria-formula-1.vercel.app',
     repo: 'https://github.com/Juanmendo13/pizzeria-formula-1',
     year: '2025',
-    image: '/portfolio/work-2.jpg',
+    image: '/portfolio/shots/pizzeria-formula-1.jpg',
     frontend: [
       {
         es: 'Home con carta: pizzas 00–10 y complementos (ensaladas, kebabs, pastas, etc.)',
@@ -294,7 +295,7 @@ export const projects: Project[] = [
     live: 'https://pitteri.vercel.app',
     repo: 'https://github.com/Juanmendo13/piteri',
     year: '2025',
-    image: '/portfolio/work-3.jpg',
+    image: '/portfolio/shots/pitteri.jpg',
     frontend: [
       {
         es: 'Sitio público: hero, locale, carta, serate/eventos, visita (Maps/ATM/Instagram)',
@@ -376,9 +377,9 @@ export const projects: Project[] = [
     stack: ['React 19', 'Vite', 'Express', 'Firebase', 'Nodemailer', 'Tailwind 4'],
     repo: 'https://github.com/Juanmendo13/FerreteriaYelamo',
     year: '2025',
-    image: '/portfolio/work-4.jpg',
+    // No public live deploy found — omit stock/decorative image.
     note: {
-      es: 'Inventario solo desde `src/` y `server.ts`. El README menciona calculadoras/DIY/flash deals que no están en el código actual.',
+      es: 'Inventario solo desde `src/` y `server.ts`. El README menciona calculadoras/DIY/flash deals que no están en el código actual. Sin captura: no hay deploy público.',
       en: 'Inventory from `src/` and `server.ts` only. README mentions calculators/DIY/flash deals not present in current code.',
       it: 'Inventario solo da `src/` e `server.ts`. Il README cita calcolatrici/DIY/flash deals assenti nel codice attuale.',
     },
@@ -453,7 +454,7 @@ export const projects: Project[] = [
     stack: ['Python', 'Tkinter', 'python-chess', 'lc0', 'SQLite'],
     repo: 'https://github.com/Juanmendo13/Stockfeet',
     year: '2025',
-    image: '/portfolio/work-3.jpg',
+    // Desktop app — repo only ships icon assets, no authentic UI screenshot.
     frontend: [
       {
         es: 'Hub Tkinter: Play, Puzzles, Shop, Improve/Profile',
@@ -530,7 +531,7 @@ export const projects: Project[] = [
     stack: ['Web app', 'Vercel'],
     live: 'https://subatomic-os.vercel.app',
     year: '2025',
-    image: '/portfolio/work-4.jpg',
+    image: '/portfolio/shots/subatomic-os.jpg',
     note: {
       es: 'Inventario desde el deploy `subatomic-os` (repo GitHub no público / 404).',
       en: 'Inventory from `subatomic-os` deploy (GitHub repo not public / 404).',
@@ -602,7 +603,7 @@ export const projects: Project[] = [
     stack: ['Static web', 'Vercel'],
     live: 'https://orticas-pub.vercel.app',
     year: '2026',
-    image: '/portfolio/work-1.jpg',
+    image: '/portfolio/shots/orticas-pub.jpg',
     note: {
       es: 'Inventario desde deploy `orticas-pub` (sin repo público listado).',
       en: 'Inventory from `orticas-pub` deploy (no listed public repo).',
@@ -659,7 +660,7 @@ export const projects: Project[] = [
     stack: ['Astro', 'Vercel', 'Vercel Insights'],
     live: 'https://proyecto-adif.vercel.app',
     year: '2025',
-    image: '/portfolio/work-4.jpg',
+    image: '/portfolio/shots/proyecto-adif.jpg',
     note: {
       es: 'Solo se documenta lo observable sin credenciales. No es un proyecto JRPG/Persona.',
       en: 'Only unauthenticated-observable behaviour documented. Not a JRPG/Persona project.',
