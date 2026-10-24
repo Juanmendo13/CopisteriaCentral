@@ -1,0 +1,36 @@
+---
+import { localeLabels, locales } from '../i18n/messages';
+---
+
+<div
+  class="flex items-center gap-0.5 rounded border border-line/80 bg-void-2/80 p-0.5 backdrop-blur-sm"
+  role="group"
+  data-i18n-attr="aria-label:lang.aria"
+  aria-label="Idioma"
+>
+  {
+    locales.map((locale) => (
+      <button
+        type="button"
+        data-lang={locale}
+        aria-pressed={locale === 'es' ? 'true' : 'false'}
+        class:list={[
+          'lang-btn font-mono min-w-[2.25rem] px-2 py-1 text-[11px] font-normal tracking-wider text-mist transition',
+          'hover:text-acid',
+          'aria-pressed:bg-acid/15 aria-pressed:text-acid',
+          'is-active:bg-acid/15 is-active:text-acid',
+        ]}
+      >
+        {localeLabels[locale]}
+      </button>
+    ))
+  }
+</div>
+
+<style>
+  .lang-btn.is-active,
+  .lang-btn[aria-pressed='true'] {
+    background: color-mix(in oklab, var(--color-acid) 15%, transparent);
+    color: var(--color-acid);
+  }
+</style>

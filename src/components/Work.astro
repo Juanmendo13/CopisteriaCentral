@@ -2,64 +2,171 @@
 import { projects } from '../data/projects';
 ---
 
-<section id="trabajo" class="scroll-mt-8 border-b border-line bg-paper px-5 py-20 sm:px-8 sm:py-28">
+<section id="proyectos" class="scroll-mt-8 bg-void px-5 py-20 sm:px-8 sm:py-28">
   <div class="mx-auto max-w-6xl">
-    <header class="mb-12 max-w-xl sm:mb-16">
-      <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-signal-deep">Trabajo</p>
-      <h2 class="font-display mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-        Proyectos recientes
+    <header class="mb-12 max-w-2xl sm:mb-16">
+      <p
+        class="font-mono text-[11px] uppercase tracking-[0.22em] text-acid"
+        data-i18n="work.kicker"
+      >
+        Proyectos
+      </p>
+      <h2
+        class="font-display mt-3 text-3xl font-extrabold tracking-tight text-fog sm:text-4xl lg:text-5xl"
+        data-i18n="work.title"
+      >
+        Todo el trabajo en producción
       </h2>
-      <p class="mt-4 text-base font-medium leading-relaxed text-muted sm:text-lg">
-        Webs y herramientas para locales reales: pedidos, cartas, catálogos y presencia online.
+      <p class="mt-4 text-base font-medium leading-relaxed text-mist sm:text-lg" data-i18n="work.lead">
+        Cada ficha lista funcionalidades frontend y backend leídas del código o del deploy real. Sin
+        relleno.
       </p>
     </header>
 
-    <ul class="space-y-0">
+    <ul class="space-y-6">
       {
         projects.map((project, i) => (
-          <li class="group border-t border-line last:border-b">
-            <a
-              href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="grid items-stretch gap-0 transition lg:grid-cols-12"
-            >
-              <div class="relative aspect-[16/10] overflow-hidden bg-paper-deep lg:col-span-5 lg:aspect-auto lg:min-h-[280px]">
+          <li class="border border-line bg-panel/60 backdrop-blur-sm">
+            <div class="grid gap-0 lg:grid-cols-12">
+              <div class="relative aspect-[16/10] overflow-hidden border-b border-line lg:col-span-4 lg:aspect-auto lg:min-h-[260px] lg:border-b-0 lg:border-r">
                 <img
                   src={project.image}
                   alt=""
-                  class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+                  class="h-full w-full object-cover opacity-80 mix-blend-luminosity transition duration-700 hover:scale-[1.03] hover:opacity-100"
                   width="1200"
                   height="800"
-                  loading={i === 0 ? 'eager' : 'lazy'}
+                  loading={i < 2 ? 'eager' : 'lazy'}
                 />
+                <div
+                  class="pointer-events-none absolute inset-0 bg-gradient-to-t from-panel via-transparent to-transparent"
+                  aria-hidden="true"
+                />
+                <span class="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-[0.2em] text-cyan">
+                  {project.year}
+                </span>
               </div>
-              <div class="flex flex-col justify-center px-0 py-8 lg:col-span-7 lg:px-10 lg:py-12">
+
+              <div class="flex flex-col px-5 py-6 sm:px-7 sm:py-8 lg:col-span-8">
                 <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span class="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
+                  <h3 class="font-display text-2xl font-extrabold tracking-tight text-fog sm:text-3xl">
                     {project.name}
-                  </span>
-                  <span class="text-sm font-semibold text-muted">{project.year}</span>
+                  </h3>
                 </div>
-                <p class="mt-1 text-sm font-bold uppercase tracking-[0.12em] text-field-bright">
-                  {project.client}
+                <p
+                  class="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-hot"
+                  data-proj={project.slug}
+                  data-proj-field="client"
+                >
+                  {project.client.es}
                 </p>
-                <p class="mt-4 max-w-lg text-base font-medium leading-relaxed text-muted">
-                  {project.summary}
+                <p
+                  class="mt-4 max-w-2xl text-base font-medium leading-relaxed text-mist"
+                  data-proj={project.slug}
+                  data-proj-field="pitch"
+                >
+                  {project.pitch.es}
                 </p>
-                <ul class="mt-5 flex flex-wrap gap-2">
+
+                <ul class="mt-4 flex flex-wrap gap-1.5">
                   {project.stack.map((tech) => (
-                    <li class="border border-line bg-paper-deep px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-ink-soft">
+                    <li class="border border-line bg-void-2 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-cyan">
                       {tech}
                     </li>
                   ))}
                 </ul>
-                <span class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-ink transition group-hover:gap-3">
-                  Ver en GitHub
-                  <span aria-hidden="true">→</span>
-                </span>
+
+                <div class="mt-5 flex flex-wrap gap-3">
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-mono text-xs uppercase tracking-[0.14em] text-acid underline decoration-acid/40 underline-offset-4 hover:decoration-acid"
+                    >
+                      <span data-i18n="work.live">Visitar</span>
+                      <span aria-hidden="true"> →</span>
+                    </a>
+                  )}
+                  {project.repo && (
+                    <a
+                      href={project.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-mono text-xs uppercase tracking-[0.14em] text-mist underline decoration-line underline-offset-4 hover:text-cyan hover:decoration-cyan"
+                    >
+                      <span data-i18n="work.code">Código</span>
+                      <span aria-hidden="true"> →</span>
+                    </a>
+                  )}
+                </div>
+
+                {project.note && (
+                  <p class="mt-4 border-l-2 border-warn/60 pl-3 font-mono text-xs leading-relaxed text-warn/90">
+                    <span class="font-bold" data-i18n="work.note">Nota</span>
+                    {': '}
+                    <span data-proj={project.slug} data-proj-field="note">
+                      {project.note.es}
+                    </span>
+                  </p>
+                )}
+
+                <details class="group mt-6 border-t border-line pt-4">
+                  <summary class="cursor-pointer list-none font-mono text-[11px] uppercase tracking-[0.16em] text-cyan marker:content-none [&::-webkit-details-marker]:hidden">
+                    <span class="group-open:hidden" data-i18n="work.open">
+                      Expandir detalles
+                    </span>
+                    <span class="hidden group-open:inline" data-i18n="work.close">
+                      Cerrar
+                    </span>
+                    <span class="ml-2 text-mist group-open:hidden" aria-hidden="true">
+                      +
+                    </span>
+                    <span class="ml-2 hidden text-mist group-open:inline" aria-hidden="true">
+                      −
+                    </span>
+                  </summary>
+
+                  <div class="mt-5 grid gap-8 md:grid-cols-2">
+                    <div>
+                      <h4
+                        class="font-mono text-[10px] uppercase tracking-[0.2em] text-acid"
+                        data-i18n="work.frontend"
+                      >
+                        Frontend
+                      </h4>
+                      <ul class="mt-3 space-y-2">
+                        {project.frontend.map((item, idx) => (
+                          <li class="flex gap-2 text-sm leading-snug text-mist">
+                            <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-acid" aria-hidden="true" />
+                            <span data-proj={project.slug} data-proj-field={`fe:${idx}`}>
+                              {item.es}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h4
+                        class="font-mono text-[10px] uppercase tracking-[0.2em] text-hot"
+                        data-i18n="work.backend"
+                      >
+                        Backend / API / infra
+                      </h4>
+                      <ul class="mt-3 space-y-2">
+                        {project.backend.map((item, idx) => (
+                          <li class="flex gap-2 text-sm leading-snug text-mist">
+                            <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-hot" aria-hidden="true" />
+                            <span data-proj={project.slug} data-proj-field={`be:${idx}`}>
+                              {item.es}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </details>
               </div>
-            </a>
+            </div>
           </li>
         ))
       }

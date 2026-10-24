@@ -2,31 +2,53 @@
 import { site } from '../lib/site';
 ---
 
-<section id="contacto" class="scroll-mt-8 bg-paper-deep px-5 py-20 sm:px-8 sm:py-28">
+<section id="contacto" class="scroll-mt-8 border-t border-line bg-void-2 px-5 py-20 sm:px-8 sm:py-28">
   <div class="mx-auto max-w-6xl">
-    <div class="max-w-2xl">
-      <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-signal-deep">Contacto</p>
-      <h2 class="font-display mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-        ¿Tienes un local sin web?
+    <div class="relative max-w-2xl overflow-hidden border border-line bg-panel/70 p-6 sm:p-10">
+      <div
+        class="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-acid/10 blur-3xl"
+        aria-hidden="true"
+      >
+      </div>
+      <p
+        class="font-mono text-[11px] uppercase tracking-[0.22em] text-cyan"
+        data-i18n="contact.kicker"
+      >
+        Contacto
+      </p>
+      <h2
+        class="font-display mt-3 text-3xl font-extrabold tracking-tight text-fog sm:text-4xl"
+        data-i18n="contact.title"
+      >
+        ¿Un local sin web?
       </h2>
-      <p class="mt-4 text-base font-medium leading-relaxed text-muted sm:text-lg">
-        Cuéntame el negocio y lo que necesitas. Respondo con una propuesta concreta, sin presentación eterna.
+      <p
+        class="mt-4 text-base font-medium leading-relaxed text-mist sm:text-lg"
+        data-i18n="contact.lead"
+      >
+        Cuéntame el negocio. Respondo con una propuesta concreta — sin presentación eterna.
       </p>
       <div class="mt-10 flex flex-wrap gap-3">
-        <a href={`mailto:${site.email}`} class="btn-primary">Escribir email</a>
+        <a href={`mailto:${site.email}`} class="btn-primary" data-i18n="contact.email"
+          >Escribir email</a
+        >
         <a
           href={site.github}
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-ghost border-ink/25 text-ink"
+          class="btn-ghost"
+          data-i18n="contact.github"
         >
           GitHub
         </a>
       </div>
-      <p class="mt-8 text-sm font-semibold text-muted">
+      <p class="mt-8 font-mono text-sm text-mist">
         {site.location}
         <span class="mx-2 text-line" aria-hidden="true">·</span>
-        <a href={`mailto:${site.email}`} class="text-ink underline decoration-signal underline-offset-4 hover:text-signal-deep">
+        <a
+          href={`mailto:${site.email}`}
+          class="text-acid underline decoration-acid/40 underline-offset-4 hover:decoration-acid"
+        >
           {site.email}
         </a>
       </p>

@@ -1,37 +1,46 @@
 ---
 import { site } from '../lib/site';
-
-const links = [
-  { href: '#trabajo', label: 'Trabajo' },
-  { href: '#enfoque', label: 'Enfoque' },
-  { href: '#contacto', label: 'Contacto' },
-];
+import LangSwitcher from './LangSwitcher.astro';
 ---
 
 <header class="absolute inset-x-0 top-0 z-40">
   <nav
-    class="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8"
+    class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-4 sm:px-8 sm:py-5"
+    data-i18n-attr="aria-label:nav.aria"
     aria-label="Principal"
   >
     <a
       href="/"
-      class="font-display text-lg font-extrabold tracking-tight text-white drop-shadow-sm sm:text-xl"
+      class="font-display text-lg font-extrabold tracking-[0.14em] text-acid drop-shadow-[0_0_18px_rgb(184_255_61_/_0.35)] sm:text-xl"
     >
-      {site.name}
+      {site.brand}<span class="text-cyan">_</span>
     </a>
-    <ul class="flex items-center gap-0.5 sm:gap-2">
-      {
-        links.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class="px-1.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-white/80 transition hover:text-white sm:px-3 sm:text-xs sm:tracking-[0.14em]"
-            >
-              {link.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+
+    <div class="flex items-center gap-2 sm:gap-4">
+      <ul class="hidden items-center gap-1 sm:flex sm:gap-2">
+        <li>
+          <a
+            href="#proyectos"
+            class="px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-mist transition hover:text-acid sm:px-3"
+            data-i18n="nav.work">Proyectos</a
+          >
+        </li>
+        <li>
+          <a
+            href="#sobre"
+            class="px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-mist transition hover:text-acid sm:px-3"
+            data-i18n="nav.about">Sobre mí</a
+          >
+        </li>
+        <li>
+          <a
+            href="#contacto"
+            class="px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-mist transition hover:text-acid sm:px-3"
+            data-i18n="nav.contact">Contacto</a
+          >
+        </li>
+      </ul>
+      <LangSwitcher />
+    </div>
   </nav>
 </header>

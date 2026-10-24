@@ -1,19 +1,23 @@
 ---
-import '@fontsource/syne/600.css';
-import '@fontsource/syne/700.css';
-import '@fontsource/syne/800.css';
-import '@fontsource/dm-sans/400.css';
-import '@fontsource/dm-sans/500.css';
-import '@fontsource/dm-sans/700.css';
+import '@fontsource/oxanium/500.css';
+import '@fontsource/oxanium/600.css';
+import '@fontsource/oxanium/700.css';
+import '@fontsource/oxanium/800.css';
+import '@fontsource/rajdhani/400.css';
+import '@fontsource/rajdhani/500.css';
+import '@fontsource/rajdhani/600.css';
+import '@fontsource/rajdhani/700.css';
+import '@fontsource/share-tech-mono/400.css';
 import '../styles/global.css';
 import { site } from '../lib/site';
+import { t } from '../i18n/messages';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = site.description } = Astro.props;
+const { title, description = t('es', 'meta.description') } = Astro.props;
 
 const siteUrl = site.url;
 const ogImage = `${siteUrl}/portfolio/hero.jpg`;
@@ -26,12 +30,15 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#05080f" />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalUrl} />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="it_IT" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -43,7 +50,10 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
   </head>
-  <body class="grain bg-paper text-ink min-h-screen antialiased">
+  <body class="cyber-root min-h-screen bg-void text-fog antialiased">
     <slot />
+    <script>
+      import '../scripts/i18n.ts';
+    </script>
   </body>
 </html>

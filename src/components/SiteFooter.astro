@@ -2,11 +2,17 @@
 import { site } from '../lib/site';
 ---
 
-<footer class="border-t border-line bg-ink px-5 py-10 text-paper/60 sm:px-8">
+<footer class="border-t border-line bg-void px-5 py-10 sm:px-8">
   <div class="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-    <p class="font-display text-lg font-bold text-paper">{site.name}</p>
-    <p class="text-sm font-medium">
-      © {new Date().getFullYear()} · {site.tagline}
+    <p class="font-display text-lg font-bold tracking-[0.12em] text-acid">
+      {site.brand}<span class="text-cyan">_</span>
+    </p>
+    <p class="font-mono text-xs text-mist">
+      © {new Date().getFullYear()}
+      <span class="mx-2 text-line" aria-hidden="true">·</span>
+      <span data-i18n="footer.copy">Ingeniería & webs para negocios locales</span>
+      <span class="mx-2 text-line" aria-hidden="true">·</span>
+      <span data-i18n="footer.rights">Portfolio personal</span>
     </p>
   </div>
 </footer>

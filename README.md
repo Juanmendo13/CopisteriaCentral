@@ -1,10 +1,13 @@
 # Juan Mendoza — Portfolio
 
-Portfolio personal de **Juan Mendoza** (`juanmendo13`): webs para negocios locales.
+Portfolio personal cyberpunk: **https://juanmendo.dev** (canónico).  
+`juanmendo.com` redirige 301 → `juanmendo.dev`.
 
 ## Stack
 
-Astro 7 + Tailwind 4 + Vercel (estático).
+- Astro 7 + Tailwind 4 + Vercel
+- UI en español (default) con conmutador **ES / EN / IT** (persistido en `localStorage`)
+- Tipografía: Oxanium, Rajdhani, Share Tech Mono
 
 ## Desarrollo
 
@@ -13,11 +16,13 @@ pnpm install
 pnpm astro dev
 ```
 
-## Contenido
+## Build
 
-- Hero con marca
-- Proyectos (Copistería Central, Formula 1, Pitteri 56, Ferretería Yélamo)
-- Enfoque de trabajo
-- Contacto (`jmendozadame@gmail.com`)
+```bash
+pnpm build
+pnpm preview
+```
 
-Edita datos en `src/lib/site.ts` y proyectos en `src/data/projects.ts`.
+## Dominios
+
+Proyecto Vercel: `juan-portfolio`. Si DNS está en Cloudflare, apunta el apex a los registros recomendados por Vercel (A/CNAME). Ver estado con `get_domain_config` / dashboard.

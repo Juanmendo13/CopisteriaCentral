@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  site: 'https://juanmendoza.dev',
+  site: 'https://juanmendo.dev',
   output: 'static',
   adapter: vercel(),
   compressHTML: true,

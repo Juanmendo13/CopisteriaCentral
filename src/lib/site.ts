@@ -2,14 +2,15 @@ export const site = {
   name: 'Juan Mendoza',
   shortName: 'JM',
   handle: 'juanmendo13',
-  tagline: 'Webs para negocios locales',
+  brand: 'JUAN',
+  tagline: 'Ingeniería & webs para negocios locales',
   description:
-    'Juan Mendoza — ingeniero de software. Diseño y desarrollo webs rápidas para negocios locales: copisterías, bares, pizzerías y comercios.',
-  role: 'Software engineer',
-  location: 'Sevilla · remoto',
+    'Juan Mendoza — estudiante de Ingeniería Informática en Sevilla (Erasmus en el Politecnico di Milano). Webs para negocios locales, IA y ciberseguridad.',
+  role: 'Ingeniería Informática',
+  location: 'Sevilla · Milano (Erasmus)',
   email: 'jmendozadame@gmail.com',
   github: 'https://github.com/Juanmendo13',
-  url: 'https://juanmendoza.dev',
+  url: 'https://juanmendo.dev',
   isPrototype: false,
 } as const;
 
