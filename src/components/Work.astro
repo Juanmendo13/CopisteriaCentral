@@ -106,6 +106,17 @@ import { projects } from '../data/projects';
                       <span aria-hidden="true"> →</span>
                     </a>
                   )}
+                  {project.download && (
+                    <a
+                      href={project.download}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-mono text-xs uppercase tracking-[0.14em] text-hot underline decoration-hot/40 underline-offset-4 hover:decoration-hot"
+                    >
+                      <span data-i18n="work.download">Descargar</span>
+                      <span aria-hidden="true"> ↓</span>
+                    </a>
+                  )}
                 </div>
 
                 {project.note && (

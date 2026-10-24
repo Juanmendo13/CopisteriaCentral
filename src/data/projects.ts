@@ -10,6 +10,7 @@ export type Project = {
   stack: string[];
   live?: string;
   repo?: string;
+  download?: string;
   year: string;
   /** Real UI screenshot path, or omit when no public web UI / no authentic capture. */
   image?: string;
@@ -453,6 +454,8 @@ export const projects: Project[] = [
     },
     stack: ['Python', 'Tkinter', 'python-chess', 'lc0', 'SQLite'],
     repo: 'https://github.com/Juanmendo13/Stockfeet',
+    download:
+      'https://github.com/Juanmendo13/Stockfeet/releases/download/v0.0.0/Stockfeet-0.0.0-try-windows.zip',
     year: '2025',
     // Desktop app — repo only ships icon assets, no authentic UI screenshot.
     frontend: [
