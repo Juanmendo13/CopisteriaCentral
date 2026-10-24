@@ -57,10 +57,6 @@ function applyLocale(locale: Locale) {
       el.textContent = project.pitch[locale];
       return;
     }
-    if (field === 'note' && project.note) {
-      el.textContent = project.note[locale];
-      return;
-    }
     if (field.startsWith('fe:')) {
       const i = Number(field.slice(3));
       if (project.frontend[i]) el.textContent = project.frontend[i][locale];

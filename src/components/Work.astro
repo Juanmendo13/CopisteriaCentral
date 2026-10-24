@@ -119,16 +119,6 @@ import { projects } from '../data/projects';
                   )}
                 </div>
 
-                {project.note && (
-                  <p class="mt-4 border-l-2 border-warn/60 pl-3 font-mono text-xs leading-relaxed text-warn/90">
-                    <span class="font-bold" data-i18n="work.note">Nota</span>
-                    {': '}
-                    <span data-proj={project.slug} data-proj-field="note">
-                      {project.note.es}
-                    </span>
-                  </p>
-                )}
-
                 <details class="group mt-6 border-t border-line pt-4">
                   <summary class="cursor-pointer list-none font-mono text-[11px] uppercase tracking-[0.16em] text-cyan marker:content-none [&::-webkit-details-marker]:hidden">
                     <span class="group-open:hidden" data-i18n="work.open">

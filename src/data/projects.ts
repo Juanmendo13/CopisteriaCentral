@@ -16,7 +16,6 @@ export type Project = {
   image?: string;
   frontend: Localized[];
   backend: Localized[];
-  note?: Localized;
 };
 
 /** Feature lists sourced from repos / live deploys — not invented. */
@@ -141,11 +140,6 @@ export const projects: Project[] = [
     live: 'https://a0-impresiones.vercel.app',
     year: '2026',
     image: '/portfolio/shots/a0-impresiones.jpg',
-    note: {
-      es: 'Inventario desde el deploy público (sin repo GitHub público). Banner de demo: formularios aún no llegan al buzón real.',
-      en: 'Inventory from the public deploy (no public GitHub repo). Demo banner: forms do not yet hit the real inbox.',
-      it: 'Inventario dal deploy pubblico (nessun repo GitHub pubblico). Banner demo: i form non arrivano ancora alla casella reale.',
-    },
     frontend: [
       {
         es: 'Hero de marca universitaria (ETSII/ETSA) con CTAs de pedido y llamada',
@@ -380,11 +374,6 @@ export const projects: Project[] = [
     repo: 'https://github.com/Juanmendo13/FerreteriaYelamo',
     year: '2025',
     image: '/portfolio/shots/ferreteria-yelamo.jpg',
-    note: {
-      es: 'Inventario solo desde `src/` y `server.ts`. El README menciona calculadoras/DIY/flash deals que no están en el código actual.',
-      en: 'Inventory from `src/` and `server.ts` only. README mentions calculators/DIY/flash deals not present in current code.',
-      it: 'Inventario solo da `src/` e `server.ts`. Il README cita calcolatrici/DIY/flash deals assenti nel codice attuale.',
-    },
     frontend: [
       {
         es: 'Home con hero, tabs home/catálogo/servicios y buscador',
@@ -536,11 +525,6 @@ export const projects: Project[] = [
     live: 'https://subatomic-os.vercel.app',
     year: '2025',
     image: '/portfolio/shots/subatomic-os.jpg',
-    note: {
-      es: 'Inventario desde el deploy `subatomic-os` (repo GitHub no público / 404).',
-      en: 'Inventory from `subatomic-os` deploy (GitHub repo not public / 404).',
-      it: 'Inventario dal deploy `subatomic-os` (repo GitHub non pubblico / 404).',
-    },
     frontend: [
       {
         es: 'HUD: energía total, energía Planck, semillas cósmicas, edad del universo',
@@ -608,11 +592,6 @@ export const projects: Project[] = [
     live: 'https://orticas-pub.vercel.app',
     year: '2026',
     image: '/portfolio/shots/orticas-pub.jpg',
-    note: {
-      es: 'Inventario desde deploy `orticas-pub` (sin repo público listado).',
-      en: 'Inventory from `orticas-pub` deploy (no listed public repo).',
-      it: 'Inventario dal deploy `orticas-pub` (nessun repo pubblico elencato).',
-    },
     frontend: [
       {
         es: 'Landing de marca Ortica’s Pub (Via Riccardo Pitteri 7)',
