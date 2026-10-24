@@ -124,156 +124,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'a0-impresiones',
-    name: 'A0 Impresiones',
-    client: {
-      es: 'Frente a ETSA, Sevilla',
-      en: 'Opposite ETSA, Seville',
-      it: 'Di fronte all’ETSA, Siviglia',
-    },
-    pitch: {
-      es: 'Demo de copistería/imprenta gran formato: fichas de servicio, precios, presupuesto y pedido con PDF hasta A0.',
-      en: 'Large-format print shop demo: service pages, prices, quotes and PDF orders up to A0.',
-      it: 'Demo tipografia/grande formato: schede servizio, prezzi, preventivi e ordini PDF fino ad A0.',
-    },
-    stack: ['Astro', 'Tailwind', 'Vercel', 'Vercel Blob', 'Web3Forms'],
-    live: 'https://a0-impresiones.vercel.app',
-    year: '2026',
-    image: '/portfolio/shots/a0-impresiones.jpg',
-    frontend: [
-      {
-        es: 'Hero de marca universitaria (ETSII/ETSA) con CTAs de pedido y llamada',
-        en: 'Campus-branded hero (ETSII/ETSA) with order and call CTAs',
-        it: 'Hero di brand universitario (ETSII/ETSA) con CTA ordine e chiamata',
-      },
-      {
-        es: 'Catálogo de servicios: fotocopias, gran formato A0–A6/SRA3, encuadernación, laminados, papelería, diseño',
-        en: 'Services catalogue: copies, A0–A6/SRA3 large format, binding, lamination, stationery, design',
-        it: 'Catalogo servizi: copie, grande formato A0–A6/SRA3, rilegatura, plastificazione, cartoleria, design',
-      },
-      {
-        es: 'Fichas `/servicio/[slug]` (diseño, encuadernaciones, escáner, CD/DVD, cartón pluma, etc.)',
-        en: '`/servicio/[slug]` pages (design, binding, scanner, CD/DVD, foam board, etc.)',
-        it: 'Schede `/servicio/[slug]` (design, rilegatura, scanner, CD/DVD, carton pluma, ecc.)',
-      },
-      {
-        es: 'Pedido `/pedido` con selector de folio (A6…A0, personalizado) y deep-links `?formato=`',
-        en: '`/pedido` with paper-size picker (A6…A0, custom) and `?formato=` deep-links',
-        it: '`/pedido` con selettore foglio (A6…A0, personalizzato) e deep-link `?formato=`',
-      },
-      {
-        es: 'Precios orientativos, galería, información, contacto y páginas legales',
-        en: 'Indicative prices, gallery, info, contact and legal pages',
-        it: 'Prezzi orientativi, galleria, info, contatti e pagine legali',
-      },
-      {
-        es: 'Horario, Maps, WhatsApp (+34 611 610 148) y email pedidos@a0impresiones.com en UI',
-        en: 'Hours, Maps, WhatsApp (+34 611 610 148) and pedidos@a0impresiones.com in UI',
-        it: 'Orari, Maps, WhatsApp (+34 611 610 148) e pedidos@a0impresiones.com in UI',
-      },
-    ],
-    backend: [
-      {
-        es: 'Formulario de pedido con `data-has-blob="1"` (subida Blob) y fallback WhatsApp',
-        en: 'Order form with `data-has-blob="1"` (Blob upload) and WhatsApp fallback',
-        it: 'Form ordine con `data-has-blob="1"` (upload Blob) e fallback WhatsApp',
-      },
-      {
-        es: 'Acepta PDF/JPG/PNG hasta 50 MB; <20 MB llega adjunto al correo (según copy del form)',
-        en: 'Accepts PDF/JPG/PNG up to 50 MB; <20 MB attached to email (per form copy)',
-        it: 'Accetta PDF/JPG/PNG fino a 50 MB; <20 MB in allegato email (secondo il copy del form)',
-      },
-      {
-        es: 'Canal de avisos tipo Web3Forms / email de demo (no productivo según banner)',
-        en: 'Web3Forms-style notify / demo email channel (non-production per banner)',
-        it: 'Canale avvisi tipo Web3Forms / email demo (non produttivo secondo il banner)',
-      },
-      {
-        es: 'Despliegue Vercel proyecto `a0-impresiones`',
-        en: 'Vercel deploy project `a0-impresiones`',
-        it: 'Deploy Vercel progetto `a0-impresiones`',
-      },
-    ],
-  },
-  {
-    slug: 'pizzeria-formula-1',
-    name: 'Pizzería Fórmula 1',
-    client: {
-      es: 'Tocina, Sevilla · hostelería',
-      en: 'Tocina, Seville · hospitality',
-      it: 'Tocina, Siviglia · ristorazione',
-    },
-    pitch: {
-      es: 'Carta digital con precios reales, fichas, carrito con login Clerk y envío de pedidos por correo al local.',
-      en: 'Digital menu with real prices, product pages, Clerk-authenticated cart and email orders to the shop.',
-      it: 'Menu digitale con prezzi reali, schede prodotto, carrello con login Clerk e ordini email al locale.',
-    },
-    stack: ['Astro', 'Tailwind 4', 'Clerk', 'Web3Forms', 'Vercel'],
-    live: 'https://pizzeria-formula-1.vercel.app',
-    repo: 'https://github.com/Juanmendo13/pizzeria-formula-1',
-    year: '2025',
-    image: '/portfolio/shots/pizzeria-formula-1.jpg',
-    frontend: [
-      {
-        es: 'Home con carta: pizzas 00–10 y complementos (ensaladas, kebabs, pastas, etc.)',
-        en: 'Home menu: pizzas 00–10 plus sides (salads, kebabs, pasta, etc.)',
-        it: 'Home con menu: pizze 00–10 e contorni (insalate, kebab, paste, ecc.)',
-      },
-      {
-        es: 'Ficha `/producto/[slug]` con ingredientes, tamaños P/M/F y añadir al carrito',
-        en: '`/producto/[slug]` with ingredients, S/M/L sizes and add-to-cart',
-        it: '`/producto/[slug]` con ingredienti, taglie P/M/F e aggiungi al carrello',
-      },
-      {
-        es: 'Carrito: cantidades, total, recogida o reparto',
-        en: 'Cart: quantities, total, pickup or delivery',
-        it: 'Carrello: quantità, totale, ritiro o consegna',
-      },
-      {
-        es: 'Auth UI Clerk: `/sign-in`, `/sign-up`, `/sign-out`, SSO callback',
-        en: 'Clerk auth UI: `/sign-in`, `/sign-up`, `/sign-out`, SSO callback',
-        it: 'UI auth Clerk: `/sign-in`, `/sign-up`, `/sign-out`, callback SSO',
-      },
-      {
-        es: '`/imprimir-carta` optimizada para PDF + descarga `/categorias/carta-formula1.pdf`',
-        en: '`/imprimir-carta` print-optimized + `/categorias/carta-formula1.pdf` download',
-        it: '`/imprimir-carta` ottimizzata stampa + download `/categorias/carta-formula1.pdf`',
-      },
-      {
-        es: 'Tema oscuro, tipografía Barlow, OG image, página de privacidad',
-        en: 'Dark theme, Barlow type, OG image, privacy page',
-        it: 'Tema scuro, tipografia Barlow, OG image, pagina privacy',
-      },
-    ],
-    backend: [
-      {
-        es: '`POST /api/pedido` — valida pedido y prepara envío Web3Forms',
-        en: '`POST /api/pedido` — validates order and prepares Web3Forms send',
-        it: '`POST /api/pedido` — valida ordine e prepara invio Web3Forms',
-      },
-      {
-        es: 'Clerk middleware + claves `PUBLIC_CLERK_*` / `CLERK_SECRET_KEY`',
-        en: 'Clerk middleware + `PUBLIC_CLERK_*` / `CLERK_SECRET_KEY`',
-        it: 'Middleware Clerk + chiavi `PUBLIC_CLERK_*` / `CLERK_SECRET_KEY`',
-      },
-      {
-        es: 'Pedidos a `pizzeriaformula1@outlook.es` vía Web3Forms (`WEB3FORMS_ACCESS_KEY`, `PEDIDOS_EMAIL`)',
-        en: 'Orders to `pizzeriaformula1@outlook.es` via Web3Forms',
-        it: 'Ordini a `pizzeriaformula1@outlook.es` via Web3Forms',
-      },
-      {
-        es: 'Datos de menú en `src/data/menu.json`; helpers de carrito/pedido en `src/lib`',
-        en: 'Menu data in `src/data/menu.json`; cart/order helpers in `src/lib`',
-        it: 'Dati menu in `src/data/menu.json`; helper carrello/ordine in `src/lib`',
-      },
-      {
-        es: 'SSR Astro en Vercel',
-        en: 'Astro SSR on Vercel',
-        it: 'SSR Astro su Vercel',
-      },
-    ],
-  },
-  {
     slug: 'pitteri',
     name: 'Pitteri 56',
     client: {
@@ -426,6 +276,156 @@ export const projects: Project[] = [
         es: 'Datos de catálogo/servicios/tienda en `src/data/hardwareData.ts`',
         en: 'Catalogue/services/store data in `src/data/hardwareData.ts`',
         it: 'Dati catalogo/servizi/negozio in `src/data/hardwareData.ts`',
+      },
+    ],
+  },
+  {
+    slug: 'pizzeria-formula-1',
+    name: 'Pizzería Fórmula 1',
+    client: {
+      es: 'Tocina, Sevilla · hostelería',
+      en: 'Tocina, Seville · hospitality',
+      it: 'Tocina, Siviglia · ristorazione',
+    },
+    pitch: {
+      es: 'Carta digital con precios reales, fichas, carrito con login Clerk y envío de pedidos por correo al local.',
+      en: 'Digital menu with real prices, product pages, Clerk-authenticated cart and email orders to the shop.',
+      it: 'Menu digitale con prezzi reali, schede prodotto, carrello con login Clerk e ordini email al locale.',
+    },
+    stack: ['Astro', 'Tailwind 4', 'Clerk', 'Web3Forms', 'Vercel'],
+    live: 'https://pizzeria-formula-1.vercel.app',
+    repo: 'https://github.com/Juanmendo13/pizzeria-formula-1',
+    year: '2025',
+    image: '/portfolio/shots/pizzeria-formula-1.jpg',
+    frontend: [
+      {
+        es: 'Home con carta: pizzas 00–10 y complementos (ensaladas, kebabs, pastas, etc.)',
+        en: 'Home menu: pizzas 00–10 plus sides (salads, kebabs, pasta, etc.)',
+        it: 'Home con menu: pizze 00–10 e contorni (insalate, kebab, paste, ecc.)',
+      },
+      {
+        es: 'Ficha `/producto/[slug]` con ingredientes, tamaños P/M/F y añadir al carrito',
+        en: '`/producto/[slug]` with ingredients, S/M/L sizes and add-to-cart',
+        it: '`/producto/[slug]` con ingredienti, taglie P/M/F e aggiungi al carrello',
+      },
+      {
+        es: 'Carrito: cantidades, total, recogida o reparto',
+        en: 'Cart: quantities, total, pickup or delivery',
+        it: 'Carrello: quantità, totale, ritiro o consegna',
+      },
+      {
+        es: 'Auth UI Clerk: `/sign-in`, `/sign-up`, `/sign-out`, SSO callback',
+        en: 'Clerk auth UI: `/sign-in`, `/sign-up`, `/sign-out`, SSO callback',
+        it: 'UI auth Clerk: `/sign-in`, `/sign-up`, `/sign-out`, callback SSO',
+      },
+      {
+        es: '`/imprimir-carta` optimizada para PDF + descarga `/categorias/carta-formula1.pdf`',
+        en: '`/imprimir-carta` print-optimized + `/categorias/carta-formula1.pdf` download',
+        it: '`/imprimir-carta` ottimizzata stampa + download `/categorias/carta-formula1.pdf`',
+      },
+      {
+        es: 'Tema oscuro, tipografía Barlow, OG image, página de privacidad',
+        en: 'Dark theme, Barlow type, OG image, privacy page',
+        it: 'Tema scuro, tipografia Barlow, OG image, pagina privacy',
+      },
+    ],
+    backend: [
+      {
+        es: '`POST /api/pedido` — valida pedido y prepara envío Web3Forms',
+        en: '`POST /api/pedido` — validates order and prepares Web3Forms send',
+        it: '`POST /api/pedido` — valida ordine e prepara invio Web3Forms',
+      },
+      {
+        es: 'Clerk middleware + claves `PUBLIC_CLERK_*` / `CLERK_SECRET_KEY`',
+        en: 'Clerk middleware + `PUBLIC_CLERK_*` / `CLERK_SECRET_KEY`',
+        it: 'Middleware Clerk + chiavi `PUBLIC_CLERK_*` / `CLERK_SECRET_KEY`',
+      },
+      {
+        es: 'Pedidos a `pizzeriaformula1@outlook.es` vía Web3Forms (`WEB3FORMS_ACCESS_KEY`, `PEDIDOS_EMAIL`)',
+        en: 'Orders to `pizzeriaformula1@outlook.es` via Web3Forms',
+        it: 'Ordini a `pizzeriaformula1@outlook.es` via Web3Forms',
+      },
+      {
+        es: 'Datos de menú en `src/data/menu.json`; helpers de carrito/pedido en `src/lib`',
+        en: 'Menu data in `src/data/menu.json`; cart/order helpers in `src/lib`',
+        it: 'Dati menu in `src/data/menu.json`; helper carrello/ordine in `src/lib`',
+      },
+      {
+        es: 'SSR Astro en Vercel',
+        en: 'Astro SSR on Vercel',
+        it: 'SSR Astro su Vercel',
+      },
+    ],
+  },
+  {
+    slug: 'a0-impresiones',
+    name: 'A0 Impresiones',
+    client: {
+      es: 'Frente a ETSA, Sevilla',
+      en: 'Opposite ETSA, Seville',
+      it: 'Di fronte all’ETSA, Siviglia',
+    },
+    pitch: {
+      es: 'Demo de copistería/imprenta gran formato: fichas de servicio, precios, presupuesto y pedido con PDF hasta A0.',
+      en: 'Large-format print shop demo: service pages, prices, quotes and PDF orders up to A0.',
+      it: 'Demo tipografia/grande formato: schede servizio, prezzi, preventivi e ordini PDF fino ad A0.',
+    },
+    stack: ['Astro', 'Tailwind', 'Vercel', 'Vercel Blob', 'Web3Forms'],
+    live: 'https://a0-impresiones.vercel.app',
+    year: '2026',
+    image: '/portfolio/shots/a0-impresiones.jpg',
+    frontend: [
+      {
+        es: 'Hero de marca universitaria (ETSII/ETSA) con CTAs de pedido y llamada',
+        en: 'Campus-branded hero (ETSII/ETSA) with order and call CTAs',
+        it: 'Hero di brand universitario (ETSII/ETSA) con CTA ordine e chiamata',
+      },
+      {
+        es: 'Catálogo de servicios: fotocopias, gran formato A0–A6/SRA3, encuadernación, laminados, papelería, diseño',
+        en: 'Services catalogue: copies, A0–A6/SRA3 large format, binding, lamination, stationery, design',
+        it: 'Catalogo servizi: copie, grande formato A0–A6/SRA3, rilegatura, plastificazione, cartoleria, design',
+      },
+      {
+        es: 'Fichas `/servicio/[slug]` (diseño, encuadernaciones, escáner, CD/DVD, cartón pluma, etc.)',
+        en: '`/servicio/[slug]` pages (design, binding, scanner, CD/DVD, foam board, etc.)',
+        it: 'Schede `/servicio/[slug]` (design, rilegatura, scanner, CD/DVD, carton pluma, ecc.)',
+      },
+      {
+        es: 'Pedido `/pedido` con selector de folio (A6…A0, personalizado) y deep-links `?formato=`',
+        en: '`/pedido` with paper-size picker (A6…A0, custom) and `?formato=` deep-links',
+        it: '`/pedido` con selettore foglio (A6…A0, personalizzato) e deep-link `?formato=`',
+      },
+      {
+        es: 'Precios orientativos, galería, información, contacto y páginas legales',
+        en: 'Indicative prices, gallery, info, contact and legal pages',
+        it: 'Prezzi orientativi, galleria, info, contatti e pagine legali',
+      },
+      {
+        es: 'Horario, Maps, WhatsApp (+34 611 610 148) y email pedidos@a0impresiones.com en UI',
+        en: 'Hours, Maps, WhatsApp (+34 611 610 148) and pedidos@a0impresiones.com in UI',
+        it: 'Orari, Maps, WhatsApp (+34 611 610 148) e pedidos@a0impresiones.com in UI',
+      },
+    ],
+    backend: [
+      {
+        es: 'Formulario de pedido con `data-has-blob="1"` (subida Blob) y fallback WhatsApp',
+        en: 'Order form with `data-has-blob="1"` (Blob upload) and WhatsApp fallback',
+        it: 'Form ordine con `data-has-blob="1"` (upload Blob) e fallback WhatsApp',
+      },
+      {
+        es: 'Acepta PDF/JPG/PNG hasta 50 MB; <20 MB llega adjunto al correo (según copy del form)',
+        en: 'Accepts PDF/JPG/PNG up to 50 MB; <20 MB attached to email (per form copy)',
+        it: 'Accetta PDF/JPG/PNG fino a 50 MB; <20 MB in allegato email (secondo il copy del form)',
+      },
+      {
+        es: 'Canal de avisos tipo Web3Forms / email de demo (no productivo según banner)',
+        en: 'Web3Forms-style notify / demo email channel (non-production per banner)',
+        it: 'Canale avvisi tipo Web3Forms / email demo (non produttivo secondo il banner)',
+      },
+      {
+        es: 'Despliegue Vercel proyecto `a0-impresiones`',
+        en: 'Vercel deploy project `a0-impresiones`',
+        it: 'Deploy Vercel progetto `a0-impresiones`',
       },
     ],
   },
@@ -627,4 +627,5 @@ export const projects: Project[] = [
       },
     ],
   },
+
 ];
