@@ -1,4 +1,4 @@
-# Juan Mendoza — Portfolio
+# juanmendo — Portfolio
 
 Portfolio personal cyberpunk: **https://juanmendo.dev** (canónico).  
 `juanmendo.com` redirige 301 → `juanmendo.dev`.
@@ -6,6 +6,7 @@ Portfolio personal cyberpunk: **https://juanmendo.dev** (canónico).
 ## Stack
 
 - Astro 7 + Tailwind 4 + Vercel
+- Marca **juanmendo**; presentación personal (“Juan…”) solo en Sobre mí
 - UI en español (default) con conmutador **ES / EN / IT** (persistido en `localStorage`)
 - Tipografía: Oxanium, Rajdhani, Share Tech Mono
 

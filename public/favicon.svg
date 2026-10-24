@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <rect width="64" height="64" fill="#05080f"/>
-  <path d="M12 48V16h8l12 22 12-22h8v32h-7V28L33 48h-2L19 28v20h-7z" fill="#b8ff3d"/>
-  <path d="M48 48h8v-4H48v4z" fill="#3de8ff"/>
+  <text x="32" y="42" text-anchor="middle" font-family="ui-monospace, monospace" font-size="18" font-weight="700" fill="#b8ff3d">jm</text>
+  <rect x="48" y="46" width="8" height="4" fill="#3de8ff"/>
 </svg>

@@ -25,32 +25,36 @@
         class="text-base font-medium leading-relaxed text-mist sm:text-lg"
         data-i18n="about.body"
       >
-        Cuarto curso de Ingeniería Informática, ahora de Erasmus en el Politecnico di Milano.
-        Construyo webs útiles para comercios locales —claras, rápidas y con personalidad— y me
-        interesan la inteligencia artificial y la ciberseguridad.
+        Soy Juan: cuarto curso de Ingeniería Informática, ahora de Erasmus en el Politecnico di
+        Milano. Trabajo full-stack de punta a punta —UI/UX y sitios rápidos en el cliente; APIs,
+        auth, email, subida de archivos (Blob), paneles admin/PDA y despliegue en Vercel en el
+        servidor—. Construyo herramientas para comercios locales (pedidos, cartas, catálogos,
+        presupuestos) y me interesan la IA y la ciberseguridad.
       </p>
       <p class="mt-5 font-mono text-sm text-cyan" data-i18n="about.lang">
         Español nativo · English C1
       </p>
       <ul class="mt-8 flex flex-wrap gap-2">
-        <li
-          class="border border-line bg-panel px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-acid"
-          data-i18n="about.tag1"
-        >
-          Webs para negocios locales
-        </li>
-        <li
-          class="border border-line bg-panel px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-acid"
-          data-i18n="about.tag2"
-        >
-          IA
-        </li>
-        <li
-          class="border border-line bg-panel px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-acid"
-          data-i18n="about.tag3"
-        >
-          Ciberseguridad
-        </li>
+        {
+          (['about.tag1', 'about.tag2', 'about.tag3', 'about.tag4', 'about.tag5'] as const).map(
+            (key, i) => (
+              <li
+                class="border border-line bg-panel px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-acid"
+                data-i18n={key}
+              >
+                {
+                  [
+                    'Frontend · UI/UX · SSR',
+                    'Backend · APIs · Auth',
+                    'Email · Blob · Admin/PDA',
+                    'Deploy Vercel',
+                    'IA · Ciberseguridad',
+                  ][i]
+                }
+              </li>
+            ),
+          )
+        }
       </ul>
     </div>
   </div>
