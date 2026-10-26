@@ -1,0 +1,78 @@
+---
+import { site } from '../lib/site';
+---
+
+<form
+  class="lead-form"
+  data-lead-form="negocios"
+  novalidate
+  aria-describedby="negocios-lead-status"
+>
+  <div class="lead-honeypot" aria-hidden="true">
+    <label>
+      Website URL
+      <input type="text" name="website_url" tabindex="-1" autocomplete="off" />
+    </label>
+  </div>
+
+  <div class="lead-grid">
+    <label class="lead-field">
+      <span data-i18n="neg.form.email">Tu email</span>
+      <input
+        type="email"
+        name="email"
+        required
+        autocomplete="email"
+        maxlength="120"
+        inputmode="email"
+      />
+    </label>
+
+    <label class="lead-field">
+      <span data-i18n="neg.form.telefono">Tu teléfono</span>
+      <input
+        type="tel"
+        name="telefono"
+        required
+        autocomplete="tel"
+        maxlength="40"
+        inputmode="tel"
+      />
+    </label>
+
+    <label class="lead-field">
+      <span data-i18n="neg.form.nombreWeb">Nombre de la web</span>
+      <input type="text" name="nombreWeb" required maxlength="80" autocomplete="organization" />
+    </label>
+
+    <label class="lead-field">
+      <span data-i18n="neg.form.dias">En cuántos días la quieres</span>
+      <input type="number" name="dias" required min="1" max="365" inputmode="numeric" />
+    </label>
+  </div>
+
+  <label class="lead-field lead-field--full">
+    <span data-i18n="neg.form.negocio">Cuéntame el negocio</span>
+    <textarea name="negocio" required rows="5" maxlength="2000"></textarea>
+  </label>
+
+  <div class="lead-actions">
+    <button type="submit" class="btn-primary" data-i18n="neg.form.submit">Enviar solicitud</button>
+    <a
+      href={`mailto:${site.email}`}
+      class="font-mono text-sm text-mist underline decoration-line underline-offset-4 hover:text-acid hover:decoration-acid"
+    >
+      {site.email}
+    </a>
+  </div>
+
+  <p
+    id="negocios-lead-status"
+    class="lead-status"
+    data-lead-status
+    role="status"
+    aria-live="polite"
+    hidden
+  >
+  </p>
+</form>

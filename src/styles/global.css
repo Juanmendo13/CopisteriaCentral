@@ -224,3 +224,108 @@ body {
 [data-i18n] {
   /* visible by default (ES SSR) */
 }
+
+/* Lead forms (negocios + tech) */
+.lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lead-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .lead-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.lead-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+}
+
+.lead-field--full {
+  grid-column: 1 / -1;
+}
+
+.lead-field input,
+.lead-field textarea,
+.lead-field select {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  background: rgb(5 8 15 / 0.75);
+  color: var(--color-fog);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  padding: 0.75rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lead-field textarea {
+  resize: vertical;
+  min-height: 7rem;
+}
+
+.lead-field input:focus,
+.lead-field textarea:focus,
+.lead-field select:focus {
+  border-color: color-mix(in oklab, var(--color-cyan) 65%, var(--color-line));
+  box-shadow: 0 0 0 1px rgb(61 232 255 / 0.25);
+}
+
+.lead-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.lead-status {
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+.lead-status.is-success {
+  color: var(--color-acid);
+}
+
+.lead-status.is-error {
+  color: var(--color-hot);
+}
+
+.lead-status.is-pending {
+  color: var(--color-cyan);
+}
+
+.lead-honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.lead-form button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+  transform: none;
+  filter: none;
+}

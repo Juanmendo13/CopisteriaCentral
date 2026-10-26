@@ -7,6 +7,8 @@ export type Project = {
   name: string;
   client: Localized;
   pitch: Localized;
+  /** Owner-facing pitch for /negocios — outcomes, no tech jargon. */
+  humanPitch?: Localized;
   stack: string[];
   live?: string;
   repo?: string;
@@ -32,6 +34,11 @@ export const projects: Project[] = [
       es: 'Plataforma para una copistería de barrio: pedido con PDF, precio orientativo, catálogo de papelería y avisos al local.',
       en: 'Platform for a neighbourhood copy shop: PDF orders, indicative pricing, stationery catalogue and shop alerts.',
       it: 'Piattaforma per una copisteria di quartiere: ordini PDF, prezzi orientativi, catalogo cartoleria e avvisi al locale.',
+    },
+    humanPitch: {
+      es: 'Los clientes piden impresión con su PDF y el aviso llega al local. También hay papelería y presupuestos orientativos.',
+      en: 'Customers order prints with their PDF and the shop gets the alert. Stationery catalogue and indicative quotes included.',
+      it: 'I clienti ordinano stampe con il loro PDF e l’avviso arriva al locale. C’è anche cartoleria e preventivi orientativi.',
     },
     stack: ['Astro 7', 'Tailwind 4', 'Vercel', 'Vercel Blob', 'Web3Forms', 'Resend'],
     live: 'https://copisteria-central.vercel.app',
@@ -136,6 +143,11 @@ export const projects: Project[] = [
       en: 'Public bar site + waiter PDA (tables, kitchen, bill) with optional Supabase sync.',
       it: 'Sito pubblico del bar + PDA comanderia (tavoli, cucina, conto) con sync Supabase opzionale.',
     },
+    humanPitch: {
+      es: 'Web del bar para quien te busca, y panel en el móvil para mesas, cocina y cuenta en el mostrador.',
+      en: 'A public site for people looking you up, plus a phone panel for tables, kitchen and the bill at the counter.',
+      it: 'Sito del bar per chi ti cerca, e pannello sul telefono per tavoli, cucina e conto al bancone.',
+    },
     stack: ['React', 'Vite', 'Supabase', 'Vercel'],
     live: 'https://pitteri.vercel.app',
     repo: 'https://github.com/Juanmendo13/piteri',
@@ -219,6 +231,11 @@ export const projects: Project[] = [
       en: 'Catalogue, WhatsApp/checkout quotes and email auth for a regional hardware store (Los Rosales / Tocina).',
       it: 'Catalogo, preventivi WhatsApp/checkout e auth email per ferramenta di zona (Los Rosales / Tocina).',
     },
+    humanPitch: {
+      es: 'Catálogo de ferretería online: el cliente arma el presupuesto y te lo manda por WhatsApp.',
+      en: 'Online hardware catalogue: the customer builds a quote and sends it to you on WhatsApp.',
+      it: 'Catalogo ferramenta online: il cliente prepara il preventivo e te lo manda su WhatsApp.',
+    },
     stack: ['React 19', 'Vite', 'Express', 'Firebase', 'Nodemailer', 'Tailwind 4'],
     live: 'https://ferreteria-yelamo.vercel.app/',
     repo: 'https://github.com/Juanmendo13/FerreteriaYelamo',
@@ -291,6 +308,11 @@ export const projects: Project[] = [
       es: 'Carta digital con precios reales, fichas, carrito con login Clerk y envío de pedidos por correo al local.',
       en: 'Digital menu with real prices, product pages, Clerk-authenticated cart and email orders to the shop.',
       it: 'Menu digitale con prezzi reali, schede prodotto, carrello con login Clerk e ordini email al locale.',
+    },
+    humanPitch: {
+      es: 'Carta online con precios reales: el cliente pide desde el móvil y el pedido llega al correo de la pizzería.',
+      en: 'Online menu with real prices: customers order from their phone and the order lands in the pizzeria’s inbox.',
+      it: 'Menu online con prezzi reali: il cliente ordina dal telefono e l’ordine arriva nella casella della pizzeria.',
     },
     stack: ['Astro', 'Tailwind 4', 'Clerk', 'Web3Forms', 'Vercel'],
     live: 'https://pizzeria-formula-1.vercel.app',
@@ -369,6 +391,11 @@ export const projects: Project[] = [
       es: 'Demo de copistería/imprenta gran formato: fichas de servicio, precios, presupuesto y pedido con PDF hasta A0.',
       en: 'Large-format print shop demo: service pages, prices, quotes and PDF orders up to A0.',
       it: 'Demo tipografia/grande formato: schede servizio, prezzi, preventivi e ordini PDF fino ad A0.',
+    },
+    humanPitch: {
+      es: 'Web de imprenta y copistería: servicios claros, precios orientativos y pedido con archivo hasta gran formato.',
+      en: 'Print-shop site: clear services, indicative prices and file orders up to large format.',
+      it: 'Sito di tipografia/copisteria: servizi chiari, prezzi orientativi e ordini con file fino al grande formato.',
     },
     stack: ['Astro', 'Tailwind', 'Vercel', 'Vercel Blob', 'Web3Forms'],
     live: 'https://a0-impresiones.vercel.app',
@@ -588,6 +615,11 @@ export const projects: Project[] = [
       en: 'Neighbourhood pub site: coffee, focaccia, beer and corner shop — with embedded TPV.',
       it: 'Sito del pub di quartiere: caffè, focacce, birra e ricevitoria — con TPV embedded.',
     },
+    humanPitch: {
+      es: 'Web del pub de barrio: qué ofreces, dónde estás, y acceso al punto de venta para el día a día.',
+      en: 'Neighbourhood pub site: what you offer, where you are, and a point-of-sale link for day-to-day.',
+      it: 'Sito del pub di quartiere: cosa offri, dove sei, e accesso al punto vendita per il quotidiano.',
+    },
     stack: ['Static web', 'Vercel'],
     live: 'https://orticas-pub.vercel.app',
     year: '2026',
@@ -627,5 +659,20 @@ export const projects: Project[] = [
       },
     ],
   },
-
 ];
+
+/** Local-business case studies for /negocios (excludes Stockfeet, subatomic.os). */
+export const businessSlugs = [
+  'copisteria-central',
+  'ferreteria-yelamo',
+  'pitteri',
+  'pizzeria-formula-1',
+  'a0-impresiones',
+  'orticas-pub',
+] as const;
+
+export function getBusinessProjects(): Project[] {
+  return businessSlugs
+    .map((slug) => projects.find((p) => p.slug === slug))
+    .filter((p): p is Project => Boolean(p));
+}

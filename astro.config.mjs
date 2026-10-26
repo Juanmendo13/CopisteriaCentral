@@ -4,7 +4,7 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://juanmendo.dev',
-  output: 'static',
+  output: 'server',
   adapter: vercel(),
   compressHTML: true,
   image: {

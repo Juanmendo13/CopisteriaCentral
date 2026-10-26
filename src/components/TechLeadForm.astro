@@ -1,0 +1,113 @@
+---
+import { site } from '../lib/site';
+---
+
+<form
+  class="lead-form"
+  data-lead-form="tech"
+  novalidate
+  aria-describedby="tech-lead-status"
+>
+  <div class="lead-honeypot" aria-hidden="true">
+    <label>
+      Website URL
+      <input type="text" name="website_url" tabindex="-1" autocomplete="off" />
+    </label>
+  </div>
+
+  <div class="lead-grid">
+    <label class="lead-field">
+      <span data-i18n="tech.form.email">Email</span>
+      <input
+        type="email"
+        name="email"
+        required
+        autocomplete="email"
+        maxlength="120"
+        inputmode="email"
+      />
+    </label>
+
+    <label class="lead-field">
+      <span data-i18n="tech.form.nombre">Nombre / handle (opcional)</span>
+      <input type="text" name="nombre" maxlength="80" autocomplete="nickname" />
+    </label>
+
+    <label class="lead-field lead-field--full">
+      <span data-i18n="tech.form.tipo">Tipo de proyecto</span>
+      <select name="tipo" required>
+        <option value="" disabled selected>—</option>
+        <option value="freelance-site" data-i18n="tech.form.tipo.freelance">Web freelance</option>
+        <option value="api" data-i18n="tech.form.tipo.api">API / backend</option>
+        <option value="fullstack" data-i18n="tech.form.tipo.fullstack">Full-stack</option>
+        <option value="collab" data-i18n="tech.form.tipo.collab">Colaboración</option>
+        <option value="other" data-i18n="tech.form.tipo.other">Otro</option>
+      </select>
+    </label>
+
+    <label class="lead-field">
+      <span data-i18n="tech.form.timeline">Timeline / deadline (opcional)</span>
+      <input type="text" name="timeline" maxlength="200" placeholder="e.g. 2 weeks / ASAP" />
+    </label>
+
+    <label class="lead-field">
+      <span data-i18n="tech.form.budget">Rango de presupuesto (opcional)</span>
+      <input type="text" name="budget" maxlength="120" />
+    </label>
+  </div>
+
+  <label class="lead-field lead-field--full">
+    <span data-i18n="tech.form.stack">Stack o restricciones (opcional)</span>
+    <textarea name="stack" rows="2" maxlength="500"></textarea>
+  </label>
+
+  <label class="lead-field lead-field--full">
+    <span data-i18n="tech.form.scope">Descripción técnica / alcance</span>
+    <textarea name="scope" required rows="5" maxlength="4000"></textarea>
+  </label>
+
+  <div class="lead-grid">
+    <label class="lead-field">
+      <span data-i18n="tech.form.github">GitHub / repo (opcional)</span>
+      <input type="url" name="github" maxlength="300" inputmode="url" placeholder="https://" />
+    </label>
+    <label class="lead-field">
+      <span data-i18n="tech.form.portfolio">Link a portfolio (opcional)</span>
+      <input type="url" name="portfolio" maxlength="300" inputmode="url" placeholder="https://" />
+    </label>
+  </div>
+
+  <div class="lead-actions">
+    <button type="submit" class="btn-primary" data-i18n="tech.form.submit">Enviar propuesta</button>
+    <a
+      href={site.github}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-ghost"
+      data-i18n="contact.github"
+    >
+      GitHub
+    </a>
+  </div>
+
+  <p class="mt-4 font-mono text-sm text-mist">
+    {site.location}
+    <span class="mx-2 text-line" aria-hidden="true">·</span>
+    <a
+      href={`mailto:${site.email}`}
+      class="text-acid underline decoration-acid/40 underline-offset-4 hover:decoration-acid"
+    >
+      {site.email}
+    </a>
+  </p>
+
+  <p
+    id="tech-lead-status"
+    class="lead-status"
+    data-lead-status
+    role="status"
+    aria-live="polite"
+    hidden
+  >
+  </p>
+</form>

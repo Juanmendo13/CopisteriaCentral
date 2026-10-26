@@ -57,6 +57,10 @@ function applyLocale(locale: Locale) {
       el.textContent = project.pitch[locale];
       return;
     }
+    if (field === 'humanPitch') {
+      el.textContent = project.humanPitch?.[locale] ?? project.pitch[locale];
+      return;
+    }
     if (field.startsWith('fe:')) {
       const i = Number(field.slice(3));
       if (project.frontend[i]) el.textContent = project.frontend[i][locale];
@@ -75,7 +79,10 @@ function applyLocale(locale: Locale) {
   });
 
   const meta = document.querySelector('meta[name="description"]');
-  if (meta) meta.setAttribute('content', t(locale, 'meta.description'));
+  if (meta) {
+    const key = (meta.getAttribute('data-i18n-meta') || 'meta.description') as UiKey;
+    if (key in ui.es) meta.setAttribute('content', t(locale, key));
+  }
 }
 
 function init() {

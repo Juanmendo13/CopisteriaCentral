@@ -1,12 +1,20 @@
 ---
+export const prerender = true;
+
 import Layout from '../layouts/Layout.astro';
 import { site } from '../lib/site';
 ---
 
-<Layout title={`No encontrado · ${site.name}`}>
-  <main class="flex min-h-[100svh] flex-col items-center justify-center px-5 text-center">
-    <p class="font-display text-6xl font-extrabold text-acid">404</p>
-    <p class="mt-4 font-mono text-mist">Esta página no existe.</p>
-    <a href="/" class="btn-primary mt-8">Volver al inicio</a>
+<Layout title={`404 · ${site.brand}`}>
+  <main class="mx-auto flex min-h-[70svh] max-w-6xl flex-col justify-center px-5 py-24 sm:px-8">
+    <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-hot">404</p>
+    <h1 class="font-display mt-3 text-4xl font-extrabold text-fog">Not found</h1>
+    <p class="mt-4 max-w-md text-mist">
+      <a href="/" class="text-acid underline decoration-acid/40 underline-offset-4">Home</a>
+      <span class="mx-2 text-line">·</span>
+      <a href="/negocios" class="text-cyan underline decoration-cyan/40 underline-offset-4"
+        >/negocios</a
+      >
+    </p>
   </main>
 </Layout>

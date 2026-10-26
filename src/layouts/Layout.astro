@@ -15,9 +15,15 @@ import { t } from '../i18n/messages';
 interface Props {
   title: string;
   description?: string;
+  /** i18n key for client-side meta updates (default meta.description). */
+  descriptionKey?: 'meta.description' | 'meta.negocios.description';
 }
 
-const { title, description = t('es', 'meta.description') } = Astro.props;
+const {
+  title,
+  descriptionKey = 'meta.description',
+  description = t('es', descriptionKey),
+} = Astro.props;
 
 const siteUrl = site.url;
 const ogImage = `${siteUrl}/portfolio/hero-cyberpunk.jpg`;
@@ -29,7 +35,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
+    <meta name="description" content={description} data-i18n-meta={descriptionKey} />
     <meta name="theme-color" content="#05080f" />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -54,6 +60,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <slot />
     <script>
       import '../scripts/i18n.ts';
+      import '../scripts/lead-form.ts';
     </script>
   </body>
 </html>
