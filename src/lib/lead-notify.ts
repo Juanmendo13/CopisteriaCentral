@@ -55,6 +55,10 @@ const TECH_TYPES = new Set([
   'freelance-site',
   'api',
   'fullstack',
+  'tpv',
+  'automation',
+  'desktop',
+  'ai',
   'collab',
   'other',
 ]);

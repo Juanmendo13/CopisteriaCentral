@@ -4,10 +4,10 @@ export const site = {
   shortName: 'jm',
   handle: 'juanmendo13',
   brand: 'juanmendo',
-  tagline: 'Full-stack para negocios locales',
+  tagline: 'Full-stack · encargos a medida',
   description:
-    'juanmendo — full-stack: frontend, backend, APIs, auth, email/blob y deploy en Vercel. Ingeniería Informática · Sevilla · Milano.',
-  role: 'Ingeniería Informática · Full-stack',
+    'juanmendo — encargos full-stack: webs/apps, APIs, TPV/PDA, paneles, automatización, desktop, IA. Interés en ciberseguridad. Sevilla · Milano.',
+  role: 'Ingeniería Informática · Full-stack · encargos',
   location: 'Sevilla · Milano',
   email: 'jmendozadame@gmail.com',
   github: 'https://github.com/Juanmendo13',
