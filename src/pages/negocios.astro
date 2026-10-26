@@ -11,7 +11,9 @@ import { site } from '../lib/site';
 const cases = getBusinessProjects();
 const benefits = [1, 2, 3, 4, 5, 6] as const;
 const steps = [1, 2, 3] as const;
-const faqs = [1, 2, 3] as const;
+const faqs = [1, 2, 3, 4] as const;
+const pitteriSala = 'https://pitteri.vercel.app/sala/';
+const pitteriWeb = 'https://pitteri.vercel.app';
 ---
 
 <Layout
@@ -67,8 +69,14 @@ const faqs = [1, 2, 3] as const;
         class="animate-rise-delay-2 mt-4 max-w-xl text-base font-medium leading-relaxed text-mist sm:text-lg"
         data-i18n="neg.hero.lead"
       >
-        Montamos juntos lo que tu negocio necesita: carta, catálogo, pedidos al móvil o al email, y
-        panel para el mostrador.
+        Carta, catálogo, pedidos al email/móvil, stock, comandería o TPV de bar. Precio claro: 200€
+        pago único, sin cuotas mensuales.
+      </p>
+      <p
+        class="animate-rise-delay-2 mt-4 font-mono text-sm uppercase tracking-[0.18em] text-acid"
+        data-i18n="neg.hero.price"
+      >
+        200€ · pago único · sin mensualidades
       </p>
       <div class="animate-rise-delay-3 mt-8 flex flex-wrap gap-3">
         <a href="#contacto" class="btn-primary" data-i18n="neg.hero.ctaContact">Pedir presupuesto</a>
@@ -225,6 +233,21 @@ const faqs = [1, 2, 3] as const;
                     >
                       {project.humanPitch?.es ?? project.pitch.es}
                     </p>
+                    {project.humanBullets?.length ? (
+                      <ul class="mt-4 space-y-2">
+                        {project.humanBullets.map((bullet, bi) => (
+                          <li class="flex gap-2 text-sm leading-snug text-fog/90">
+                            <span
+                              class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-acid"
+                              aria-hidden="true"
+                            />
+                            <span data-proj={project.slug} data-proj-field={`hb:${bi}`}>
+                              {bullet.es}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                     <div class="mt-6 flex flex-wrap gap-3">
                       {project.live ? (
                         <a
@@ -237,6 +260,18 @@ const faqs = [1, 2, 3] as const;
                           Visitar
                         </a>
                       ) : null}
+                      {project.demos?.map((demo, di) => (
+                        <a
+                          href={demo.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="btn-ghost"
+                        >
+                          <span data-proj={project.slug} data-proj-field={`demo:${di}`}>
+                            {demo.label.es}
+                          </span>
+                        </a>
+                      ))}
                       <a href="/#proyectos" class="btn-ghost" data-i18n="neg.cases.tech">
                         Detalle técnico
                       </a>
@@ -250,26 +285,76 @@ const faqs = [1, 2, 3] as const;
       </div>
     </section>
 
-    <section class="border-t border-line bg-void-2 px-5 py-20 sm:px-8 sm:py-24">
+    <section id="tpv" class="scroll-mt-8 border-t border-line bg-void-2 px-5 py-20 sm:px-8 sm:py-24">
+      <div class="mx-auto max-w-6xl">
+        <p
+          class="font-mono text-[11px] uppercase tracking-[0.22em] text-hot"
+          data-i18n="neg.tpv.kicker"
+        >
+          También TPV de bar
+        </p>
+        <h2
+          class="font-display mt-3 max-w-2xl text-3xl font-extrabold tracking-tight text-fog sm:text-4xl"
+          data-i18n="neg.tpv.title"
+        >
+          ¿Necesitas una comandería sencilla?
+        </h2>
+        <p
+          class="mt-4 max-w-2xl text-base font-medium leading-relaxed text-mist sm:text-lg"
+          data-i18n="neg.tpv.lead"
+        >
+          Además de la web pública, puedo montar un TPV/comandera básico para bares. Mira la demo en
+          vivo de Pitteri (sala).
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href={pitteriSala}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary"
+            data-i18n="neg.tpv.cta"
+          >
+            Abrir demo /sala
+          </a>
+          <a
+            href={pitteriWeb}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-ghost"
+            data-i18n="neg.tpv.ctaWeb"
+          >
+            Ver web del bar
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-line bg-void px-5 py-20 sm:px-8 sm:py-24">
       <div class="mx-auto max-w-6xl grid gap-12 lg:grid-cols-2">
         <div>
           <p
             class="font-mono text-[11px] uppercase tracking-[0.22em] text-cyan"
             data-i18n="neg.pricing.kicker"
           >
-            Cómo empezamos
+            Precio
           </p>
           <h2
-            class="font-display mt-3 text-3xl font-extrabold tracking-tight text-fog"
+            class="font-display mt-3 text-4xl font-extrabold tracking-tight text-acid sm:text-5xl"
             data-i18n="neg.pricing.title"
           >
-            Presupuesto a medida.
+            200€. Pago único.
           </h2>
           <p
             class="mt-4 text-base font-medium leading-relaxed text-mist"
             data-i18n="neg.pricing.lead"
           >
-            Cada local es distinto. Rellena el formulario y te respondo con una propuesta concreta.
+            Sin mensualidades. Un pago de 200€ por la web del local.
+          </p>
+          <p
+            class="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-cyan"
+            data-i18n="neg.pricing.note"
+          >
+            Sin cuotas mensuales · formulario sin compromiso
           </p>
           <a href="#contacto" class="btn-primary mt-8 inline-flex" data-i18n="neg.pricing.cta">
             Ir al formulario

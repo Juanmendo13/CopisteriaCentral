@@ -95,6 +95,19 @@ import { projects } from '../data/projects';
                       <span aria-hidden="true"> →</span>
                     </a>
                   )}
+                  {project.demos?.map((demo, di) => (
+                    <a
+                      href={demo.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-mono text-xs uppercase tracking-[0.14em] text-cyan underline decoration-cyan/40 underline-offset-4 hover:decoration-cyan"
+                    >
+                      <span data-proj={project.slug} data-proj-field={`demo:${di}`}>
+                        {demo.label.es}
+                      </span>
+                      <span aria-hidden="true"> →</span>
+                    </a>
+                  ))}
                   {project.repo && (
                     <a
                       href={project.repo}

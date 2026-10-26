@@ -2,6 +2,11 @@ export type Locale = 'es' | 'en' | 'it';
 
 export type Localized = Record<Locale, string>;
 
+export type ProjectLink = {
+  href: string;
+  label: Localized;
+};
+
 export type Project = {
   slug: string;
   name: string;
@@ -9,8 +14,12 @@ export type Project = {
   pitch: Localized;
   /** Owner-facing pitch for /negocios — outcomes, no tech jargon. */
   humanPitch?: Localized;
+  /** Short owner-facing capability bullets for /negocios cards. */
+  humanBullets?: Localized[];
   stack: string[];
   live?: string;
+  /** Extra demos (e.g. Pitteri PDA /sala/) — never invent URLs. */
+  demos?: ProjectLink[];
   repo?: string;
   download?: string;
   year: string;
@@ -31,16 +40,38 @@ export const projects: Project[] = [
       it: 'Reina Mercedes, Siviglia',
     },
     pitch: {
-      es: 'Plataforma para una copistería de barrio: pedido con PDF, precio orientativo, catálogo de papelería y avisos al local.',
-      en: 'Platform for a neighbourhood copy shop: PDF orders, indicative pricing, stationery catalogue and shop alerts.',
-      it: 'Piattaforma per una copisteria di quartiere: ordini PDF, prezzi orientativi, catalogo cartoleria e avvisi al locale.',
+      es: 'Copistería full-stack: pedido con PDF (páginas detectadas automáticamente), calculadora de precio, papelería `/venta` con catálogo vivo, panel `/admin` de productos/stock autónomo, y avisos al Gmail del local.',
+      en: 'Full-stack copy shop: PDF orders (pages auto-detected), price calculator, `/venta` stationery with live catalogue, `/admin` self-serve products/stock panel, and alerts to the shop Gmail.',
+      it: 'Copisteria full-stack: ordini PDF (pagine rilevate automaticamente), calcolatore prezzo, cartoleria `/venta` con catalogo live, pannello `/admin` prodotti/stock autonomo e avvisi alla Gmail del locale.',
     },
     humanPitch: {
-      es: 'Los clientes piden impresión con su PDF y el aviso llega al local. También hay papelería y presupuestos orientativos.',
-      en: 'Customers order prints with their PDF and the shop gets the alert. Stationery catalogue and indicative quotes included.',
-      it: 'I clienti ordinano stampe con il loro PDF e l’avviso arriva al locale. C’è anche cartoleria e preventivi orientativi.',
+      es: 'El cliente sube el PDF para imprimir: la web cuenta las páginas sola (nadie las cuenta a mano), calcula un precio orientativo y el aviso llega al email del local. Papelería online con carrito, y un panel del dueño para dar de alta productos y gestionar el stock sin depender de un informático.',
+      en: 'Customers upload a PDF to print: the site counts the pages automatically (no manual counting), shows an indicative price, and emails the shop. Online stationery with a cart, plus an owner panel to add products and manage stock without needing a developer.',
+      it: 'Il cliente carica il PDF da stampare: il sito conta le pagine da solo (niente conteggio a mano), calcola un prezzo orientativo e avvisa la Gmail del locale. Cartoleria online con carrello e pannello del titolare per prodotti e stock senza un informatico.',
     },
-    stack: ['Astro 7', 'Tailwind 4', 'Vercel', 'Vercel Blob', 'Web3Forms', 'Resend'],
+    humanBullets: [
+      {
+        es: 'Subida de PDF: las páginas se detectan solas',
+        en: 'PDF upload: pages detected automatically',
+        it: 'Upload PDF: pagine rilevate automaticamente',
+      },
+      {
+        es: 'Precio orientativo según formato, color, caras, páginas y copias',
+        en: 'Indicative price from size, colour, sides, pages and copies',
+        it: 'Prezzo orientativo da formato, colore, facciate, pagine e copie',
+      },
+      {
+        es: 'Panel del dueño: alta de productos y stock de papelería',
+        en: 'Owner panel: add products and manage stationery stock',
+        it: 'Pannello titolare: prodotti e stock cartoleria',
+      },
+      {
+        es: 'Aviso del pedido al email del local (+ WhatsApp si el archivo es grande)',
+        en: 'Order alert to the shop email (+ WhatsApp for large files)',
+        it: 'Avviso ordine alla email del locale (+ WhatsApp se il file è grande)',
+      },
+    ],
+    stack: ['Astro 7', 'Tailwind 4', 'Vercel', 'Vercel Blob', 'pdf.js', 'Web3Forms', 'Resend'],
     live: 'https://copisteria-central.vercel.app',
     repo: 'https://github.com/Juanmendo13/CopisteriaCentral',
     year: '2026',
@@ -57,14 +88,29 @@ export const projects: Project[] = [
         it: 'Catalogo servizi (`/servicios`) e schede dinamiche `/servicio/[slug]`',
       },
       {
-        es: 'Pedido con subida de PDF/imagen, opciones de impresión y confirmación',
-        en: 'Order flow with PDF/image upload, print options and confirmation',
-        it: 'Flusso ordine con upload PDF/immagine, opzioni di stampa e conferma',
+        es: '`/pedido`: subida PDF/JPG/PNG; pdf.js cuenta `numPages` y rellena el campo de páginas (editable si hace falta)',
+        en: '`/pedido`: PDF/JPG/PNG upload; pdf.js reads `numPages` and fills the pages field (editable if needed)',
+        it: '`/pedido`: upload PDF/JPG/PNG; pdf.js legge `numPages` e riempie il campo pagine (editabile se serve)',
       },
       {
-        es: 'Papelería `/venta`: búsqueda, cards densas en móvil, carrito sticky con subtotal en cabecera',
-        en: 'Stationery `/venta`: search, dense mobile cards, sticky cart with header subtotal',
-        it: 'Cartoleria `/venta`: ricerca, card dense su mobile, carrello sticky con subtotale in header',
+        es: 'Calculadora de precio orientativo en vivo (formato, color, caras, páginas, copias)',
+        en: 'Live indicative price calculator (size, colour, sides, pages, copies)',
+        it: 'Calcolatore prezzo orientativo live (formato, colore, facciate, pagine, copie)',
+      },
+      {
+        es: 'Papelería `/venta`: catálogo en vivo (Blob) con fallback estático, búsqueda, cards densas, carrito sticky con subtotal',
+        en: 'Stationery `/venta`: live catalogue (Blob) with static fallback, search, dense cards, sticky cart with subtotal',
+        it: 'Cartoleria `/venta`: catalogo live (Blob) con fallback statico, ricerca, card dense, carrello sticky con subtotale',
+      },
+      {
+        es: 'Badges de stock en `/venta` cuando el admin gestiona unidades (0 / consultar)',
+        en: 'Stock badges on `/venta` when admin manages units (0 / enquire)',
+        it: 'Badge stock su `/venta` quando l’admin gestisce unità (0 / consulta)',
+      },
+      {
+        es: '`/admin`: panel privado (login + cookie) para productos, precios, imagen, activo/oculto y stock',
+        en: '`/admin`: private panel (login + cookie) for products, prices, image, active/hidden and stock',
+        it: '`/admin`: pannello privato (login + cookie) per prodotti, prezzi, immagine, attivo/nascosto e stock',
       },
       {
         es: 'Precios orientativos con carrito de presupuesto (`/precios`)',
@@ -72,26 +118,31 @@ export const projects: Project[] = [
         it: 'Prezzi orientativi con carrello preventivo (`/precios`)',
       },
       {
-        es: 'Contacto: teléfono, WhatsApp, horario y mapa',
-        en: 'Contact: phone, WhatsApp, hours and map',
-        it: 'Contatti: telefono, WhatsApp, orari e mappa',
-      },
-      {
-        es: 'Galería del local (`/imagenes`) e información / legales',
-        en: 'Shop gallery (`/imagenes`) plus info / legal pages',
-        it: 'Galleria del locale (`/imagenes`) e pagine info / legali',
-      },
-      {
-        es: 'UI en español, tipografía de marca, diseño responsive',
-        en: 'Spanish UI, brand typography, responsive design',
-        it: 'UI in spagnolo, tipografia di brand, design responsive',
+        es: 'Contacto: teléfono, WhatsApp, horario y mapa; galería `/imagenes` y legales',
+        en: 'Contact: phone, WhatsApp, hours and map; `/imagenes` gallery and legal pages',
+        it: 'Contatti: telefono, WhatsApp, orari e mappa; galleria `/imagenes` e legali',
       },
     ],
     backend: [
       {
-        es: '`POST /api/pedido` — valida pedido e inicia aviso a la tienda',
-        en: '`POST /api/pedido` — validates order and triggers shop notify',
-        it: '`POST /api/pedido` — valida ordine e avvia notifica al negozio',
+        es: '`POST /api/pedido` — valida pedido (incl. páginas/copias) e inicia aviso a la tienda',
+        en: '`POST /api/pedido` — validates order (incl. pages/copies) and triggers shop notify',
+        it: '`POST /api/pedido` — valida ordine (incl. pagine/copie) e avvia notifica al negozio',
+      },
+      {
+        es: '`POST /api/upload` — subida a Vercel Blob (`BLOB_READ_WRITE_TOKEN`)',
+        en: '`POST /api/upload` — upload to Vercel Blob (`BLOB_READ_WRITE_TOKEN`)',
+        it: '`POST /api/upload` — upload su Vercel Blob (`BLOB_READ_WRITE_TOKEN`)',
+      },
+      {
+        es: 'Catálogo vivo en Blob `catalog/venta.json` (`venta-catalog.ts`) con fallback al catálogo estático',
+        en: 'Live catalogue in Blob `catalog/venta.json` (`venta-catalog.ts`) with static fallback',
+        it: 'Catalogo live in Blob `catalog/venta.json` (`venta-catalog.ts`) con fallback statico',
+      },
+      {
+        es: '`/api/admin/*` — login/logout/session, CRUD productos, seed y subida de imagen (auth por cookie HttpOnly)',
+        en: '`/api/admin/*` — login/logout/session, product CRUD, seed and image upload (HttpOnly cookie auth)',
+        it: '`/api/admin/*` — login/logout/session, CRUD prodotti, seed e upload immagine (auth cookie HttpOnly)',
       },
       {
         es: '`POST /api/presupuesto-carrito` y `/api/presupuesto-contacto`',
@@ -99,29 +150,19 @@ export const projects: Project[] = [
         it: '`POST /api/presupuesto-carrito` e `/api/presupuesto-contacto`',
       },
       {
-        es: '`POST /api/upload` — subida a Vercel Blob (token `BLOB_READ_WRITE_TOKEN`)',
-        en: '`POST /api/upload` — upload to Vercel Blob (`BLOB_READ_WRITE_TOKEN`)',
-        it: '`POST /api/upload` — upload su Vercel Blob (`BLOB_READ_WRITE_TOKEN`)',
-      },
-      {
-        es: '`GET /api/notify-health` — comprobación del canal de avisos',
-        en: '`GET /api/notify-health` — notify channel health check',
-        it: '`GET /api/notify-health` — health check del canale di avviso',
-      },
-      {
-        es: 'Web3Forms → Gmail de pedidos (`PEDIDOS_EMAIL` / `WEB3FORMS_ACCESS_KEY`)',
-        en: 'Web3Forms → orders Gmail (`PEDIDOS_EMAIL` / `WEB3FORMS_ACCESS_KEY`)',
-        it: 'Web3Forms → Gmail ordini (`PEDIDOS_EMAIL` / `WEB3FORMS_ACCESS_KEY`)',
-      },
-      {
-        es: 'Resend opcional como respaldo (`RESEND_API_KEY` / `RESEND_FROM`)',
-        en: 'Optional Resend fallback (`RESEND_API_KEY` / `RESEND_FROM`)',
-        it: 'Resend opzionale di backup (`RESEND_API_KEY` / `RESEND_FROM`)',
+        es: 'Web3Forms → Gmail de pedidos (`PEDIDOS_EMAIL` / `WEB3FORMS_ACCESS_KEY`); Resend opcional',
+        en: 'Web3Forms → orders Gmail (`PEDIDOS_EMAIL` / `WEB3FORMS_ACCESS_KEY`); optional Resend',
+        it: 'Web3Forms → Gmail ordini (`PEDIDOS_EMAIL` / `WEB3FORMS_ACCESS_KEY`); Resend opzionale',
       },
       {
         es: 'WhatsApp (`wa.me`) como alternativa si el archivo es grande',
         en: 'WhatsApp (`wa.me`) fallback for large files',
         it: 'WhatsApp (`wa.me`) come alternativa per file grandi',
+      },
+      {
+        es: '`GET /api/notify-health` — comprobación del canal de avisos',
+        en: '`GET /api/notify-health` — notify channel health check',
+        it: '`GET /api/notify-health` — health check del canale di avviso',
       },
       {
         es: 'SSR Astro en Vercel (`@astrojs/vercel`)',
@@ -139,17 +180,44 @@ export const projects: Project[] = [
       it: 'Lambrate, Milano',
     },
     pitch: {
-      es: 'Web pública del bar + comandera PDA (mesas, cocina, cuenta) con sync Supabase opcional.',
-      en: 'Public bar site + waiter PDA (tables, kitchen, bill) with optional Supabase sync.',
-      it: 'Sito pubblico del bar + PDA comanderia (tavoli, cucina, conto) con sync Supabase opzionale.',
+      es: 'Web pública del bar + comandera PDA en `/sala/` (mesas, cocina, cuenta, admin) con sync Supabase opcional o localStorage.',
+      en: 'Public bar site + waiter PDA at `/sala/` (tables, kitchen, bill, admin) with optional Supabase sync or localStorage.',
+      it: 'Sito pubblico del bar + PDA comanderia su `/sala/` (tavoli, cucina, conto, admin) con sync Supabase opzionale o localStorage.',
     },
     humanPitch: {
-      es: 'Web del bar para quien te busca, y panel en el móvil para mesas, cocina y cuenta en el mostrador.',
-      en: 'A public site for people looking you up, plus a phone panel for tables, kitchen and the bill at the counter.',
-      it: 'Sito del bar per chi ti cerca, e pannello sul telefono per tavoli, cucina e conto al bancone.',
+      es: 'Web del bar para quien te busca (carta, horario, Maps) y, aparte, una comandería en el móvil: mesas por zonas, cocina, cuenta y cierre. Puedes abrir la demo de sala ahora mismo.',
+      en: 'A public site for people looking you up (menu, hours, Maps) plus a phone comandería: zoned tables, kitchen, bill and close-out. You can open the sala demo right now.',
+      it: 'Sito del bar per chi ti cerca (menu, orari, Maps) e, a parte, una comanderia sul telefono: tavoli per zone, cucina, conto e chiusura. Puoi aprire subito la demo sala.',
     },
+    humanBullets: [
+      {
+        es: 'Demo en vivo de la comandería: pitteri.vercel.app/sala/',
+        en: 'Live comandería demo: pitteri.vercel.app/sala/',
+        it: 'Demo live della comanderia: pitteri.vercel.app/sala/',
+      },
+      {
+        es: 'PIN de camareros, plano de mesas, cocina y cobro',
+        en: 'Waiter PIN, floor plan, kitchen and payment',
+        it: 'PIN camerieri, pianta tavoli, cucina e pagamento',
+      },
+      {
+        es: 'Sirve como base de un TPV/comandera sencillo para bares',
+        en: 'Works as a base for a simple bar POS/comandería',
+        it: 'Serve da base per un TPV/comanderia semplice da bar',
+      },
+    ],
     stack: ['React', 'Vite', 'Supabase', 'Vercel'],
     live: 'https://pitteri.vercel.app',
+    demos: [
+      {
+        href: 'https://pitteri.vercel.app/sala/',
+        label: {
+          es: 'Probar PDA /sala',
+          en: 'Try PDA /sala',
+          it: 'Prova PDA /sala',
+        },
+      },
+    ],
     repo: 'https://github.com/Juanmendo13/piteri',
     year: '2025',
     image: '/portfolio/shots/pitteri.jpg',
@@ -232,10 +300,22 @@ export const projects: Project[] = [
       it: 'Catalogo, preventivi WhatsApp/checkout e auth email per ferramenta di zona (Los Rosales / Tocina).',
     },
     humanPitch: {
-      es: 'Catálogo de ferretería online: el cliente arma el presupuesto y te lo manda por WhatsApp.',
-      en: 'Online hardware catalogue: the customer builds a quote and sends it to you on WhatsApp.',
-      it: 'Catalogo ferramenta online: il cliente prepara il preventivo e te lo manda su WhatsApp.',
+      es: 'Catálogo de ferretería por categorías: el cliente busca, arma el presupuesto con notas y te lo manda por WhatsApp o checkout. Registro por email para repetir pedidos.',
+      en: 'Hardware catalogue by category: customers search, build a quote with notes and send it via WhatsApp or checkout. Email signup for repeat orders.',
+      it: 'Catalogo ferramenta per categorie: il cliente cerca, prepara il preventivo con note e lo manda su WhatsApp o checkout. Registrazione email per ordini ripetuti.',
     },
+    humanBullets: [
+      {
+        es: 'Catálogo por categorías + ficha de producto',
+        en: 'Category catalogue + product pages',
+        it: 'Catalogo per categorie + scheda prodotto',
+      },
+      {
+        es: 'Presupuesto listo para WhatsApp (o checkout)',
+        en: 'Quote ready for WhatsApp (or checkout)',
+        it: 'Preventivo pronto per WhatsApp (o checkout)',
+      },
+    ],
     stack: ['React 19', 'Vite', 'Express', 'Firebase', 'Nodemailer', 'Tailwind 4'],
     live: 'https://ferreteria-yelamo.vercel.app/',
     repo: 'https://github.com/Juanmendo13/FerreteriaYelamo',
@@ -310,10 +390,22 @@ export const projects: Project[] = [
       it: 'Menu digitale con prezzi reali, schede prodotto, carrello con login Clerk e ordini email al locale.',
     },
     humanPitch: {
-      es: 'Carta online con precios reales: el cliente pide desde el móvil y el pedido llega al correo de la pizzería.',
-      en: 'Online menu with real prices: customers order from their phone and the order lands in the pizzeria’s inbox.',
-      it: 'Menu online con prezzi reali: il cliente ordina dal telefono e l’ordine arriva nella casella della pizzeria.',
+      es: 'Carta digital con precios reales, tamaños e ingredientes: el cliente monta el carrito (recogida o reparto), inicia sesión y el pedido llega al correo de la pizzería. También hay carta para imprimir en PDF.',
+      en: 'Digital menu with real prices, sizes and ingredients: customers build a cart (pickup or delivery), sign in, and the order hits the pizzeria inbox. Printable PDF menu included.',
+      it: 'Menu digitale con prezzi reali, taglie e ingredienti: il cliente compone il carrello (ritiro o consegna), accede e l’ordine arriva alla casella della pizzeria. C’è anche il menu PDF da stampare.',
     },
+    humanBullets: [
+      {
+        es: 'Carta con precios reales + carrito (recogida/reparto)',
+        en: 'Menu with real prices + cart (pickup/delivery)',
+        it: 'Menu con prezzi reali + carrello (ritiro/consegna)',
+      },
+      {
+        es: 'Pedido al email de la pizzería; carta PDF imprimible',
+        en: 'Order to the pizzeria email; printable PDF menu',
+        it: 'Ordine alla email della pizzeria; menu PDF stampabile',
+      },
+    ],
     stack: ['Astro', 'Tailwind 4', 'Clerk', 'Web3Forms', 'Vercel'],
     live: 'https://pizzeria-formula-1.vercel.app',
     repo: 'https://github.com/Juanmendo13/pizzeria-formula-1',
@@ -393,10 +485,22 @@ export const projects: Project[] = [
       it: 'Demo tipografia/grande formato: schede servizio, prezzi, preventivi e ordini PDF fino ad A0.',
     },
     humanPitch: {
-      es: 'Web de imprenta y copistería: servicios claros, precios orientativos y pedido con archivo hasta gran formato.',
-      en: 'Print-shop site: clear services, indicative prices and file orders up to large format.',
-      it: 'Sito di tipografia/copisteria: servizi chiari, prezzi orientativi e ordini con file fino al grande formato.',
+      es: 'Web de imprenta/copistería orientada a campus: fichas de servicio (fotocopias, A0–A6, encuadernación…), precios orientativos y pedido con archivo hasta gran formato, con aviso al local y alternativa WhatsApp.',
+      en: 'Campus-oriented print shop site: service pages (copies, A0–A6, binding…), indicative prices and file orders up to large format, with shop alerts and WhatsApp fallback.',
+      it: 'Sito tipografia/copisteria campus: schede servizio (copie, A0–A6, rilegatura…), prezzi orientativi e ordini con file fino al grande formato, con avviso al locale e alternativa WhatsApp.',
     },
+    humanBullets: [
+      {
+        es: 'Servicios y pedido con archivo hasta formato A0',
+        en: 'Services and file orders up to A0',
+        it: 'Servizi e ordini con file fino ad A0',
+      },
+      {
+        es: 'Precios orientativos + contacto WhatsApp/Maps',
+        en: 'Indicative prices + WhatsApp/Maps contact',
+        it: 'Prezzi orientativi + contatto WhatsApp/Maps',
+      },
+    ],
     stack: ['Astro', 'Tailwind', 'Vercel', 'Vercel Blob', 'Web3Forms'],
     live: 'https://a0-impresiones.vercel.app',
     year: '2026',
@@ -616,10 +720,22 @@ export const projects: Project[] = [
       it: 'Sito del pub di quartiere: caffè, focacce, birra e ricevitoria — con TPV embedded.',
     },
     humanPitch: {
-      es: 'Web del pub de barrio: qué ofreces, dónde estás, y acceso al punto de venta para el día a día.',
-      en: 'Neighbourhood pub site: what you offer, where you are, and a point-of-sale link for day-to-day.',
-      it: 'Sito del pub di quartiere: cosa offri, dove sei, e accesso al punto vendita per il quotidiano.',
+      es: 'Landing del pub (caffè, focacce, cerveza, recibidoría) con dirección y marca, más una ruta `/tpv/` embebida para el punto de venta del día a día.',
+      en: 'Pub landing (coffee, focaccia, beer, corner shop) with address and brand, plus an embedded `/tpv/` route for day-to-day point of sale.',
+      it: 'Landing del pub (caffè, focacce, birra, ricevitoria) con indirizzo e brand, più una route `/tpv/` embedded per il punto vendita quotidiano.',
     },
+    humanBullets: [
+      {
+        es: 'Web de marca + horario/ubicación',
+        en: 'Brand site + hours/location',
+        it: 'Sito di brand + orari/posizione',
+      },
+      {
+        es: 'TPV embebido en `/tpv/` para el mostrador',
+        en: 'Embedded POS at `/tpv/` for the counter',
+        it: 'TPV embedded su `/tpv/` per il bancone',
+      },
+    ],
     stack: ['Static web', 'Vercel'],
     live: 'https://orticas-pub.vercel.app',
     year: '2026',

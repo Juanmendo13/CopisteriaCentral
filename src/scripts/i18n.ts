@@ -61,6 +61,18 @@ function applyLocale(locale: Locale) {
       el.textContent = project.humanPitch?.[locale] ?? project.pitch[locale];
       return;
     }
+    if (field.startsWith('hb:')) {
+      const i = Number(field.slice(3));
+      const bullet = project.humanBullets?.[i];
+      if (bullet) el.textContent = bullet[locale];
+      return;
+    }
+    if (field.startsWith('demo:')) {
+      const i = Number(field.slice(5));
+      const demo = project.demos?.[i];
+      if (demo) el.textContent = demo.label[locale];
+      return;
+    }
     if (field.startsWith('fe:')) {
       const i = Number(field.slice(3));
       if (project.frontend[i]) el.textContent = project.frontend[i][locale];
